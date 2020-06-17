@@ -31,31 +31,12 @@
 
 ### 状态
 
-
-When lattice parameters of unit cell (set by ``POSCAR``) are the
-column vectors of :math:`\mathbf{a}_\mathrm{u}`,
-:math:`\mathbf{b}_\mathrm{u}`, and :math:`\mathbf{c}_\mathrm{u}`,
-those of supercell, :math:`\mathbf{a}_\mathrm{p}`,
-:math:`\mathbf{b}_\mathrm{p}`, :math:`\mathbf{c}_\mathrm{p}`, are
-determined by,
-
-.. math::
-
-   ( \mathbf{a}_\mathrm{p} \; \mathbf{b}_\mathrm{p} \; \mathbf{c}_\mathrm{p} )
-   =  ( \mathbf{a}_\mathrm{u} \; \mathbf{b}_\mathrm{u} \;
-   \mathbf{c}_\mathrm{u} ) \mathrm{M}_\mathrm{p}.
-
-:math:`\mathrm{M}_\mathrm{p}` is a change of basis matrix and so
-:math:`\mathrm{M}_\mathrm{p}^{-1}` must be an integer matrix. Be careful that
-:math:the axes in ``POSCAR`` is defined by three row vectors, i.e.,
-:math:`( \mathbf{a}_\mathrm{u} \; \mathbf{b}_\mathrm{u} \;
-\mathbf{c}_\mathrm{u} )^T`.
-
-考虑孤立和闭合系统，达到热力学平衡时，可由三个物理量描述。它们是：压强 \\(p\\)，体积~$V$, 和温度~$T$。给定这三个量，就确定了系统的一个\textbf{状态}(state)。事实上，这三个量并非完全独立，而是由一个叫做\textbf{状态方程}(equation of state)的方程联系着的。该方程可写为
-\begin{equation}
-\label{equation:equation_of_state_general}
+*考虑孤立和闭合系统，达到热力学平衡时，可由三个物理量描述。它们是：压强 $p$，体积$V$, 和温度$T$。给定这三个量，就确定了系统的一个\textbf{状态}(state)。事实上，这三个量并非完全独立，而是由一个叫做\textbf{状态方程}(equation of state)的方程联系着的。该方程可写为
+$$
 f(p, V, T) = 0.
-\end{equation}
+$$
+
+
 其中， $f$ 是一个特定的(三元)函数。当然我们可以将其中任何一个量写成另外两个量的(两元)函数，比如~$V=V(p,T)$。这样的两元函数在由~$p$、$V$、$T$ 这三个参数构成的三维空间中可以表示为一个曲面。系统的某一个状态就对应于该曲面上的一个点。
 
 如果系统的状态发生了变化，我们称系统经历了一个\textbf{过程}(process)。如果系统在其状态发生变化时始终无限接近平衡态，那么系统经历的过程为\textbf{准静态过程}(quasi-static process)。显然，准静态过程对应于状态方程曲面上的一条曲线。
