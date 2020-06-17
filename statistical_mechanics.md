@@ -7,18 +7,20 @@
 
 ## 热力学基础
 
-### 基本概念
+### 热力学系统
 
-一个**热力学系统**(thermodynamic system)是大量粒子的集合，常简称为\textbf{系统}(system)。系统之外的所有物质称为\textbf{环境}(environment)。
+* 一个**热力学系统** (thermodynamic system)是大量粒子的集合，常简称为**系统** (system)。系统之外的所有物质称为**环境** (environment)。
 
-如果系统与环境既不能交换能量也不能交换物质，则称其为一个\textbf{孤立系统}(isolated system)；若可交换能量但不能交换物质，则称为\textbf{闭合系统}(closed system)；若即可交换能量也可交换物质，则称为\textbf{开放系统}(open system)。交换的能量可以是\textbf{热能}(thermal energy)，称为\textbf{热量}(heat)，也可以是\textbf{机械能}(mechanical energy)，称为\textbf{功}
-(work)。
+* 如果系统与环境既不能交换能量也不能交换物质，则称其为一个**孤立系统** (isolated system)；若可交换能量但不能交换物质，则称为**闭合系统** (closed system)；若即可交换能量也可交换物质，则称为**开放系统** (open system)。交换的能量可以是**热能** (thermal energy)，称为**热量** (heat)，也可以是**机械能** (mechanical energy)，称为**功** (work)。
 
-如果我们说一个系统达到了\textbf{热力学平衡}(thermodynamic equilibrium)，那么它的各个部分(叫做子系统)之间一定同时达到了(1)\textbf{热平衡}(thermal equilibrium)、(2)\textbf{力学平衡}(mechanical equilibrium) 以及(3)\textbf{扩散平衡}(diffusive equilibrium)。
+* 如果我们说一个系统达到了**热力学平衡** (thermodynamic equilibrium)，那么它的各个部分(叫做子系统)之间一定同时达到了
+    * **热平衡** (thermal equilibrium)
+    * **力学平衡** (mechanical equilibrium) 
+    * **扩散平衡** (diffusive equilibrium)
 
+### 热力学基本定律
 
-热力学中一共有四条基本经验定律，其中在时间上最后提出但在逻辑上排在第一个的叫\textbf{热力学第零定律}(the zeroth law of thermodynamics)。 该定律说如果两个系统分别与第三个系统能达到热平衡，那么这两个系统也一定能达到热平衡。这说明处于热平衡的两个系统之间有一个相等的量。这个量就是热力学中最重要的物理量之一：
-\textbf{温度}(temperature)。
+* 热力学中一共有四条基本经验定律，其中在时间上最后提出但在逻辑上排在第一个的叫**热力学第零定律** (the zeroth law of thermodynamics)。 该定律说如果两个系统分别与第三个系统能达到热平衡，那么这两个系统也一定能达到热平衡。这说明处于热平衡的两个系统之间有一个相等的量。这个量就是热力学中最重要的物理量之一：**温度** (temperature)。这就是温度的定义之一。
 
 通过规定两个特定系统的温度值，可以建立\textbf{温标}(temperature scale)。一般选择一个大气压下水的冰点和沸点作为这两个特定系统。Celsius 温标规定冰点的温度为~0 $^{\circ}$C，沸点的温度为~100 $^{\circ}$C，而且将这中间的温度均分为~100 份。Kelvin 温标规定冰点的温度为~273.15 K，沸点的温度为~373.15 K，而且将这中间的温度均分为~100 份。显然: $T (^{\circ}\text{C}) = T (\text{K}) -  273.15$.
 
