@@ -1,9 +1,12 @@
 # 《分子动力学模拟：原理与实现》源代码
 
 ## 对读者的要求：
-* 系统学过本科水平的《经典力学》和《热力学与统计物理》。
-* 熟悉 `C++` 编程。
-* 熟悉 `Scilab` (https://www.scilab.org/) 编程。
+* 本科数学水平：《一元和多元微积分》、《线性代数》、《概率论》
+* 本科物理水平：《经典力学》和《热力学与统计物理》。
+* 编程水平：
+    * 熟悉Windows或者Linux中的命令行操作
+    * 熟悉 `C++` 编程。
+    * 熟悉 `Scilab` (https://www.scilab.org/) 编程。
  
 ##  书稿与源码
 * 书稿将在我的个人主页 (https://gpumd.zheyongfan.org/index.php/Molecular_Dynamics_Simulaiton) 发布与更新。欢迎读者指正。
