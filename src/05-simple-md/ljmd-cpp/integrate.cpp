@@ -1,6 +1,5 @@
-#include "integrate.cuh"
-#include "error.cuh"
-#include "force.cuh"
+#include "integrate.h"
+#include "force.h"
 #include <math.h>
 #include <stdio.h>
 #include <time.h>

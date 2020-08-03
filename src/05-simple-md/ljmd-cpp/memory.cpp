@@ -1,4 +1,4 @@
-#include "memory.cuh"
+#include "memory.h"
 #include <stdlib.h>
 
 void allocate_memory(int N, int MN, Atom* atom)

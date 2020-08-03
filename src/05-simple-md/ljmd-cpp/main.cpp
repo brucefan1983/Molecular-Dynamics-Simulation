@@ -1,8 +1,8 @@
-#include "common.cuh"
-#include "initialize.cuh"
-#include "integrate.cuh"
-#include "memory.cuh"
-#include "neighbor.cuh"
+#include "common.h"
+#include "initialize.h"
+#include "integrate.h"
+#include "memory.h"
+#include "neighbor.h"
 #include <stdio.h>
 #include <stdlib.h>
 

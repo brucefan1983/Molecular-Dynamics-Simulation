@@ -1,5 +1,5 @@
 #pragma once
-#include "common.cuh"
+#include "common.h"
 
 void equilibration(int Ne, int N, int MN, real T_0, real time_step, Atom* atom);
 

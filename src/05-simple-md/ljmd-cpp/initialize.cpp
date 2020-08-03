@@ -1,4 +1,4 @@
-#include "initialize.cuh"
+#include "initialize.h"
 #include <math.h>
 #include <stdlib.h>
 

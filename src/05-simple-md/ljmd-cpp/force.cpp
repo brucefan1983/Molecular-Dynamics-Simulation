@@ -1,5 +1,5 @@
-#include "force.cuh"
-#include "mic.cuh"
+#include "force.h"
+#include "mic.h"
 
 void find_force(int N, int MN, Atom* atom)
 {

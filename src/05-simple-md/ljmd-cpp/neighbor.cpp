@@ -1,5 +1,5 @@
-#include "neighbor.cuh"
-#include "mic.cuh"
+#include "neighbor.h"
+#include "mic.h"
 #include <stdio.h>
 #include <stdlib.h>
 
