@@ -8,12 +8,12 @@ const double K_B = 8.617343e-5;
 const double TIME_UNIT_CONVERSION = 1.018051e+1;
 
 static void scale_velocity1(
-  int N,
-  double T_0,
+  const int N,
+  const double T_0,
   std::vector<double>& vx,
   std::vector<double>& vy,
   std::vector<double>& vz,
-  std::vector<double>& ke)
+  const std::vector<double>& ke)
 {
   double temperature = std::accumulate(ke.begin(), ke.end(), 0.0);
   temperature /= 1.5 * K_B * N;
@@ -26,9 +26,9 @@ static void scale_velocity1(
 }
 
 static void scale_velocity(
-  int N,
-  double T_0,
-  std::vector<double>& mass,
+  const int N,
+  const double T_0,
+  const std::vector<double>& mass,
   std::vector<double>& vx,
   std::vector<double>& vy,
   std::vector<double>& vz)
@@ -48,8 +48,8 @@ static void scale_velocity(
 }
 
 void initialize_position(
-  int nx,
-  double ax,
+  const int nx,
+  const double ax,
   std::vector<double>& box,
   std::vector<double>& x,
   std::vector<double>& y,
@@ -80,9 +80,9 @@ void initialize_position(
 }
 
 void initialize_velocity(
-  int N,
-  double T_0,
-  std::vector<double>& mass,
+  const int N,
+  const double T_0,
+  const std::vector<double>& mass,
   std::vector<double>& vx,
   std::vector<double>& vy,
   std::vector<double>& vz)
@@ -105,7 +105,8 @@ void initialize_velocity(
   scale_velocity(N, T_0, mass, vx, vy, vz);
 }
 
-static void apply_mic(double* box, double* x12, double* y12, double* z12)
+static void
+apply_mic(const std::vector<double>& box, double* x12, double* y12, double* z12)
 {
   if (*x12 < -box[3]) {
     *x12 += box[0];
@@ -125,11 +126,11 @@ static void apply_mic(double* box, double* x12, double* y12, double* z12)
 }
 
 void find_neighbor(
-  int N,
-  int MN,
-  std::vector<double>& box,
-  std::vector<double>& x,
-  std::vector<double>& y,
+  const int N,
+  const int MN,
+  const std::vector<double>& box,
+  const std::vector<double>& x,
+  const std::vector<double>& y,
   std::vector<double>& z,
   std::vector<int>& NN,
   std::vector<int>& NL)
@@ -137,16 +138,15 @@ void find_neighbor(
   double cutoff = 11.0;
   double cutoff_square = cutoff * cutoff;
 
-  for (int n = 0; n < N; n++) {
+  for (int n = 0; n < N; n++)
     NN[n] = 0;
-  }
 
   for (int n1 = 0; n1 < N - 1; n1++) {
     for (int n2 = n1 + 1; n2 < N; n2++) {
       double x12 = x[n2] - x[n1];
       double y12 = y[n2] - y[n1];
       double z12 = z[n2] - z[n1];
-      apply_mic(box.data(), &x12, &y12, &z12);
+      apply_mic(box, &x12, &y12, &z12);
       double d_square = x12 * x12 + y12 * y12 + z12 * z12;
 
       if (d_square < cutoff_square) {
@@ -165,14 +165,14 @@ void find_neighbor(
 }
 
 void find_force(
-  int N,
-  int MN,
-  std::vector<double>& box,
-  std::vector<double>& x,
-  std::vector<double>& y,
-  std::vector<double>& z,
-  std::vector<int>& NN,
-  std::vector<int>& NL,
+  const int N,
+  const int MN,
+  const std::vector<double>& box,
+  const std::vector<double>& x,
+  const std::vector<double>& y,
+  const std::vector<double>& z,
+  const std::vector<int>& NN,
+  const std::vector<int>& NL,
   std::vector<double>& fx,
   std::vector<double>& fy,
   std::vector<double>& fz,
@@ -189,9 +189,9 @@ void find_force(
   const double e48s12 = 48.0 * epsilon * sigma_12;
   const double e4s6 = 4.0 * epsilon * sigma_6;
   const double e4s12 = 4.0 * epsilon * sigma_12;
-  for (int n = 0; n < N; ++n) {
+  for (int n = 0; n < N; ++n)
     fx[n] = fy[n] = fz[n] = pe[n] = 0.0;
-  }
+
   for (int i = 0; i < N; ++i) {
     for (int k = 0; k < NN[i]; k++) {
       int j = NL[i * MN + k];
@@ -200,11 +200,11 @@ void find_force(
       double x_ij = x[j] - x[i];
       double y_ij = y[j] - y[i];
       double z_ij = z[j] - z[i];
-      apply_mic(box.data(), &x_ij, &y_ij, &z_ij);
+      apply_mic(box, &x_ij, &y_ij, &z_ij);
       double r2 = x_ij * x_ij + y_ij * y_ij + z_ij * z_ij;
-      if (r2 > cutoff_square) {
+      if (r2 > cutoff_square)
         continue;
-      }
+
       double r2inv = 1.0 / r2;
       double r4inv = r2inv * r2inv;
       double r6inv = r2inv * r4inv;
@@ -224,12 +224,12 @@ void find_force(
 }
 
 static void integrate(
-  int N,
-  double time_step,
-  std::vector<double>& mass,
-  std::vector<double>& fx,
-  std::vector<double>& fy,
-  std::vector<double>& fz,
+  const int N,
+  const double time_step,
+  const std::vector<double>& mass,
+  const std::vector<double>& fx,
+  const std::vector<double>& fy,
+  const std::vector<double>& fz,
   std::vector<double>& x,
   std::vector<double>& y,
   std::vector<double>& z,
@@ -237,7 +237,7 @@ static void integrate(
   std::vector<double>& vy,
   std::vector<double>& vz,
   std::vector<double>& ke,
-  int flag)
+  const int flag)
 {
   double time_step_half = time_step * 0.5;
   for (int n = 0; n < N; ++n) {
@@ -275,11 +275,11 @@ int main(int argc, char** argv)
   }
 
   const int N = 4 * nx * nx * nx;
-  int Ns = 100;
+  const int Ns = 100;
   const int MN = 200;
-  double T_0 = 60.0;
-  double ax = 5.385;
-  double time_step = 5.0 / TIME_UNIT_CONVERSION;
+  const double T_0 = 60.0;
+  const double ax = 5.385;
+  const double time_step = 5.0 / TIME_UNIT_CONVERSION;
 
   std::vector<int> NN(N);
   std::vector<int> NL(N * MN);
@@ -297,9 +297,8 @@ int main(int argc, char** argv)
   std::vector<double> ke(N);
   std::vector<double> box(6);
 
-  for (int n = 0; n < N; ++n) {
+  for (int n = 0; n < N; ++n)
     mass[n] = 40.0;
-  }
 
   initialize_position(nx, ax, box, x, y, z);
   initialize_velocity(N, T_0, mass, vx, vy, vz);
@@ -313,7 +312,7 @@ int main(int argc, char** argv)
     scale_velocity1(N, T_0, vx, vy, vz, ke);
   }
 
-  clock_t t_total_start = clock();
+  const clock_t t_start = clock();
 
   FILE* fid = fopen("energy.txt", "w");
   for (int step = 0; step < Np; ++step) {
@@ -328,9 +327,9 @@ int main(int argc, char** argv)
   }
   fclose(fid);
 
-  clock_t t_total_stop = clock();
+  const clock_t t_stop = clock();
 
-  float t_total = float(t_total_stop - t_total_start) / CLOCKS_PER_SEC;
+  const float t_total = float(t_stop - t_start) / CLOCKS_PER_SEC;
   printf("Time used for production = %g s\n", t_total);
 
   return 0;
