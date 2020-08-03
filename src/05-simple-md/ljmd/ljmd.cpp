@@ -7,25 +7,7 @@
 const double K_B = 8.617343e-5;
 const double TIME_UNIT_CONVERSION = 1.018051e+1;
 
-static void scale_velocity1(
-  const int N,
-  const double T_0,
-  std::vector<double>& vx,
-  std::vector<double>& vy,
-  std::vector<double>& vz,
-  const std::vector<double>& ke)
-{
-  double temperature = std::accumulate(ke.begin(), ke.end(), 0.0);
-  temperature /= 1.5 * K_B * N;
-  double scale_factor = sqrt(T_0 / temperature);
-  for (int n = 0; n < N; ++n) {
-    vx[n] *= scale_factor;
-    vy[n] *= scale_factor;
-    vz[n] *= scale_factor;
-  }
-}
-
-static void scale_velocity(
+void scale_velocity(
   const int N,
   const double T_0,
   const std::vector<double>& mass,
@@ -105,8 +87,8 @@ void initialize_velocity(
   scale_velocity(N, T_0, mass, vx, vy, vz);
 }
 
-static void
-apply_mic(const std::vector<double>& box, double* x12, double* y12, double* z12)
+void apply_mic(
+  const std::vector<double>& box, double* x12, double* y12, double* z12)
 {
   if (*x12 < -box[3]) {
     *x12 += box[0];
@@ -223,7 +205,7 @@ void find_force(
   }
 }
 
-static void integrate(
+void integrate(
   const int N,
   const double time_step,
   const std::vector<double>& mass,
@@ -236,7 +218,6 @@ static void integrate(
   std::vector<double>& vx,
   std::vector<double>& vy,
   std::vector<double>& vz,
-  std::vector<double>& ke,
   const int flag)
 {
   double time_step_half = time_step * 0.5;
@@ -252,9 +233,6 @@ static void integrate(
       x[n] += vx[n] * time_step;
       y[n] += vy[n] * time_step;
       z[n] += vz[n] * time_step;
-    } else {
-      double v2 = vx[n] * vx[n] + vy[n] * vy[n] + vz[n] * vz[n];
-      ke[n] = mass[n] * v2 * 0.5;
     }
   }
 }
@@ -294,7 +272,6 @@ int main(int argc, char** argv)
   std::vector<double> fy(N);
   std::vector<double> fz(N);
   std::vector<double> pe(N);
-  std::vector<double> ke(N);
   std::vector<double> box(6);
 
   for (int n = 0; n < N; ++n)
@@ -306,21 +283,26 @@ int main(int argc, char** argv)
 
   find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
   for (int step = 0; step < Ne; ++step) {
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, ke, 1);
+    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, ke, 2);
-    scale_velocity1(N, T_0, vx, vy, vz, ke);
+    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
+    scale_velocity(N, T_0, mass, vx, vy, vz);
   }
 
   const clock_t t_start = clock();
 
   FILE* fid = fopen("energy.txt", "w");
   for (int step = 0; step < Np; ++step) {
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, ke, 1);
+    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, ke, 2);
+    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
     if (0 == step % Ns) {
-      const double keTotal = std::accumulate(ke.begin(), ke.end(), 0.0);
+      double keTotal = 0.0;
+      for (int n = 0; n < N; ++n) {
+        double v2 = vx[n] * vx[n] + vy[n] * vy[n] + vz[n] * vz[n];
+        keTotal += mass[n] * v2;
+      }
+      keTotal *= 0.5;
       const double peTotal = std::accumulate(pe.begin(), pe.end(), 0.0);
       fprintf(fid, "%g %g\n", keTotal, peTotal);
     }
