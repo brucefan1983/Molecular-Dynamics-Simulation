@@ -1,19 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <numeric>
 #include <vector>
 
 const double K_B = 8.617343e-5;
 const double TIME_UNIT_CONVERSION = 1.018051e+1;
-
-static double sum(int N, double* x)
-{
-  double s = 0.0;
-  for (int n = 0; n < N; ++n) {
-    s += x[n];
-  }
-  return s;
-}
 
 static void scale_velocity1(
   int N,
@@ -23,7 +15,8 @@ static void scale_velocity1(
   std::vector<double>& vz,
   std::vector<double>& ke)
 {
-  double temperature = sum(N, ke.data()) / (1.5 * K_B * N);
+  double temperature = std::accumulate(ke.begin(), ke.end(), 0.0);
+  temperature /= 1.5 * K_B * N;
   double scale_factor = sqrt(T_0 / temperature);
   for (int n = 0; n < N; ++n) {
     vx[n] *= scale_factor;
@@ -328,7 +321,9 @@ int main(int argc, char** argv)
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
     integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, ke, 2);
     if (0 == step % Ns) {
-      fprintf(fid, "%g %g\n", sum(N, ke.data()), sum(N, pe.data()));
+      const double keTotal = std::accumulate(ke.begin(), ke.end(), 0.0);
+      const double peTotal = std::accumulate(pe.begin(), pe.end(), 0.0);
+      fprintf(fid, "%g %g\n", keTotal, peTotal);
     }
   }
   fclose(fid);
