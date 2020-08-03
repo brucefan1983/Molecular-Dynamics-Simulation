@@ -87,15 +87,15 @@ void initializeVelocity(
   scaleVelocity(N, T0, mass, vx, vy, vz);
 }
 
-void applyMicOne(const double length, const double halfLength, double* x12)
+void applyMicOne(const double length, const double halfLength, double& x12)
 {
-  if (*x12 < -halfLength)
-    *x12 += length;
-  else if (*x12 > +halfLength)
-    *x12 -= length;
+  if (x12 < -halfLength)
+    x12 += length;
+  else if (x12 > +halfLength)
+    x12 -= length;
 }
 
-void applyMic(const double box[6], double* x12, double* y12, double* z12)
+void applyMic(const double box[6], double& x12, double& y12, double& z12)
 {
   applyMicOne(box[0], box[3], x12);
   applyMicOne(box[1], box[4], y12);
@@ -123,7 +123,7 @@ void findNeighbor(
       double x12 = x[n2] - x[n1];
       double y12 = y[n2] - y[n1];
       double z12 = z[n2] - z[n1];
-      applyMic(box, &x12, &y12, &z12);
+      applyMic(box, x12, y12, z12);
       double dSquare = x12 * x12 + y12 * y12 + z12 * z12;
 
       if (dSquare < cutoffSquare) {
@@ -177,7 +177,7 @@ void find_force(
       double xij = x[j] - x[i];
       double yij = y[j] - y[i];
       double zij = z[j] - z[i];
-      applyMic(box, &xij, &yij, &zij);
+      applyMic(box, xij, yij, zij);
       double r2 = xij * xij + yij * yij + zij * zij;
       if (r2 > cutoffSquare)
         continue;
