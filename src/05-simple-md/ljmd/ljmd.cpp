@@ -7,9 +7,9 @@
 const double K_B = 8.617343e-5;
 const double TIME_UNIT_CONVERSION = 1.018051e+1;
 
-void scale_velocity(
+void scaleVelocity(
   const int N,
-  const double T_0,
+  const double T0,
   const std::vector<double>& mass,
   std::vector<double>& vx,
   std::vector<double>& vy,
@@ -21,15 +21,15 @@ void scale_velocity(
     temperature += mass[n] * v2;
   }
   temperature /= 3.0 * K_B * N;
-  double scale_factor = sqrt(T_0 / temperature);
+  double scaleFactor = sqrt(T0 / temperature);
   for (int n = 0; n < N; ++n) {
-    vx[n] *= scale_factor;
-    vy[n] *= scale_factor;
-    vz[n] *= scale_factor;
+    vx[n] *= scaleFactor;
+    vy[n] *= scaleFactor;
+    vz[n] *= scaleFactor;
   }
 }
 
-void initialize_position(
+void initializePosition(
   const int nx,
   const double ax,
   double box[6],
@@ -61,33 +61,33 @@ void initialize_position(
   }
 }
 
-void initialize_velocity(
+void initializeVelocity(
   const int N,
-  const double T_0,
+  const double T0,
   const std::vector<double>& mass,
   std::vector<double>& vx,
   std::vector<double>& vy,
   std::vector<double>& vz)
 {
-  double momentum_average[3] = {0.0, 0.0, 0.0};
+  double momentumAverage[3] = {0.0, 0.0, 0.0};
   for (int n = 0; n < N; ++n) {
     vx[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
     vy[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
     vz[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
 
-    momentum_average[0] += mass[n] * vx[n] / N;
-    momentum_average[1] += mass[n] * vy[n] / N;
-    momentum_average[2] += mass[n] * vz[n] / N;
+    momentumAverage[0] += mass[n] * vx[n] / N;
+    momentumAverage[1] += mass[n] * vy[n] / N;
+    momentumAverage[2] += mass[n] * vz[n] / N;
   }
   for (int n = 0; n < N; ++n) {
-    vx[n] -= momentum_average[0] / mass[n];
-    vy[n] -= momentum_average[1] / mass[n];
-    vz[n] -= momentum_average[2] / mass[n];
+    vx[n] -= momentumAverage[0] / mass[n];
+    vy[n] -= momentumAverage[1] / mass[n];
+    vz[n] -= momentumAverage[2] / mass[n];
   }
-  scale_velocity(N, T_0, mass, vx, vy, vz);
+  scaleVelocity(N, T0, mass, vx, vy, vz);
 }
 
-void apply_mic_one(const double length, const double halfLength, double* x12)
+void applyMicOne(const double length, const double halfLength, double* x12)
 {
   if (*x12 < -halfLength)
     *x12 += length;
@@ -95,14 +95,14 @@ void apply_mic_one(const double length, const double halfLength, double* x12)
     *x12 -= length;
 }
 
-void apply_mic(const double box[6], double* x12, double* y12, double* z12)
+void applyMic(const double box[6], double* x12, double* y12, double* z12)
 {
-  apply_mic_one(box[0], box[3], x12);
-  apply_mic_one(box[1], box[4], y12);
-  apply_mic_one(box[2], box[5], z12);
+  applyMicOne(box[0], box[3], x12);
+  applyMicOne(box[1], box[4], y12);
+  applyMicOne(box[2], box[5], z12);
 }
 
-void find_neighbor(
+void findNeighbor(
   const int N,
   const int MN,
   const double box[6],
@@ -113,7 +113,7 @@ void find_neighbor(
   std::vector<int>& NL)
 {
   double cutoff = 11.0;
-  double cutoff_square = cutoff * cutoff;
+  double cutoffSquare = cutoff * cutoff;
 
   for (int n = 0; n < N; n++)
     NN[n] = 0;
@@ -123,17 +123,17 @@ void find_neighbor(
       double x12 = x[n2] - x[n1];
       double y12 = y[n2] - y[n1];
       double z12 = z[n2] - z[n1];
-      apply_mic(box, &x12, &y12, &z12);
-      double d_square = x12 * x12 + y12 * y12 + z12 * z12;
+      applyMic(box, &x12, &y12, &z12);
+      double dSquare = x12 * x12 + y12 * y12 + z12 * z12;
 
-      if (d_square < cutoff_square) {
+      if (dSquare < cutoffSquare) {
         NL[n1 * MN + NN[n1]++] = n2;
         NL[n2 * MN + NN[n2]++] = n1;
       }
     }
   }
 
-  for (int n1 = 0; n1 < N - 1; n1++) {
+  for (int n1 = 0; n1 < N; n1++) {
     if (NN[n1] > MN) {
       printf("Error: MN is too small.\n");
       exit(1);
@@ -158,14 +158,14 @@ void find_force(
   const double epsilon = 1.032e-2;
   const double sigma = 3.405;
   const double cutoff = 10.0;
-  const double cutoff_square = cutoff * cutoff;
-  const double sigma_3 = sigma * sigma * sigma;
-  const double sigma_6 = sigma_3 * sigma_3;
-  const double sigma_12 = sigma_6 * sigma_6;
-  const double e24s6 = 24.0 * epsilon * sigma_6;
-  const double e48s12 = 48.0 * epsilon * sigma_12;
-  const double e4s6 = 4.0 * epsilon * sigma_6;
-  const double e4s12 = 4.0 * epsilon * sigma_12;
+  const double cutoffSquare = cutoff * cutoff;
+  const double sigma3 = sigma * sigma * sigma;
+  const double sigma6 = sigma3 * sigma3;
+  const double sigma12 = sigma6 * sigma6;
+  const double e24s6 = 24.0 * epsilon * sigma6;
+  const double e48s12 = 48.0 * epsilon * sigma12;
+  const double e4s6 = 4.0 * epsilon * sigma6;
+  const double e4s12 = 4.0 * epsilon * sigma12;
   for (int n = 0; n < N; ++n)
     fx[n] = fy[n] = fz[n] = pe[n] = 0.0;
 
@@ -174,12 +174,12 @@ void find_force(
       int j = NL[i * MN + k];
       if (j < i)
         continue;
-      double x_ij = x[j] - x[i];
-      double y_ij = y[j] - y[i];
-      double z_ij = z[j] - z[i];
-      apply_mic(box, &x_ij, &y_ij, &z_ij);
-      double r2 = x_ij * x_ij + y_ij * y_ij + z_ij * z_ij;
-      if (r2 > cutoff_square)
+      double xij = x[j] - x[i];
+      double yij = y[j] - y[i];
+      double zij = z[j] - z[i];
+      applyMic(box, &xij, &yij, &zij);
+      double r2 = xij * xij + yij * yij + zij * zij;
+      if (r2 > cutoffSquare)
         continue;
 
       double r2inv = 1.0 / r2;
@@ -190,19 +190,19 @@ void find_force(
       double r14inv = r6inv * r8inv;
       double f_ij = e24s6 * r8inv - e48s12 * r14inv;
       pe[i] += e4s12 * r12inv - e4s6 * r6inv;
-      fx[i] += f_ij * x_ij;
-      fx[j] -= f_ij * x_ij;
-      fy[i] += f_ij * y_ij;
-      fy[j] -= f_ij * y_ij;
-      fz[i] += f_ij * z_ij;
-      fz[j] -= f_ij * z_ij;
+      fx[i] += f_ij * xij;
+      fx[j] -= f_ij * xij;
+      fy[i] += f_ij * yij;
+      fy[j] -= f_ij * yij;
+      fz[i] += f_ij * zij;
+      fz[j] -= f_ij * zij;
     }
   }
 }
 
 void integrate(
   const int N,
-  const double time_step,
+  const double timeStep,
   const std::vector<double>& mass,
   const std::vector<double>& fx,
   const std::vector<double>& fy,
@@ -215,19 +215,19 @@ void integrate(
   std::vector<double>& vz,
   const int flag)
 {
-  double time_step_half = time_step * 0.5;
+  double timeStepHalf = timeStep * 0.5;
   for (int n = 0; n < N; ++n) {
     double mass_inv = 1.0 / mass[n];
     double ax = fx[n] * mass_inv;
     double ay = fy[n] * mass_inv;
     double az = fz[n] * mass_inv;
-    vx[n] += ax * time_step_half;
-    vy[n] += ay * time_step_half;
-    vz[n] += az * time_step_half;
+    vx[n] += ax * timeStepHalf;
+    vy[n] += ay * timeStepHalf;
+    vz[n] += az * timeStepHalf;
     if (flag == 1) {
-      x[n] += vx[n] * time_step;
-      y[n] += vy[n] * time_step;
-      z[n] += vz[n] * time_step;
+      x[n] += vx[n] * timeStep;
+      y[n] += vy[n] * timeStep;
+      z[n] += vz[n] * timeStep;
     }
   }
 }
@@ -250,9 +250,9 @@ int main(int argc, char** argv)
   const int N = 4 * nx * nx * nx;
   const int Ns = 100;
   const int MN = 200;
-  const double T_0 = 60.0;
+  const double T0 = 60.0;
   const double ax = 5.385;
-  const double time_step = 5.0 / TIME_UNIT_CONVERSION;
+  const double timeStep = 5.0 / TIME_UNIT_CONVERSION;
 
   std::vector<int> NN(N);
   std::vector<int> NL(N * MN);
@@ -272,25 +272,25 @@ int main(int argc, char** argv)
   for (int n = 0; n < N; ++n)
     mass[n] = 40.0;
 
-  initialize_position(nx, ax, box, x, y, z);
-  initialize_velocity(N, T_0, mass, vx, vy, vz);
-  find_neighbor(N, MN, box, x, y, z, NN, NL);
+  initializePosition(nx, ax, box, x, y, z);
+  initializeVelocity(N, T0, mass, vx, vy, vz);
+  findNeighbor(N, MN, box, x, y, z, NN, NL);
 
   find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
   for (int step = 0; step < Ne; ++step) {
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
+    integrate(N, timeStep, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
-    scale_velocity(N, T_0, mass, vx, vy, vz);
+    integrate(N, timeStep, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
+    scaleVelocity(N, T0, mass, vx, vy, vz);
   }
 
-  const clock_t t_start = clock();
+  const clock_t tStart = clock();
 
   FILE* fid = fopen("energy.txt", "w");
   for (int step = 0; step < Np; ++step) {
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
+    integrate(N, timeStep, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
-    integrate(N, time_step, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
+    integrate(N, timeStep, mass, fx, fy, fz, x, y, z, vx, vy, vz, 2);
     if (0 == step % Ns) {
       double keTotal = 0.0;
       for (int n = 0; n < N; ++n) {
@@ -304,10 +304,9 @@ int main(int argc, char** argv)
   }
   fclose(fid);
 
-  const clock_t t_stop = clock();
-
-  const float t_total = float(t_stop - t_start) / CLOCKS_PER_SEC;
-  printf("Time used for production = %g s\n", t_total);
+  const clock_t tStop = clock();
+  const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
+  printf("Time used for production = %g s\n", tElapsed);
 
   return 0;
 }
