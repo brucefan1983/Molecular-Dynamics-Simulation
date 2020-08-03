@@ -1,6 +1,7 @@
-#include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 #include <numeric>
 #include <vector>
 
@@ -234,25 +235,19 @@ void integrate(
 
 int main(int argc, char** argv)
 {
-  int nx = 5;
-  int Ne = 20000;
-  int Np = 20000;
-
-  if (argc != 3) {
-    printf("Usage: %s nx Ne\n", argv[0]);
-    exit(1);
-  } else {
-    nx = atoi(argv[1]);
-    Ne = atoi(argv[2]);
-    Np = Ne;
-  }
-
+  int nx, Ne, Np;
+  double T0, ax, timeStep;
+  std::string name;
+  std::cin >> name >> nx;
+  std::cin >> name >> Ne;
+  std::cin >> name >> Np;
+  std::cin >> name >> T0;
+  std::cin >> name >> ax;
+  std::cin >> name >> timeStep;
   const int N = 4 * nx * nx * nx;
   const int Ns = 100;
   const int MN = 200;
-  const double T0 = 60.0;
-  const double ax = 5.385;
-  const double timeStep = 5.0 / TIME_UNIT_CONVERSION;
+  timeStep /= TIME_UNIT_CONVERSION;
 
   std::vector<int> NN(N);
   std::vector<int> NL(N * MN);
@@ -286,7 +281,7 @@ int main(int argc, char** argv)
 
   const clock_t tStart = clock();
 
-  FILE* fid = fopen("energy.txt", "w");
+  std::ofstream ofile("energy.txt");
   for (int step = 0; step < Np; ++step) {
     integrate(N, timeStep, mass, fx, fy, fz, x, y, z, vx, vy, vz, 1);
     find_force(N, MN, box, x, y, z, NN, NL, fx, fy, fz, pe);
@@ -299,14 +294,14 @@ int main(int argc, char** argv)
       }
       keTotal *= 0.5;
       const double peTotal = std::accumulate(pe.begin(), pe.end(), 0.0);
-      fprintf(fid, "%g %g\n", keTotal, peTotal);
+      ofile << keTotal << " " << peTotal << std::endl;
     }
   }
-  fclose(fid);
+  ofile.close();
 
   const clock_t tStop = clock();
   const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
-  printf("Time used for production = %g s\n", tElapsed);
+  std::cout << "Time used for production = " << tElapsed << " s" << std::endl;
 
   return 0;
 }
