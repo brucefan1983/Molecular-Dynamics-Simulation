@@ -32,7 +32,7 @@ void scale_velocity(
 void initialize_position(
   const int nx,
   const double ax,
-  std::vector<double>& box,
+  double box[6],
   std::vector<double>& x,
   std::vector<double>& y,
   std::vector<double>& z)
@@ -87,30 +87,25 @@ void initialize_velocity(
   scale_velocity(N, T_0, mass, vx, vy, vz);
 }
 
-void apply_mic(
-  const std::vector<double>& box, double* x12, double* y12, double* z12)
+void apply_mic_one(const double length, const double halfLength, double* x12)
 {
-  if (*x12 < -box[3]) {
-    *x12 += box[0];
-  } else if (*x12 > +box[3]) {
-    *x12 -= box[0];
-  }
-  if (*y12 < -box[4]) {
-    *y12 += box[1];
-  } else if (*y12 > +box[4]) {
-    *y12 -= box[1];
-  }
-  if (*z12 < -box[5]) {
-    *z12 += box[2];
-  } else if (*z12 > +box[5]) {
-    *z12 -= box[2];
-  }
+  if (*x12 < -halfLength)
+    *x12 += length;
+  else if (*x12 > +halfLength)
+    *x12 -= length;
+}
+
+void apply_mic(const double box[6], double* x12, double* y12, double* z12)
+{
+  apply_mic_one(box[0], box[3], x12);
+  apply_mic_one(box[1], box[4], y12);
+  apply_mic_one(box[2], box[5], z12);
 }
 
 void find_neighbor(
   const int N,
   const int MN,
-  const std::vector<double>& box,
+  const double box[6],
   const std::vector<double>& x,
   const std::vector<double>& y,
   std::vector<double>& z,
@@ -149,7 +144,7 @@ void find_neighbor(
 void find_force(
   const int N,
   const int MN,
-  const std::vector<double>& box,
+  const double box[6],
   const std::vector<double>& x,
   const std::vector<double>& y,
   const std::vector<double>& z,
@@ -272,7 +267,7 @@ int main(int argc, char** argv)
   std::vector<double> fy(N);
   std::vector<double> fz(N);
   std::vector<double> pe(N);
-  std::vector<double> box(6);
+  double box[6];
 
   for (int n = 0; n < N; ++n)
     mass[n] = 40.0;
