@@ -13,7 +13,7 @@
 * 编程水平：
     * 熟悉 Windows 或者 Linux 中的命令行操作
     * 熟悉 `C++` 编程。
-    * 熟悉 `Scilab` (https://www.scilab.org/) 编程。
+    * 熟悉 `Python` 编程。
  
 ##  书稿与源码
 * 书稿将在我的个人主页 (https://gpumd.zheyongfan.org/index.php/Molecular_Dynamics_Simulaiton) 发布与更新。欢迎读者指正。
