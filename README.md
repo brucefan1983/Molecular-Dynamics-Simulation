@@ -16,11 +16,11 @@
     * 熟悉 `Python` 编程。
  
 ##  书稿与源码
-* 书稿将在我的个人主页 (https://gpumd.zheyongfan.org/index.php/Molecular_Dynamics_Simulaiton) 发布与更新。欢迎读者指正。
+* 书稿将在我的个人主页 (https://gpumd.zheyongfan.org/index.php/Molecular_Dynamics_Simulation) 发布与更新。欢迎读者指正。
 * 所有源代码将在本 Github 仓库发布与更新。欢迎读者报告 bug。
 * 目前，书稿的内容还很混乱，代码和书稿的联系也不甚明朗。
 * 等部分书稿和代码确定下来，我会告知读者。
-    * 目前，前4章书稿已经修订完毕，读者可以开始阅读了。欢迎指正。
+    * 目前，前4章书稿已经修订完毕，读者可以开始阅读了。欢迎指正。ti
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816
