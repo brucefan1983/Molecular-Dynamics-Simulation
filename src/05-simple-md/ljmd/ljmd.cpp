@@ -4,6 +4,7 @@
 #include <iostream>
 #include <numeric>
 #include <vector>
+#include <cmath>
 
 const double K_B = 8.617343e-5;
 const double TIME_UNIT_CONVERSION = 1.018051e+1;
