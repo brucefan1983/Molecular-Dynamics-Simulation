@@ -8,8 +8,8 @@ $ ./hello_with_comments
 #include <iostream> // needed for using std::cout
 
 // The main function: entrance of the program
-int main()                     // This is the function head
-{                              // The function body starts here
-  std::cout << "Hello World!"; // This is a statement
-  return 0;                    // This is also a statement
+int main() // This is the function head
+{          // The function body starts here
+  std::cout << "Hello World!" << std::endl; // This is a statement
+  return 0; // This is also a statement
 } // The function body ends here

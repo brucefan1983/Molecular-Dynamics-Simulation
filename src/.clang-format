@@ -3,7 +3,7 @@ AlignAfterOpenBracket: AlwaysBreak
 AlwaysBreakTemplateDeclarations: Yes
 BinPackParameters: false
 BreakBeforeBraces: Linux
-ColumnLimit: 80
+ColumnLimit: 70
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
