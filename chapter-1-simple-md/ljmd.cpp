@@ -4,6 +4,8 @@ Compile:
     g++ ljmd.cpp -O3 -o ljmd
 Run:
     ljmd numCells numSteps temperature timeStep
+    such as
+        ljmd 4 20000 60 5
 ------------------------------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
@@ -94,20 +96,24 @@ void initializeVelocity(const double T0, Atom& atom)
 #ifndef DEBUG
   srand(time(NULL));
 #endif
-  double momentumAverage[3] = {0.0, 0.0, 0.0};
+  double centerOfMassVelocity[3] = {0.0, 0.0, 0.0};
+  double totalMass = 0.0;
   for (int n = 0; n < atom.number; ++n) {
+    totalMass += atom.mass[n];
     atom.vx[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
     atom.vy[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
     atom.vz[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
-
-    momentumAverage[0] += atom.mass[n] * atom.vx[n] / atom.number;
-    momentumAverage[1] += atom.mass[n] * atom.vy[n] / atom.number;
-    momentumAverage[2] += atom.mass[n] * atom.vz[n] / atom.number;
+    centerOfMassVelocity[0] += atom.mass[n] * atom.vx[n];
+    centerOfMassVelocity[1] += atom.mass[n] * atom.vy[n];
+    centerOfMassVelocity[2] += atom.mass[n] * atom.vz[n];
   }
+  centerOfMassVelocity[0] /= totalMass;
+  centerOfMassVelocity[1] /= totalMass;
+  centerOfMassVelocity[2] /= totalMass;
   for (int n = 0; n < atom.number; ++n) {
-    atom.vx[n] -= momentumAverage[0] / atom.mass[n];
-    atom.vy[n] -= momentumAverage[1] / atom.mass[n];
-    atom.vz[n] -= momentumAverage[2] / atom.mass[n];
+    atom.vx[n] -= centerOfMassVelocity[0];
+    atom.vy[n] -= centerOfMassVelocity[1];
+    atom.vz[n] -= centerOfMassVelocity[2];
   }
   scaleVelocity(T0, atom);
 }
