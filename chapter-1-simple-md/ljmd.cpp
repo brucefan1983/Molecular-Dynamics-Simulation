@@ -83,6 +83,9 @@ void initializePosition(const int numCells, Atom& atom)
 
 void initializeVelocity(const double T0, Atom& atom)
 {
+#ifndef DEBUG
+  srand(time(NULL));
+#endif
   double momentumAverage[3] = {0.0, 0.0, 0.0};
   for (int n = 0; n < atom.number; ++n) {
     atom.vx[n] = -1.0 + (rand() * 2.0) / RAND_MAX;
