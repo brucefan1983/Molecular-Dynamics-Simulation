@@ -11,6 +11,7 @@ Run:
 #include <cmath>    // sqrt() function
 #include <ctime>    // for timing
 #include <fstream>  // file
+#include <iomanip>  // std::setprecision
 #include <iostream> // input/output
 #include <numeric>  // summation
 #include <vector>   // vector
@@ -215,6 +216,8 @@ int main(int argc, char** argv)
 
   const clock_t tStart = clock();
   std::ofstream ofile("energy.txt");
+  ofile << std::fixed << std::setprecision(16);
+
   for (int step = 0; step < numSteps; ++step) {
     integrate(true, timeStep, atom);  // step 1 in the book
     findForce(atom);                  // step 2 in the book
