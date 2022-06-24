@@ -1,3 +1,11 @@
+/*------------------------------------------------------------------70
+    Copyright 2022 Zheyong Fan
+Compile:
+    g++ ljmd.cpp -O3 -o ljmd
+Run:
+    ljmd numCells numSteps temperature timeStep
+--------------------------------------------------------------------*/
+
 #include <cmath>    // sqrt() function
 #include <ctime>    // for timing
 #include <fstream>  // file
