@@ -28,7 +28,7 @@ double findKineticEnergy(const Atom& atom)
 
 void scaleVelocity(const double T0, Atom& atom)
 {
-  double temperature =
+  const double temperature =
     findKineticEnergy(atom) * 2.0 / (3.0 * K_B * atom.number);
   double scaleFactor = sqrt(T0 / temperature);
   for (int n = 0; n < atom.number; ++n) {
@@ -141,17 +141,17 @@ void findForce(Atom& atom)
       double yij = atom.y[j] - atom.y[i];
       double zij = atom.z[j] - atom.z[i];
       applyMic(atom.box, xij, yij, zij);
-      double r2 = xij * xij + yij * yij + zij * zij;
+      const double r2 = xij * xij + yij * yij + zij * zij;
       if (r2 > cutoffSquare)
         continue;
 
-      double r2inv = 1.0 / r2;
-      double r4inv = r2inv * r2inv;
-      double r6inv = r2inv * r4inv;
-      double r8inv = r4inv * r4inv;
-      double r12inv = r4inv * r8inv;
-      double r14inv = r6inv * r8inv;
-      double f_ij = e24s6 * r8inv - e48s12 * r14inv;
+      const double r2inv = 1.0 / r2;
+      const double r4inv = r2inv * r2inv;
+      const double r6inv = r2inv * r4inv;
+      const double r8inv = r4inv * r4inv;
+      const double r12inv = r4inv * r8inv;
+      const double r14inv = r6inv * r8inv;
+      const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
       atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
       atom.fx[i] += f_ij * xij;
       atom.fx[j] -= f_ij * xij;
@@ -165,12 +165,12 @@ void findForce(Atom& atom)
 
 void integrate(const bool isStepOne, const double timeStep, Atom& atom)
 {
-  double timeStepHalf = timeStep * 0.5;
+  const double timeStepHalf = timeStep * 0.5;
   for (int n = 0; n < atom.number; ++n) {
-    double mass_inv = 1.0 / atom.mass[n];
-    double ax = atom.fx[n] * mass_inv;
-    double ay = atom.fy[n] * mass_inv;
-    double az = atom.fz[n] * mass_inv;
+    const double mass_inv = 1.0 / atom.mass[n];
+    const double ax = atom.fx[n] * mass_inv;
+    const double ay = atom.fy[n] * mass_inv;
+    const double az = atom.fz[n] * mass_inv;
     atom.vx[n] += ax * timeStepHalf;
     atom.vy[n] += ay * timeStepHalf;
     atom.vz[n] += az * timeStepHalf;
