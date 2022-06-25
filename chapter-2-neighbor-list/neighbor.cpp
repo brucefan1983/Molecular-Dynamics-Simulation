@@ -15,6 +15,9 @@ Run:
 #include <iostream> // input/output
 #include <numeric>  // summation
 #include <vector>   // vector
+#if defined(_OPENMP)
+#include <omp.h> // openMP
+#endif
 
 const int Ns = 100;             // output frequency
 const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
@@ -160,9 +163,6 @@ void applyMic(const double box[18], double& x12, double& y12, double& z12)
   applyMicOne(sx12);
   applyMicOne(sy12);
   applyMicOne(sz12);
-  // sx12 -= nearbyint(sx12);
-  // sy12 -= nearbyint(sy12);
-  // sz12 -= nearbyint(sz12);
   x12 = box[0] * sx12 + box[1] * sy12 + box[2] * sz12;
   y12 = box[3] * sx12 + box[4] * sy12 + box[5] * sz12;
   z12 = box[6] * sx12 + box[7] * sy12 + box[8] * sz12;
@@ -184,8 +184,14 @@ void findForce(Atom& atom)
   for (int n = 0; n < atom.number; ++n)
     atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
 
-  for (int i = 0; i < atom.number - 1; ++i) {
-    for (int j = i + 1; j < atom.number; ++j) {
+#if defined(_OPENMP)
+#pragma omp parallel for
+#endif
+  for (int i = 0; i < atom.number; ++i) {
+    double pe = 0.0;
+    for (int j = 0; j < atom.number; ++j) {
+      if (i == j)
+        continue;
       double xij = atom.x[j] - atom.x[i];
       double yij = atom.y[j] - atom.y[i];
       double zij = atom.z[j] - atom.z[i];
@@ -201,14 +207,12 @@ void findForce(Atom& atom)
       const double r12inv = r4inv * r8inv;
       const double r14inv = r6inv * r8inv;
       const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
-      atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
+      pe += e4s12 * r12inv - e4s6 * r6inv;
       atom.fx[i] += f_ij * xij;
-      atom.fx[j] -= f_ij * xij;
       atom.fy[i] += f_ij * yij;
-      atom.fy[j] -= f_ij * yij;
       atom.fz[i] += f_ij * zij;
-      atom.fz[j] -= f_ij * zij;
     }
+    atom.pe[i] = pe * 0.5;
   }
 }
 
@@ -233,6 +237,15 @@ void integrate(const bool isStepOne, const double timeStep, Atom& atom)
 
 int main(int argc, char** argv)
 {
+#if defined(_OPENMP)
+#pragma omp parallel
+  {
+    if (omp_get_thread_num() == 0) {
+      std::cout << "Using " << omp_get_num_threads() << " threads" << std::endl;
+    }
+  }
+#endif
+
   if (argc != 5) {
     printf("usage: %s numCells numSteps temperature timeStep\n", argv[0]);
     exit(1);
