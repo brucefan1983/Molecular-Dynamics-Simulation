@@ -1,11 +1,11 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ ljmd.cpp -O3 -o ljmd
+    g++ neighbor.cpp -O3 -fopenmp -o neighbor
 Run:
-    ljmd numCells numSteps temperature timeStep
+    neighbor numCells numSteps temperature timeStep
     such as
-        ljmd 4 20000 60 5
+        neighbor 4 20000 60 5
 ------------------------------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
