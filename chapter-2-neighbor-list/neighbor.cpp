@@ -22,7 +22,7 @@ const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
 
 struct Atom {
   int number;
-  double box[6];
+  double box[18];
   std::vector<double> mass, x, y, z, vx, vy, vz, fx, fy, fz, pe;
 };
 
@@ -66,14 +66,39 @@ void allocateMemory(const int numCells, Atom& atom)
   atom.pe.resize(atom.number, 0.0);
 }
 
+void getInverseBox(double box[18])
+{
+  box[9] = box[4] * box[8] - box[5] * box[7];
+  box[10] = box[2] * box[7] - box[1] * box[8];
+  box[11] = box[1] * box[5] - box[2] * box[4];
+  box[12] = box[5] * box[6] - box[3] * box[8];
+  box[13] = box[0] * box[8] - box[2] * box[6];
+  box[14] = box[2] * box[3] - box[0] * box[5];
+  box[15] = box[3] * box[7] - box[4] * box[6];
+  box[16] = box[1] * box[6] - box[0] * box[7];
+  box[17] = box[0] * box[4] - box[1] * box[3];
+  double det = box[0] * (box[4] * box[8] - box[5] * box[7]) +
+               box[1] * (box[5] * box[6] - box[3] * box[8]) +
+               box[2] * (box[3] * box[7] - box[4] * box[6]);
+  for (int n = 9; n < 18; ++n) {
+    box[n] /= det;
+  }
+}
+
 void initializePosition(const int numCells, Atom& atom)
 {
   const int numAtomsPerCell = 4;
   const double latticeConstant = 5.385;
-  atom.box[0] = atom.box[1] = atom.box[2] = latticeConstant * numCells;
-  atom.box[3] = atom.box[0] * 0.5;
-  atom.box[4] = atom.box[1] * 0.5;
-  atom.box[5] = atom.box[2] * 0.5;
+  for (int d1 = 0; d1 < 3; ++d1) {
+    for (int d2 = 0; d2 < 3; ++d2) {
+      if (d1 == d2) {
+        atom.box[d1 * 3 + d2] = latticeConstant * numCells;
+      } else {
+        atom.box[d1 * 3 + d2] = 0.0;
+      }
+    }
+  }
+  getInverseBox(atom.box);
   const double x0[numAtomsPerCell] = {0.0, 0.0, 0.5, 0.5};
   const double y0[numAtomsPerCell] = {0.0, 0.5, 0.0, 0.5};
   const double z0[numAtomsPerCell] = {0.0, 0.5, 0.5, 0.0};
@@ -119,19 +144,28 @@ void initializeVelocity(const double T0, Atom& atom)
   scaleVelocity(T0, atom);
 }
 
-void applyMicOne(const double length, const double halfLength, double& x12)
+void applyMicOne(double& x12)
 {
-  if (x12 < -halfLength)
-    x12 += length;
-  else if (x12 > +halfLength)
-    x12 -= length;
+  if (x12 < -0.5)
+    x12 += 1.0;
+  else if (x12 > +0.5)
+    x12 -= 1.0;
 }
 
-void applyMic(const double box[6], double& x12, double& y12, double& z12)
+void applyMic(const double box[18], double& x12, double& y12, double& z12)
 {
-  applyMicOne(box[0], box[3], x12);
-  applyMicOne(box[1], box[4], y12);
-  applyMicOne(box[2], box[5], z12);
+  double sx12 = box[9] * x12 + box[10] * y12 + box[11] * z12;
+  double sy12 = box[12] * x12 + box[13] * y12 + box[14] * z12;
+  double sz12 = box[15] * x12 + box[16] * y12 + box[17] * z12;
+  applyMicOne(sx12);
+  applyMicOne(sy12);
+  applyMicOne(sz12);
+  // sx12 -= nearbyint(sx12);
+  // sy12 -= nearbyint(sy12);
+  // sz12 -= nearbyint(sz12);
+  x12 = box[0] * sx12 + box[1] * sy12 + box[2] * sz12;
+  y12 = box[3] * sx12 + box[4] * sy12 + box[5] * sz12;
+  z12 = box[6] * sx12 + box[7] * sy12 + box[8] * sz12;
 }
 
 void findForce(Atom& atom)
