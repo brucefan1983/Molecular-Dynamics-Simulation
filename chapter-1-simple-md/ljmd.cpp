@@ -138,7 +138,7 @@ void findForce(Atom& atom)
 {
   const double epsilon = 1.032e-2;
   const double sigma = 3.405;
-  const double cutoff = 10.0;
+  const double cutoff = 9.0;
   const double cutoffSquare = cutoff * cutoff;
   const double sigma3 = sigma * sigma * sigma;
   const double sigma6 = sigma3 * sigma3;
