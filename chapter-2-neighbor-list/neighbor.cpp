@@ -25,8 +25,11 @@ const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
 
 struct Atom {
   int number;
+  int numUpdates = 0;
+  const int MN = 1000;
   double box[18];
-  std::vector<double> mass, x, y, z, vx, vy, vz, fx, fy, fz, pe;
+  std::vector<int> NN, NL;
+  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, pe;
 };
 
 double findKineticEnergy(const Atom& atom)
@@ -56,7 +59,12 @@ void allocateMemory(const int numCells, Atom& atom)
 {
   const int numAtomsPerCell = 4;
   atom.number = numCells * numCells * numCells * numAtomsPerCell;
+  atom.NN.resize(atom.number, 0);
+  atom.NL.resize(atom.number * atom.MN, 0);
   atom.mass.resize(atom.number, 40.0); // argon mass
+  atom.x0.resize(atom.number, 0.0);
+  atom.y0.resize(atom.number, 0.0);
+  atom.z0.resize(atom.number, 0.0);
   atom.x.resize(atom.number, 0.0);
   atom.y.resize(atom.number, 0.0);
   atom.z.resize(atom.number, 0.0);
@@ -168,11 +176,108 @@ void applyMic(const double box[18], double& x12, double& y12, double& z12)
   z12 = box[6] * sx12 + box[7] * sy12 + box[8] * sz12;
 }
 
+bool checkIfNeedUpdate(const Atom& atom)
+{
+  bool needUpdate = false;
+  for (int n = 0; n < atom.number; ++n) {
+    double dx = atom.x[n] - atom.x0[n];
+    double dy = atom.y[n] - atom.y0[n];
+    double dz = atom.z[n] - atom.z0[n];
+    if (dx * dx + dy * dy + dz * dz > 0.25) {
+      needUpdate = true;
+      break;
+    }
+  }
+  return needUpdate;
+}
+
+void applyPbcOne(double& sx)
+{
+  if (sx < 0.0) {
+    sx += 1.0;
+  } else if (sx > 1.0) {
+    sx -= 1.0;
+  }
+}
+
+void applyPbc(Atom& atom)
+{
+  for (int n = 0; n < atom.number; ++n) {
+    double sx = atom.box[9] * atom.x[n] + atom.box[10] * atom.y[n] +
+                atom.box[11] * atom.z[n];
+    double sy = atom.box[12] * atom.x[n] + atom.box[13] * atom.y[n] +
+                atom.box[14] * atom.z[n];
+    double sz = atom.box[15] * atom.x[n] + atom.box[16] * atom.y[n] +
+                atom.box[17] * atom.z[n];
+    applyPbcOne(sx);
+    applyPbcOne(sy);
+    applyPbcOne(sz);
+    atom.x[n] = atom.box[0] * sx + atom.box[1] * sy + atom.box[2] * sz;
+    atom.y[n] = atom.box[3] * sx + atom.box[4] * sy + atom.box[5] * sz;
+    atom.z[n] = atom.box[6] * sx + atom.box[7] * sy + atom.box[8] * sz;
+  }
+}
+
+void updateXyz0(Atom& atom)
+{
+  for (int n = 0; n < atom.number; ++n) {
+    atom.x0[n] = atom.x[n];
+    atom.y0[n] = atom.y[n];
+    atom.z0[n] = atom.z[n];
+  }
+}
+
+void findNeighborON2(Atom& atom)
+{
+  const double cutoff = 10.0;
+  const double cutoffSquare = cutoff * cutoff;
+
+#if defined(_OPENMP)
+#pragma omp parallel for
+#endif
+  for (int i = 0; i < atom.number; ++i) {
+    const double x1 = atom.x[i];
+    const double y1 = atom.y[i];
+    const double z1 = atom.z[i];
+    int count = 0;
+    for (int j = 0; j < atom.number; ++j) {
+      double xij = atom.x[j] - x1;
+      double yij = atom.y[j] - y1;
+      double zij = atom.z[j] - z1;
+      applyMic(atom.box, xij, yij, zij);
+      const double distanceSquare = xij * xij + yij * yij + zij * zij;
+      if (i != j && distanceSquare < cutoffSquare) {
+        atom.NL[i * atom.MN + count++] = j;
+      }
+    }
+    atom.NN[i] = count;
+    if (count > atom.MN) {
+      std::cout << "Error: number of neighbors for atom " << i << " exceeds "
+                << atom.MN << std::endl;
+      exit(1);
+    }
+  }
+}
+
+void findNeighbor(Atom& atom)
+{
+  if (checkIfNeedUpdate(atom)) {
+    atom.numUpdates++;
+    applyPbc(atom);
+#ifdef USE_ON1
+    findNeighborON1(atom);
+#else
+    findNeighborON2(atom);
+#endif
+    updateXyz0(atom);
+  }
+}
+
 void findForce(Atom& atom)
 {
   const double epsilon = 1.032e-2;
   const double sigma = 3.405;
-  const double cutoff = 10.0;
+  const double cutoff = 9.0;
   const double cutoffSquare = cutoff * cutoff;
   const double sigma3 = sigma * sigma * sigma;
   const double sigma6 = sigma3 * sigma3;
@@ -181,20 +286,20 @@ void findForce(Atom& atom)
   const double e48s12 = 48.0 * epsilon * sigma12;
   const double e4s6 = 4.0 * epsilon * sigma6;
   const double e4s12 = 4.0 * epsilon * sigma12;
-  for (int n = 0; n < atom.number; ++n)
-    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
 
 #if defined(_OPENMP)
 #pragma omp parallel for
 #endif
   for (int i = 0; i < atom.number; ++i) {
-    double pe = 0.0;
-    for (int j = 0; j < atom.number; ++j) {
-      if (i == j)
-        continue;
-      double xij = atom.x[j] - atom.x[i];
-      double yij = atom.y[j] - atom.y[i];
-      double zij = atom.z[j] - atom.z[i];
+    double pe = 0.0, fx = 0.0, fy = 0.0, fz = 0.0;
+    const double xi = atom.x[i];
+    const double yi = atom.y[i];
+    const double zi = atom.z[i];
+    for (int jj = 0; jj < atom.NN[i]; ++jj) {
+      const int j = atom.NL[i * atom.MN + jj];
+      double xij = atom.x[j] - xi;
+      double yij = atom.y[j] - yi;
+      double zij = atom.z[j] - zi;
       applyMic(atom.box, xij, yij, zij);
       const double r2 = xij * xij + yij * yij + zij * zij;
       if (r2 > cutoffSquare)
@@ -208,11 +313,14 @@ void findForce(Atom& atom)
       const double r14inv = r6inv * r8inv;
       const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
       pe += e4s12 * r12inv - e4s6 * r6inv;
-      atom.fx[i] += f_ij * xij;
-      atom.fy[i] += f_ij * yij;
-      atom.fz[i] += f_ij * zij;
+      fx += f_ij * xij;
+      fy += f_ij * yij;
+      fz += f_ij * zij;
     }
     atom.pe[i] = pe * 0.5;
+    atom.fx[i] = fx;
+    atom.fy[i] = fy;
+    atom.fz[i] = fz;
   }
 }
 
@@ -266,6 +374,7 @@ int main(int argc, char** argv)
   ofile << std::fixed << std::setprecision(16);
 
   for (int step = 0; step < numSteps; ++step) {
+    findNeighbor(atom);
     integrate(true, timeStep, atom);  // step 1 in the book
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
@@ -278,6 +387,7 @@ int main(int argc, char** argv)
   ofile.close();
   const clock_t tStop = clock();
   const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
+  std::cout << atom.numUpdates << " neighbor list updates" << std::endl;
   std::cout << "Time used = " << tElapsed << " s" << std::endl;
 
   return 0;
