@@ -27,6 +27,7 @@ struct Atom {
   int number;
   int numUpdates = 0;
   const int MN = 1000;
+  double cutoffNeighbor = 10.0;
   double box[18];
   std::vector<int> NN, NL;
   std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, pe;
@@ -77,7 +78,14 @@ void allocateMemory(const int numCells, Atom& atom)
   atom.pe.resize(atom.number, 0.0);
 }
 
-void getInverseBox(double box[18])
+double getDet(const double* box)
+{
+  return box[0] * (box[4] * box[8] - box[5] * box[7]) +
+         box[1] * (box[5] * box[6] - box[3] * box[8]) +
+         box[2] * (box[3] * box[7] - box[4] * box[6]);
+}
+
+void getInverseBox(double* box)
 {
   box[9] = box[4] * box[8] - box[5] * box[7];
   box[10] = box[2] * box[7] - box[1] * box[8];
@@ -88,12 +96,29 @@ void getInverseBox(double box[18])
   box[15] = box[3] * box[7] - box[4] * box[6];
   box[16] = box[1] * box[6] - box[0] * box[7];
   box[17] = box[0] * box[4] - box[1] * box[3];
-  double det = box[0] * (box[4] * box[8] - box[5] * box[7]) +
-               box[1] * (box[5] * box[6] - box[3] * box[8]) +
-               box[2] * (box[3] * box[7] - box[4] * box[6]);
+  double det = getDet(box);
   for (int n = 9; n < 18; ++n) {
     box[n] /= det;
   }
+}
+
+float getArea(const double* a, const double* b)
+{
+  const double s1 = a[1] * b[2] - a[2] * b[1];
+  const double s2 = a[2] * b[0] - a[0] * b[2];
+  const double s3 = a[0] * b[1] - a[1] * b[0];
+  return sqrt(s1 * s1 + s2 * s2 + s3 * s3);
+}
+
+void getThickness(const Atom& atom, double* thickness)
+{
+  double volume = abs(getDet(atom.box));
+  const double a[3] = {atom.box[0], atom.box[3], atom.box[6]};
+  const double b[3] = {atom.box[1], atom.box[4], atom.box[7]};
+  const double c[3] = {atom.box[2], atom.box[5], atom.box[8]};
+  thickness[0] = volume / getArea(b, c);
+  thickness[1] = volume / getArea(c, a);
+  thickness[2] = volume / getArea(a, b);
 }
 
 void initializePosition(const int numCells, Atom& atom)
@@ -163,7 +188,7 @@ void applyMicOne(double& x12)
     x12 -= 1.0;
 }
 
-void applyMic(const double box[18], double& x12, double& y12, double& z12)
+void applyMic(const double* box, double& x12, double& y12, double& z12)
 {
   double sx12 = box[9] * x12 + box[10] * y12 + box[11] * z12;
   double sy12 = box[12] * x12 + box[13] * y12 + box[14] * z12;
@@ -229,8 +254,7 @@ void updateXyz0(Atom& atom)
 
 void findNeighborON2(Atom& atom)
 {
-  const double cutoff = 10.0;
-  const double cutoffSquare = cutoff * cutoff;
+  const double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
 
 #if defined(_OPENMP)
 #pragma omp parallel for
@@ -253,6 +277,114 @@ void findNeighborON2(Atom& atom)
     atom.NN[i] = count;
     if (count > atom.MN) {
       std::cout << "Error: number of neighbors for atom " << i << " exceeds "
+                << atom.MN << std::endl;
+      exit(1);
+    }
+  }
+}
+
+void findCell(
+  const double* box,
+  const double* thickness,
+  const double* r,
+  double cutoffInverse,
+  const int* numCells,
+  int* cell)
+{
+  double s[3];
+  s[0] = box[9] * r[0] + box[10] * r[1] + box[11] * r[2];
+  s[1] = box[12] * r[0] + box[13] * r[1] + box[14] * r[2];
+  s[2] = box[15] * r[0] + box[16] * r[1] + box[17] * r[2];
+  for (int d = 0; d < 3; ++d) {
+    cell[d] = floor(s[d] * thickness[d] * cutoffInverse);
+    if (cell[d] < 0)
+      cell[d] += numCells[d];
+    if (cell[d] >= numCells[d])
+      cell[d] -= numCells[d];
+  }
+  cell[3] = cell[0] + numCells[0] * (cell[1] + numCells[1] * cell[2]);
+}
+
+void findNeighborON1(Atom& atom)
+{
+  const double cutoffInverse = 1.0 / atom.cutoffNeighbor;
+  double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
+  double thickness[3];
+  getThickness(atom, thickness);
+  int numCells[4];
+
+  for (int d = 0; d < 3; ++d) {
+    numCells[d] = floor(thickness[d] * cutoffInverse);
+  }
+
+  numCells[3] = numCells[0] * numCells[1] * numCells[2];
+  int cell[4];
+
+  std::vector<int> cellCount(numCells[3], 0);
+  std::vector<int> cellCountSum(numCells[3], 0);
+
+  for (int n = 0; n < atom.number; ++n) {
+    const double r[3] = {atom.x[n], atom.y[n], atom.z[n]};
+    findCell(atom.box, thickness, r, cutoffInverse, numCells, cell);
+    ++cellCount[cell[3]];
+  }
+
+  for (int i = 1; i < numCells[3]; ++i) {
+    cellCountSum[i] = cellCountSum[i - 1] + cellCount[i - 1];
+  }
+
+  std::fill(cellCount.begin(), cellCount.end(), 0);
+
+  std::vector<int> cellContents(atom.number, 0);
+
+  for (int n = 0; n < atom.number; ++n) {
+    const double r[3] = {atom.x[n], atom.y[n], atom.z[n]};
+    findCell(atom.box, thickness, r, cutoffInverse, numCells, cell);
+    cellContents[cellCountSum[cell[3]] + cellCount[cell[3]]] = n;
+    ++cellCount[cell[3]];
+  }
+
+#if defined(_OPENMP)
+#pragma omp parallel for
+#endif
+  for (int n1 = 0; n1 < atom.number; ++n1) {
+    int count = 0;
+    const double r1[3] = {atom.x[n1], atom.y[n1], atom.z[n1]};
+    findCell(atom.box, thickness, r1, cutoffInverse, numCells, cell);
+    for (int k = -1; k <= 1; ++k) {
+      for (int j = -1; j <= 1; ++j) {
+        for (int i = -1; i <= 1; ++i) {
+          int neighborCell = cell[3] + (k * numCells[1] + j) * numCells[0] + i;
+          if (cell[0] + i < 0)
+            neighborCell += numCells[0];
+          if (cell[0] + i >= numCells[0])
+            neighborCell -= numCells[0];
+          if (cell[1] + j < 0)
+            neighborCell += numCells[1] * numCells[0];
+          if (cell[1] + j >= numCells[1])
+            neighborCell -= numCells[1] * numCells[0];
+          if (cell[2] + k < 0)
+            neighborCell += numCells[3];
+          if (cell[2] + k >= numCells[2])
+            neighborCell -= numCells[3];
+
+          for (int m = 0; m < cellCount[neighborCell]; ++m) {
+            const int n2 = cellContents[cellCountSum[neighborCell] + m];
+            double x12 = atom.x[n2] - r1[0];
+            double y12 = atom.y[n2] - r1[1];
+            double z12 = atom.z[n2] - r1[2];
+            applyMic(atom.box, x12, y12, z12);
+            const double d2 = x12 * x12 + y12 * y12 + z12 * z12;
+            if (n1 != n2 && d2 < cutoffSquare) {
+              atom.NL[n1 * atom.MN + count++] = n2;
+            }
+          }
+        }
+      }
+    }
+    atom.NN[n1] = count;
+    if (count > atom.MN) {
+      std::cout << "Error: number of neighbors for atom " << n1 << " exceeds "
                 << atom.MN << std::endl;
       exit(1);
     }
