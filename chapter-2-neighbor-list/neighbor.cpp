@@ -1,11 +1,15 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ neighbor.cpp -O3 -fopenmp -o neighbor
+    using O(N^2) neighbor list algorithm:
+        g++ neighbor.cpp -O3 -o neighbor
+    using O(N) neighbor list algorithm:
+        g++ neighbor.cpp -O3 -DUSE_ON1 -o neighbor
 Run:
-    neighbor numCells numSteps temperature timeStep
-    such as
-        neighbor 4 20000 60 5
+    command:
+        neighbor numCells numSteps temperature timeStep
+    example:
+        neighbor 6 20000 60 5
 ------------------------------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
