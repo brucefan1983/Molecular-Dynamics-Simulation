@@ -15,9 +15,6 @@ Run:
 #include <iostream> // input/output
 #include <numeric>  // summation
 #include <vector>   // vector
-#if defined(_OPENMP)
-#include <omp.h> // openMP
-#endif
 
 const int Ns = 100;             // output frequency
 const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
@@ -255,30 +252,26 @@ void updateXyz0(Atom& atom)
 void findNeighborON2(Atom& atom)
 {
   const double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
+  std::fill(atom.NN.begin(), atom.NN.end(), 0);
 
-#if defined(_OPENMP)
-#pragma omp parallel for
-#endif
-  for (int i = 0; i < atom.number; ++i) {
+  for (int i = 0; i < atom.number - 1; ++i) {
     const double x1 = atom.x[i];
     const double y1 = atom.y[i];
     const double z1 = atom.z[i];
-    int count = 0;
-    for (int j = 0; j < atom.number; ++j) {
+    for (int j = i + 1; j < atom.number; ++j) {
       double xij = atom.x[j] - x1;
       double yij = atom.y[j] - y1;
       double zij = atom.z[j] - z1;
       applyMic(atom.box, xij, yij, zij);
       const double distanceSquare = xij * xij + yij * yij + zij * zij;
-      if (i != j && distanceSquare < cutoffSquare) {
-        atom.NL[i * atom.MN + count++] = j;
+      if (distanceSquare < cutoffSquare) {
+        atom.NL[i * atom.MN + atom.NN[i]++] = j;
+        if (atom.NN[i] > atom.MN) {
+          std::cout << "Error: number of neighbors for atom " << i
+                    << " exceeds " << atom.MN << std::endl;
+          exit(1);
+        }
       }
-    }
-    atom.NN[i] = count;
-    if (count > atom.MN) {
-      std::cout << "Error: number of neighbors for atom " << i << " exceeds "
-                << atom.MN << std::endl;
-      exit(1);
     }
   }
 }
@@ -311,6 +304,7 @@ void findNeighborON1(Atom& atom)
   double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
   double thickness[3];
   getThickness(atom, thickness);
+
   int numCells[4];
 
   for (int d = 0; d < 3; ++d) {
@@ -344,11 +338,9 @@ void findNeighborON1(Atom& atom)
     ++cellCount[cell[3]];
   }
 
-#if defined(_OPENMP)
-#pragma omp parallel for
-#endif
+  std::fill(atom.NN.begin(), atom.NN.end(), 0);
+
   for (int n1 = 0; n1 < atom.number; ++n1) {
-    int count = 0;
     const double r1[3] = {atom.x[n1], atom.y[n1], atom.z[n1]};
     findCell(atom.box, thickness, r1, cutoffInverse, numCells, cell);
     for (int k = -1; k <= 1; ++k) {
@@ -370,23 +362,24 @@ void findNeighborON1(Atom& atom)
 
           for (int m = 0; m < cellCount[neighborCell]; ++m) {
             const int n2 = cellContents[cellCountSum[neighborCell] + m];
-            double x12 = atom.x[n2] - r1[0];
-            double y12 = atom.y[n2] - r1[1];
-            double z12 = atom.z[n2] - r1[2];
-            applyMic(atom.box, x12, y12, z12);
-            const double d2 = x12 * x12 + y12 * y12 + z12 * z12;
-            if (n1 != n2 && d2 < cutoffSquare) {
-              atom.NL[n1 * atom.MN + count++] = n2;
+            if (n1 < n2) {
+              double x12 = atom.x[n2] - r1[0];
+              double y12 = atom.y[n2] - r1[1];
+              double z12 = atom.z[n2] - r1[2];
+              applyMic(atom.box, x12, y12, z12);
+              const double d2 = x12 * x12 + y12 * y12 + z12 * z12;
+              if (d2 < cutoffSquare) {
+                atom.NL[n1 * atom.MN + atom.NN[n1]++] = n2;
+                if (atom.NN[n1] > atom.MN) {
+                  std::cout << "Error: number of neighbors for atom " << n1
+                            << " exceeds " << atom.MN << std::endl;
+                  exit(1);
+                }
+              }
             }
           }
         }
       }
-    }
-    atom.NN[n1] = count;
-    if (count > atom.MN) {
-      std::cout << "Error: number of neighbors for atom " << n1 << " exceeds "
-                << atom.MN << std::endl;
-      exit(1);
     }
   }
 }
@@ -418,12 +411,10 @@ void findForce(Atom& atom)
   const double e48s12 = 48.0 * epsilon * sigma12;
   const double e4s6 = 4.0 * epsilon * sigma6;
   const double e4s12 = 4.0 * epsilon * sigma12;
+  for (int n = 0; n < atom.number; ++n)
+    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for
-#endif
   for (int i = 0; i < atom.number; ++i) {
-    double pe = 0.0, fx = 0.0, fy = 0.0, fz = 0.0;
     const double xi = atom.x[i];
     const double yi = atom.y[i];
     const double zi = atom.z[i];
@@ -444,15 +435,14 @@ void findForce(Atom& atom)
       const double r12inv = r4inv * r8inv;
       const double r14inv = r6inv * r8inv;
       const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
-      pe += e4s12 * r12inv - e4s6 * r6inv;
-      fx += f_ij * xij;
-      fy += f_ij * yij;
-      fz += f_ij * zij;
+      atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
+      atom.fx[i] += f_ij * xij;
+      atom.fx[j] -= f_ij * xij;
+      atom.fy[i] += f_ij * yij;
+      atom.fy[j] -= f_ij * yij;
+      atom.fz[i] += f_ij * zij;
+      atom.fz[j] -= f_ij * zij;
     }
-    atom.pe[i] = pe * 0.5;
-    atom.fx[i] = fx;
-    atom.fy[i] = fy;
-    atom.fz[i] = fz;
   }
 }
 
@@ -477,15 +467,6 @@ void integrate(const bool isStepOne, const double timeStep, Atom& atom)
 
 int main(int argc, char** argv)
 {
-#if defined(_OPENMP)
-#pragma omp parallel
-  {
-    if (omp_get_thread_num() == 0) {
-      std::cout << "Using " << omp_get_num_threads() << " threads" << std::endl;
-    }
-  }
-#endif
-
   if (argc != 5) {
     printf("usage: %s numCells numSteps temperature timeStep\n", argv[0]);
     exit(1);

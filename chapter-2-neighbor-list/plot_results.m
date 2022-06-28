@@ -37,3 +37,8 @@ xlabel('Time (ps)', 'fontsize', 15);
 ylabel('Relative Energy', 'fontsize', 15);
 title('(d)', 'fontsize', 15);
 set(gca, 'fontsize', 15);
+
+load energy_ref.txt
+
+figure;
+plot(energy-energy_ref);
