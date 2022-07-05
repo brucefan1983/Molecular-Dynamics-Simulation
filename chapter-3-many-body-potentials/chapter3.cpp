@@ -270,8 +270,14 @@ void findNeighborON2(Atom& atom)
       const double distanceSquare = xij * xij + yij * yij + zij * zij;
       if (distanceSquare < cutoffSquare) {
         atom.NL[i * atom.MN + atom.NN[i]++] = j;
+        atom.NL[j * atom.MN + atom.NN[j]++] = i;
         if (atom.NN[i] > atom.MN) {
           std::cout << "Error: number of neighbors for atom " << i
+                    << " exceeds " << atom.MN << std::endl;
+          exit(1);
+        }
+        if (atom.NN[j] > atom.MN) {
+          std::cout << "Error: number of neighbors for atom " << j
                     << " exceeds " << atom.MN << std::endl;
           exit(1);
         }
@@ -374,8 +380,14 @@ void findNeighborON1(Atom& atom)
               const double d2 = x12 * x12 + y12 * y12 + z12 * z12;
               if (d2 < cutoffSquare) {
                 atom.NL[n1 * atom.MN + atom.NN[n1]++] = n2;
+                atom.NL[n2 * atom.MN + atom.NN[n2]++] = n1;
                 if (atom.NN[n1] > atom.MN) {
                   std::cout << "Error: number of neighbors for atom " << n1
+                            << " exceeds " << atom.MN << std::endl;
+                  exit(1);
+                }
+                if (atom.NN[n2] > atom.MN) {
+                  std::cout << "Error: number of neighbors for atom " << n2
                             << " exceeds " << atom.MN << std::endl;
                   exit(1);
                 }
