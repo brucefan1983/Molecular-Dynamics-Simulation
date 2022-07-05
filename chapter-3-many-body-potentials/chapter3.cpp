@@ -414,6 +414,355 @@ void findNeighbor(Atom& atom)
   }
 }
 
+inline void find_fr_and_frp(double d12, double& fr, double& frp)
+{
+  const double a = 1393.6;
+  const double lambda = 3.4879;
+  fr = a * exp(-lambda * d12);
+  frp = -lambda * fr;
+}
+
+inline void find_fa_and_fap(double d12, double& fa, double& fap)
+{
+  const double b = 430.0; // optimized
+  const double mu = 2.2119;
+  fa = b * exp(-mu * d12);
+  fap = -mu * fa;
+}
+
+inline void find_fa(double d12, double& fa)
+{
+  const double b = 430.0;
+  const double mu = 2.2119;
+  fa = b * exp(-mu * d12);
+}
+
+inline void find_fc_and_fcp(double d12, double& fc, double& fcp)
+{
+  const double r1 = 1.8;
+  const double r2 = 2.1;
+  const double pi = 3.141592653589793;
+  const double pi_factor = pi / (r2 - r1);
+  if (d12 < r1) {
+    fc = 1.0;
+    fcp = 0.0;
+  } else if (d12 < r2) {
+    fc = cos(pi_factor * (d12 - r1)) * 0.5 + 0.5;
+    fcp = -sin(pi_factor * (d12 - r1)) * pi_factor * 0.5;
+  } else {
+    fc = 0.0;
+    fcp = 0.0;
+  }
+}
+
+inline void find_fc(double d12, double& fc)
+{
+  const double r1 = 1.8;
+  const double r2 = 2.1;
+  const double pi = 3.141592653589793;
+  const double pi_factor = pi / (r2 - r1);
+  if (d12 < r1) {
+    fc = 1.0;
+  } else if (d12 < r2) {
+    fc = cos(pi_factor * (d12 - r1)) * 0.5 + 0.5;
+  } else {
+    fc = 0.0;
+  }
+}
+
+inline void find_g_and_gp(double cos, double& g, double& gp)
+{
+  const double c = 38049.0;
+  const double d = 4.3484;
+  const double h = -0.930; // optimized
+  const double c2 = c * c;
+  const double d2 = d * d;
+  const double c2overd2 = c2 / d2;
+  double temp = d2 + (cos - h) * (cos - h);
+  g = 1.0 + c2overd2 - c2 / temp;
+  gp = 2.0 * c2 * (cos - h) / (temp * temp);
+}
+
+inline void find_g(double cos, double& g)
+{
+  const double c = 38049.0;
+  const double d = 4.3484;
+  const double h = -0.930; // optimized
+  const double c2 = c * c;
+  const double d2 = d * d;
+  const double c2overd2 = c2 / d2;
+  double temp = d2 + (cos - h) * (cos - h);
+  g = 1.0 + c2overd2 - c2 / temp;
+}
+
+void find_b_and_bp(
+  Atom& atom,
+  int N,
+  int* NN,
+  int* NL,
+  int MN,
+  int pbc[3],
+  double box[3],
+  double* x,
+  double* y,
+  double* z,
+  double* b,
+  double* bp)
+{
+  const double beta = 1.5724e-7;
+  const double n = 0.72751;
+  const double minus_half_over_n = -0.5 / n;
+
+  double lxh = box[0] * 0.5;
+  double lyh = box[1] * 0.5;
+  double lzh = box[2] * 0.5;
+  for (int n1 = 0; n1 < N; ++n1) {
+    for (int i1 = 0; i1 < NN[n1]; ++i1) {
+      int n2 = NL[n1 * MN + i1]; // we only know n2 != n1
+      double x12, y12, z12;
+      x12 = x[n2] - x[n1];
+      y12 = y[n2] - y[n1];
+      z12 = z[n2] - z[n1];
+      applyMic(atom.box, x12, y12, z12);
+      double d12 = sqrt(x12 * x12 + y12 * y12 + z12 * z12);
+
+      double zeta = 0.0;
+      for (int i2 = 0; i2 < NN[n1]; ++i2) {
+        int n3 = NL[n1 * MN + i2]; // we only know n3 != n1
+        if (n3 == n2) {
+          continue;
+        } // ensure that n3 != n2
+        double x13, y13, z13;
+        x13 = x[n3] - x[n1];
+        y13 = y[n3] - y[n1];
+        z13 = z[n3] - z[n1];
+        applyMic(atom.box, x13, y13, z13);
+
+        double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
+        double cos = (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
+        double fc13, g123;
+        find_fc(d13, fc13);
+        find_g(cos, g123);
+        zeta += fc13 * g123;
+      }
+      double bzn = pow(beta * zeta, n);
+      double b12 = pow(1.0 + bzn, minus_half_over_n);
+      b[n1 * MN + i1] = b12;
+      bp[n1 * MN + i1] = -b12 * bzn * 0.5 / ((1.0 + bzn) * zeta);
+    }
+  }
+}
+
+void find_force_tersoff(
+  Atom& atom,
+  int N,
+  int* NN,
+  int* NL,
+  int MN,
+  int pbc[3],
+  double box[3],
+  double* b,
+  double* bp,
+  double* x,
+  double* y,
+  double* z,
+  double* vx,
+  double* vy,
+  double* vz,
+  double* fx,
+  double* fy,
+  double* fz,
+  double prop[7])
+{
+  for (int n = 0; n < 7; ++n) {
+    prop[n] = 0.0;
+  }
+  for (int n = 0; n < N; ++n) {
+    fx[n] = fy[n] = fz[n] = 0.0;
+  }
+  double lxh = box[0] * 0.5;
+  double lyh = box[1] * 0.5;
+  double lzh = box[2] * 0.5;
+
+  for (int n1 = 0; n1 < N; ++n1) {
+    for (int i1 = 0; i1 < NN[n1]; ++i1) {
+      int n2 = NL[n1 * MN + i1];
+      if (n2 < n1) {
+        continue;
+      } // Will use Newton's 3rd law!!!
+      double x12, y12, z12;
+      x12 = x[n2] - x[n1];
+      y12 = y[n2] - y[n1];
+      z12 = z[n2] - z[n1];
+      applyMic(atom.box, x12, y12, z12);
+
+      double d12 = sqrt(x12 * x12 + y12 * y12 + z12 * z12);
+      double d12inv = 1.0 / d12;
+      double d12inv_square = d12inv * d12inv;
+
+      double fc12, fcp12;
+      double fa12, fap12;
+      double fr12, frp12;
+      find_fc_and_fcp(d12, fc12, fcp12);
+      find_fa_and_fap(d12, fa12, fap12);
+      find_fr_and_frp(d12, fr12, frp12);
+
+      double b12, bp12;
+
+      double f12[3] = {0.0, 0.0, 0.0}; // d_U_i_d_r_ij
+      double f21[3] = {0.0, 0.0, 0.0}; // d_U_j_d_r_ji
+      double p12 = 0.0;                // U_ij
+      double p21 = 0.0;                // U_ji
+
+      // accumulate_force_12
+      b12 = b[n1 * MN + i1];
+      double factor1 = -b12 * fa12 + fr12;
+      double factor2 = -b12 * fap12 + frp12;
+      double factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
+      f12[0] += x12 * factor3 * 0.5;
+      f12[1] += y12 * factor3 * 0.5;
+      f12[2] += z12 * factor3 * 0.5;
+      p12 += factor1 * fc12;
+
+      // accumulate_force_21
+      int offset = 0;
+      for (int k = 0; k < NN[n2]; ++k) {
+        if (NL[n2 * MN + k] == n1) {
+          offset = k;
+          break;
+        }
+      }
+      b12 = b[n2 * MN + offset];
+      factor1 = -b12 * fa12 + fr12;
+      factor2 = -b12 * fap12 + frp12;
+      factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
+      f21[0] += -x12 * factor3 * 0.5;
+      f21[1] += -y12 * factor3 * 0.5;
+      f21[2] += -z12 * factor3 * 0.5;
+      p21 += factor1 * fc12;
+
+      // accumulate_force_123
+      bp12 = bp[n1 * MN + i1];
+      for (int i2 = 0; i2 < NN[n1]; ++i2) {
+        int n3 = NL[n1 * MN + i2];
+        if (n3 == n2) {
+          continue;
+        }
+        double x13, y13, z13;
+        x13 = x[n3] - x[n1];
+        y13 = y[n3] - y[n1];
+        z13 = z[n3] - z[n1];
+        applyMic(atom.box, x13, y13, z13);
+
+        double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
+        double fc13, fa13;
+        find_fc(d13, fc13);
+        find_fa(d13, fa13);
+        double bp13 = bp[n1 * MN + i2];
+
+        double cos123 = (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
+        double g123, gp123;
+        find_g_and_gp(cos123, g123, gp123);
+        double cos_x = x13 / (d12 * d13) - x12 * cos123 / (d12 * d12);
+        double cos_y = y13 / (d12 * d13) - y12 * cos123 / (d12 * d12);
+        double cos_z = z13 / (d12 * d13) - z12 * cos123 / (d12 * d12);
+        double factor123a =
+          (-bp12 * fc12 * fa12 * fc13 - bp13 * fc13 * fa13 * fc12) * gp123;
+        double factor123b = -bp13 * fc13 * fa13 * fcp12 * g123 * d12inv;
+        f12[0] += (x12 * factor123b + factor123a * cos_x) * 0.5;
+        f12[1] += (y12 * factor123b + factor123a * cos_y) * 0.5;
+        f12[2] += (z12 * factor123b + factor123a * cos_z) * 0.5;
+      }
+
+      // accumulate_force_213
+      bp12 = bp[n2 * MN + offset];
+      for (int i2 = 0; i2 < NN[n2]; ++i2) {
+        int n3 = NL[n2 * MN + i2];
+        if (n3 == n1) {
+          continue;
+        }
+        double x23, y23, z23;
+        x23 = x[n3] - x[n2];
+        y23 = y[n3] - y[n2];
+        z23 = z[n3] - z[n2];
+        applyMic(atom.box, x23, y23, z23);
+
+        double d23 = sqrt(x23 * x23 + y23 * y23 + z23 * z23);
+        double fc23, fa23;
+        find_fc(d23, fc23);
+        find_fa(d23, fa23);
+        double bp13 = bp[n2 * MN + i2];
+
+        double cos213 = -(x12 * x23 + y12 * y23 + z12 * z23) / (d12 * d23);
+        double g213, gp213;
+        find_g_and_gp(cos213, g213, gp213);
+        double cos_x = x23 / (d12 * d23) + x12 * cos213 / (d12 * d12);
+        double cos_y = y23 / (d12 * d23) + y12 * cos213 / (d12 * d12);
+        double cos_z = z23 / (d12 * d23) + z12 * cos213 / (d12 * d12);
+        double factor213a =
+          (-bp12 * fc12 * fa12 * fc23 - bp13 * fc23 * fa23 * fc12) * gp213;
+        double factor213b = -bp13 * fc23 * fa23 * fcp12 * g213 * d12inv;
+        f21[0] += (-x12 * factor213b + factor213a * cos_x) * 0.5;
+        f21[1] += (-y12 * factor213b + factor213a * cos_y) * 0.5;
+        f21[2] += (-z12 * factor213b + factor213a * cos_z) * 0.5;
+      }
+
+      // accumulate force: see Eq. (37) in [PRB 92, 094301 (2015)]
+      double fx12 = f12[0] - f21[0];
+      double fy12 = f12[1] - f21[1];
+      double fz12 = f12[2] - f21[2];
+      fx[n1] += fx12;
+      fy[n1] += fy12;
+      fz[n1] += fz12;
+      fx[n2] -= fx12; // Newton's 3rd law used here
+      fy[n2] -= fy12;
+      fz[n2] -= fz12;
+
+      // accumulate potential energy:
+      prop[0] += (p12 + p21) * 0.5;
+
+      // accumulate virial; see Eq. (39) in [PRB 92, 094301 (2015)]
+      prop[1] -= fx12 * x12;
+      prop[2] -= fy12 * y12;
+      prop[3] -= fz12 * z12;
+
+      // accumulate heat current; see Eq. (43) in [PRB 92, 094301 (2015)]
+      double f12_dot_v2 = f12[0] * vx[n2] + f12[1] * vy[n2] + f12[2] * vz[n2];
+      double f21_dot_v1 = f21[0] * vx[n1] + f21[1] * vy[n1] + f21[2] * vz[n1];
+      prop[4] -= (f12_dot_v2 - f21_dot_v1) * x12;
+      prop[5] -= (f12_dot_v2 - f21_dot_v1) * y12;
+      prop[6] -= (f12_dot_v2 - f21_dot_v1) * z12;
+    }
+  }
+}
+
+void findForce(
+  Atom& atom,
+  int N,
+  int* NN,
+  int* NL,
+  int MN,
+  int pbc[3],
+  double box[3],
+  double* b,
+  double* bp,
+  double* x,
+  double* y,
+  double* z,
+  double* vx,
+  double* vy,
+  double* vz,
+  double* fx,
+  double* fy,
+  double* fz,
+  double prop[7])
+{
+  find_b_and_bp(atom, N, NN, NL, MN, pbc, box, x, y, z, b, bp);
+  find_force_tersoff(
+    atom, N, NN, NL, MN, pbc, box, b, bp, x, y, z, vx, vy, vz, fx, fy, fz,
+    prop);
+}
+
 void findForce(Atom& atom)
 {
   const double epsilon = 1.032e-2;
