@@ -1,8 +1,7 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ md2.cpp -O3 -o md2 # using O(N^2) neighbor list algorithm
-    g++ md2.cpp -O3 -DUSE_ON1 -o md2 # using O(N) neighbor list algorithm
+    g++ md2.cpp -O3 -o md2
 Run:
     path/to/md2.out # Linux
     path\to\md2.exe # Windows
