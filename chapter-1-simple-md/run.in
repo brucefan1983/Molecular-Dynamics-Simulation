@@ -1,0 +1,7 @@
+
+velocity 60 # temperature in units of K
+
+time_step 5 # time step in units of fs
+
+# Now it's time to run
+run 20000

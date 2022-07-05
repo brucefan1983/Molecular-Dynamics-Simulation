@@ -13,8 +13,11 @@ Run:
 #include <fstream>  // file
 #include <iomanip>  // std::setprecision
 #include <iostream> // input/output
-#include <numeric>  // summation
-#include <vector>   // vector
+#include <iterator>
+#include <numeric> // std::accumulate
+#include <sstream> // std::istringstream
+#include <string>  // string
+#include <vector>  // vector
 
 const int Ns = 100;             // output frequency
 const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
@@ -197,16 +200,95 @@ void integrate(const bool isStepOne, const double timeStep, Atom& atom)
   }
 }
 
+std::vector<std::string> getTokens(std::ifstream& input)
+{
+  std::string line;
+  std::getline(input, line);
+  std::istringstream iss(line);
+  std::vector<std::string> tokens{
+    std::istream_iterator<std::string>{iss},
+    std::istream_iterator<std::string>{}};
+  return tokens;
+}
+
+int getInt(std::string& token)
+{
+  int value = 0;
+  try {
+    value = std::stoi(token);
+  } catch (const std::exception& e) {
+    std::cout << "Standard exception:" << e.what() << std::endl;
+    exit(1);
+  }
+  return value;
+}
+
+double getDouble(std::string& token)
+{
+  float value = 0;
+  try {
+    value = std::stod(token);
+  } catch (const std::exception& e) {
+    std::cout << "Standard exception:" << e.what() << std::endl;
+    exit(1);
+  }
+  return value;
+}
+
+void readRun(int& numSteps, double& timeStep, double& temperature)
+{
+  std::ifstream input("run.in");
+  if (!input.is_open()) {
+    std::cout << "Failed to open run.in." << std::endl;
+    exit(1);
+  }
+
+  while (input.peek() != EOF) {
+    std::vector<std::string> tokens = getTokens(input);
+    if (tokens.size() > 0) {
+      if (tokens[0] == "time_step") {
+        timeStep = getDouble(tokens[1]);
+        if (timeStep < 0) {
+          std::cout << "timeStep should >= 0." << std::endl;
+          exit(1);
+        }
+        std::cout << "timeStep = " << timeStep << " fs." << std::endl;
+      } else if (tokens[0] == "run") {
+        numSteps = getInt(tokens[1]);
+        if (numSteps < 1) {
+          std::cout << "numSteps should >= 1." << std::endl;
+          exit(1);
+        }
+        std::cout << "numSteps = " << numSteps << std::endl;
+      } else if (tokens[0] == "velocity") {
+        temperature = getDouble(tokens[1]);
+        if (temperature < 0) {
+          std::cout << "temperature >= 0." << std::endl;
+          exit(1);
+        }
+        std::cout << "temperature = " << temperature << " K." << std::endl;
+      } else if (tokens[0][0] != '#') {
+        std::cout << tokens[0] << " is not a valid keyword." << std::endl;
+        exit(1);
+      }
+    }
+  }
+
+  input.close();
+}
+
 int main(int argc, char** argv)
 {
-  if (argc != 5) {
-    printf("usage: %s numCells numSteps temperature timeStep\n", argv[0]);
+  if (argc != 2) {
+    printf("usage: %s numCells\n", argv[0]);
     exit(1);
   }
   const int numCells = atoi(argv[1]);
-  const int numSteps = atoi(argv[2]);
-  const double temperature = atof(argv[3]);
-  double timeStep = atof(argv[4]);
+  int numSteps;
+  double temperature;
+  double timeStep;
+  readRun(numSteps, timeStep, temperature);
+
   timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
 
   Atom atom;
