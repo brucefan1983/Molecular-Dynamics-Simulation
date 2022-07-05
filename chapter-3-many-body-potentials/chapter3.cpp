@@ -31,7 +31,8 @@ struct Atom {
   double cutoffNeighbor = 10.0;
   double box[18];
   std::vector<int> NN, NL;
-  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, pe;
+  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, pe, b,
+    bp;
 };
 
 double findKineticEnergy(const Atom& atom)
@@ -63,6 +64,8 @@ void allocateMemory(const int numCells, Atom& atom)
   atom.number = numCells * numCells * numCells * numAtomsPerCell;
   atom.NN.resize(atom.number, 0);
   atom.NL.resize(atom.number * atom.MN, 0);
+  atom.b.resize(atom.number * atom.MN, 0);
+  atom.bp.resize(atom.number * atom.MN, 0);
   atom.mass.resize(atom.number, 40.0); // argon mass
   atom.x0.resize(atom.number, 0.0);
   atom.y0.resize(atom.number, 0.0);
@@ -495,47 +498,31 @@ inline void find_g(double cos, double& g)
   g = 1.0 + c2overd2 - c2 / temp;
 }
 
-void find_b_and_bp(
-  Atom& atom,
-  int N,
-  int* NN,
-  int* NL,
-  int MN,
-  int pbc[3],
-  double box[3],
-  double* x,
-  double* y,
-  double* z,
-  double* b,
-  double* bp)
+void find_b_and_bp(Atom& atom)
 {
   const double beta = 1.5724e-7;
   const double n = 0.72751;
   const double minus_half_over_n = -0.5 / n;
-
-  double lxh = box[0] * 0.5;
-  double lyh = box[1] * 0.5;
-  double lzh = box[2] * 0.5;
-  for (int n1 = 0; n1 < N; ++n1) {
-    for (int i1 = 0; i1 < NN[n1]; ++i1) {
-      int n2 = NL[n1 * MN + i1]; // we only know n2 != n1
+  for (int n1 = 0; n1 < atom.number; ++n1) {
+    for (int i1 = 0; i1 < atom.NN[n1]; ++i1) {
+      int n2 = atom.NL[n1 * atom.MN + i1]; // we only know n2 != n1
       double x12, y12, z12;
-      x12 = x[n2] - x[n1];
-      y12 = y[n2] - y[n1];
-      z12 = z[n2] - z[n1];
+      x12 = atom.x[n2] - atom.x[n1];
+      y12 = atom.y[n2] - atom.y[n1];
+      z12 = atom.z[n2] - atom.z[n1];
       applyMic(atom.box, x12, y12, z12);
       double d12 = sqrt(x12 * x12 + y12 * y12 + z12 * z12);
 
       double zeta = 0.0;
-      for (int i2 = 0; i2 < NN[n1]; ++i2) {
-        int n3 = NL[n1 * MN + i2]; // we only know n3 != n1
+      for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
+        int n3 = atom.NL[n1 * atom.MN + i2]; // we only know n3 != n1
         if (n3 == n2) {
           continue;
         } // ensure that n3 != n2
         double x13, y13, z13;
-        x13 = x[n3] - x[n1];
-        y13 = y[n3] - y[n1];
-        z13 = z[n3] - z[n1];
+        x13 = atom.x[n3] - atom.x[n1];
+        y13 = atom.y[n3] - atom.y[n1];
+        z13 = atom.z[n3] - atom.z[n1];
         applyMic(atom.box, x13, y13, z13);
 
         double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
@@ -547,53 +534,31 @@ void find_b_and_bp(
       }
       double bzn = pow(beta * zeta, n);
       double b12 = pow(1.0 + bzn, minus_half_over_n);
-      b[n1 * MN + i1] = b12;
-      bp[n1 * MN + i1] = -b12 * bzn * 0.5 / ((1.0 + bzn) * zeta);
+      atom.b[n1 * atom.MN + i1] = b12;
+      atom.bp[n1 * atom.MN + i1] = -b12 * bzn * 0.5 / ((1.0 + bzn) * zeta);
     }
   }
 }
 
-void find_force_tersoff(
-  Atom& atom,
-  int N,
-  int* NN,
-  int* NL,
-  int MN,
-  int pbc[3],
-  double box[3],
-  double* b,
-  double* bp,
-  double* x,
-  double* y,
-  double* z,
-  double* vx,
-  double* vy,
-  double* vz,
-  double* fx,
-  double* fy,
-  double* fz,
-  double prop[7])
+void find_force_tersoff(Atom& atom, double prop[7])
 {
   for (int n = 0; n < 7; ++n) {
     prop[n] = 0.0;
   }
-  for (int n = 0; n < N; ++n) {
-    fx[n] = fy[n] = fz[n] = 0.0;
+  for (int n = 0; n < atom.number; ++n) {
+    atom.fx[n] = atom.fy[n] = atom.fz[n] = 0.0;
   }
-  double lxh = box[0] * 0.5;
-  double lyh = box[1] * 0.5;
-  double lzh = box[2] * 0.5;
 
-  for (int n1 = 0; n1 < N; ++n1) {
-    for (int i1 = 0; i1 < NN[n1]; ++i1) {
-      int n2 = NL[n1 * MN + i1];
+  for (int n1 = 0; n1 < atom.number; ++n1) {
+    for (int i1 = 0; i1 < atom.NN[n1]; ++i1) {
+      int n2 = atom.NL[n1 * atom.MN + i1];
       if (n2 < n1) {
         continue;
       } // Will use Newton's 3rd law!!!
       double x12, y12, z12;
-      x12 = x[n2] - x[n1];
-      y12 = y[n2] - y[n1];
-      z12 = z[n2] - z[n1];
+      x12 = atom.x[n2] - atom.x[n1];
+      y12 = atom.y[n2] - atom.y[n1];
+      z12 = atom.z[n2] - atom.z[n1];
       applyMic(atom.box, x12, y12, z12);
 
       double d12 = sqrt(x12 * x12 + y12 * y12 + z12 * z12);
@@ -615,7 +580,7 @@ void find_force_tersoff(
       double p21 = 0.0;                // U_ji
 
       // accumulate_force_12
-      b12 = b[n1 * MN + i1];
+      b12 = atom.b[n1 * atom.MN + i1];
       double factor1 = -b12 * fa12 + fr12;
       double factor2 = -b12 * fap12 + frp12;
       double factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
@@ -626,13 +591,13 @@ void find_force_tersoff(
 
       // accumulate_force_21
       int offset = 0;
-      for (int k = 0; k < NN[n2]; ++k) {
-        if (NL[n2 * MN + k] == n1) {
+      for (int k = 0; k < atom.NN[n2]; ++k) {
+        if (atom.NL[n2 * atom.MN + k] == n1) {
           offset = k;
           break;
         }
       }
-      b12 = b[n2 * MN + offset];
+      b12 = atom.b[n2 * atom.MN + offset];
       factor1 = -b12 * fa12 + fr12;
       factor2 = -b12 * fap12 + frp12;
       factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
@@ -642,23 +607,23 @@ void find_force_tersoff(
       p21 += factor1 * fc12;
 
       // accumulate_force_123
-      bp12 = bp[n1 * MN + i1];
-      for (int i2 = 0; i2 < NN[n1]; ++i2) {
-        int n3 = NL[n1 * MN + i2];
+      bp12 = atom.bp[n1 * atom.MN + i1];
+      for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
+        int n3 = atom.NL[n1 * atom.MN + i2];
         if (n3 == n2) {
           continue;
         }
         double x13, y13, z13;
-        x13 = x[n3] - x[n1];
-        y13 = y[n3] - y[n1];
-        z13 = z[n3] - z[n1];
+        x13 = atom.x[n3] - atom.x[n1];
+        y13 = atom.y[n3] - atom.y[n1];
+        z13 = atom.z[n3] - atom.z[n1];
         applyMic(atom.box, x13, y13, z13);
 
         double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
         double fc13, fa13;
         find_fc(d13, fc13);
         find_fa(d13, fa13);
-        double bp13 = bp[n1 * MN + i2];
+        double bp13 = atom.bp[n1 * atom.MN + i2];
 
         double cos123 = (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
         double g123, gp123;
@@ -675,23 +640,23 @@ void find_force_tersoff(
       }
 
       // accumulate_force_213
-      bp12 = bp[n2 * MN + offset];
-      for (int i2 = 0; i2 < NN[n2]; ++i2) {
-        int n3 = NL[n2 * MN + i2];
+      bp12 = atom.bp[n2 * atom.MN + offset];
+      for (int i2 = 0; i2 < atom.NN[n2]; ++i2) {
+        int n3 = atom.NL[n2 * atom.MN + i2];
         if (n3 == n1) {
           continue;
         }
         double x23, y23, z23;
-        x23 = x[n3] - x[n2];
-        y23 = y[n3] - y[n2];
-        z23 = z[n3] - z[n2];
+        x23 = atom.x[n3] - atom.x[n2];
+        y23 = atom.y[n3] - atom.y[n2];
+        z23 = atom.z[n3] - atom.z[n2];
         applyMic(atom.box, x23, y23, z23);
 
         double d23 = sqrt(x23 * x23 + y23 * y23 + z23 * z23);
         double fc23, fa23;
         find_fc(d23, fc23);
         find_fa(d23, fa23);
-        double bp13 = bp[n2 * MN + i2];
+        double bp13 = atom.bp[n2 * atom.MN + i2];
 
         double cos213 = -(x12 * x23 + y12 * y23 + z12 * z23) / (d12 * d23);
         double g213, gp213;
@@ -711,12 +676,12 @@ void find_force_tersoff(
       double fx12 = f12[0] - f21[0];
       double fy12 = f12[1] - f21[1];
       double fz12 = f12[2] - f21[2];
-      fx[n1] += fx12;
-      fy[n1] += fy12;
-      fz[n1] += fz12;
-      fx[n2] -= fx12; // Newton's 3rd law used here
-      fy[n2] -= fy12;
-      fz[n2] -= fz12;
+      atom.fx[n1] += fx12;
+      atom.fy[n1] += fy12;
+      atom.fz[n1] += fz12;
+      atom.fx[n2] -= fx12; // Newton's 3rd law used here
+      atom.fy[n2] -= fy12;
+      atom.fz[n2] -= fz12;
 
       // accumulate potential energy:
       prop[0] += (p12 + p21) * 0.5;
@@ -727,8 +692,10 @@ void find_force_tersoff(
       prop[3] -= fz12 * z12;
 
       // accumulate heat current; see Eq. (43) in [PRB 92, 094301 (2015)]
-      double f12_dot_v2 = f12[0] * vx[n2] + f12[1] * vy[n2] + f12[2] * vz[n2];
-      double f21_dot_v1 = f21[0] * vx[n1] + f21[1] * vy[n1] + f21[2] * vz[n1];
+      double f12_dot_v2 =
+        f12[0] * atom.vx[n2] + f12[1] * atom.vy[n2] + f12[2] * atom.vz[n2];
+      double f21_dot_v1 =
+        f21[0] * atom.vx[n1] + f21[1] * atom.vy[n1] + f21[2] * atom.vz[n1];
       prop[4] -= (f12_dot_v2 - f21_dot_v1) * x12;
       prop[5] -= (f12_dot_v2 - f21_dot_v1) * y12;
       prop[6] -= (f12_dot_v2 - f21_dot_v1) * z12;
@@ -736,31 +703,10 @@ void find_force_tersoff(
   }
 }
 
-void findForce(
-  Atom& atom,
-  int N,
-  int* NN,
-  int* NL,
-  int MN,
-  int pbc[3],
-  double box[3],
-  double* b,
-  double* bp,
-  double* x,
-  double* y,
-  double* z,
-  double* vx,
-  double* vy,
-  double* vz,
-  double* fx,
-  double* fy,
-  double* fz,
-  double prop[7])
+void findForce(Atom& atom, double prop[7])
 {
-  find_b_and_bp(atom, N, NN, NL, MN, pbc, box, x, y, z, b, bp);
-  find_force_tersoff(
-    atom, N, NN, NL, MN, pbc, box, b, bp, x, y, z, vx, vy, vz, fx, fy, fz,
-    prop);
+  find_b_and_bp(atom);
+  find_force_tersoff(atom, prop);
 }
 
 void findForce(Atom& atom)
