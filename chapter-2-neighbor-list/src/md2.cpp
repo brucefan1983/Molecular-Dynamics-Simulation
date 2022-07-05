@@ -28,6 +28,7 @@ const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
 struct Atom {
   int number;
   int numUpdates = 0;
+  int neighbor_flag = 2;
   const int MN = 1000;
   double cutoffNeighbor = 10.0;
   double box[18];
@@ -340,11 +341,10 @@ void findNeighbor(Atom& atom)
   if (checkIfNeedUpdate(atom)) {
     atom.numUpdates++;
     applyPbc(atom);
-#ifdef USE_ON1
-    findNeighborON1(atom);
-#else
-    findNeighborON2(atom);
-#endif
+    if (atom.neighbor_flag == 1)
+      findNeighborON1(atom);
+    else if (atom.neighbor_flag == 2)
+      findNeighborON2(atom);
     updateXyz0(atom);
   }
 }
@@ -451,7 +451,7 @@ double getDouble(std::string& token)
   return value;
 }
 
-void readRun(int& numSteps, double& timeStep, double& temperature)
+void readRun(int& numSteps, double& timeStep, double& temperature, Atom& atom)
 {
   std::ifstream input("run.in");
   if (!input.is_open()) {
@@ -483,6 +483,13 @@ void readRun(int& numSteps, double& timeStep, double& temperature)
           exit(1);
         }
         std::cout << "temperature = " << temperature << " K." << std::endl;
+      } else if (tokens[0] == "neighbor_flag") {
+        atom.neighbor_flag = getDouble(tokens[1]);
+        if (atom.neighbor_flag != 1 && atom.neighbor_flag != 2) {
+          std::cout << "neighbor_flag can only be 1 or 2." << std::endl;
+          exit(1);
+        }
+        std::cout << "neighbor_flag = " << atom.neighbor_flag << std::endl;
       } else if (tokens[0][0] != '#') {
         std::cout << tokens[0] << " is not a valid keyword." << std::endl;
         exit(1);
@@ -582,11 +589,10 @@ int main(int argc, char** argv)
   int numSteps;
   double temperature;
   double timeStep;
-  readRun(numSteps, timeStep, temperature);
-
-  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
 
   Atom atom;
+  readRun(numSteps, timeStep, temperature, atom);
+  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
   readXyz(atom);
   initializeVelocity(temperature, atom);
 
