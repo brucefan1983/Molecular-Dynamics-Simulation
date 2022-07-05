@@ -52,49 +52,6 @@ void scaleVelocity(const double T0, Atom& atom)
   }
 }
 
-void allocateMemory(const int numCells, Atom& atom)
-{
-  const int numAtomsPerCell = 4;
-  atom.number = numCells * numCells * numCells * numAtomsPerCell;
-  atom.mass.resize(atom.number, 40.0); // argon mass
-  atom.x.resize(atom.number, 0.0);
-  atom.y.resize(atom.number, 0.0);
-  atom.z.resize(atom.number, 0.0);
-  atom.vx.resize(atom.number, 0.0);
-  atom.vy.resize(atom.number, 0.0);
-  atom.vz.resize(atom.number, 0.0);
-  atom.fx.resize(atom.number, 0.0);
-  atom.fy.resize(atom.number, 0.0);
-  atom.fz.resize(atom.number, 0.0);
-  atom.pe.resize(atom.number, 0.0);
-}
-
-void initializePosition(const int numCells, Atom& atom)
-{
-  const int numAtomsPerCell = 4;
-  const double latticeConstant = 5.385;
-  atom.box[0] = atom.box[1] = atom.box[2] = latticeConstant * numCells;
-  atom.box[3] = atom.box[0] * 0.5;
-  atom.box[4] = atom.box[1] * 0.5;
-  atom.box[5] = atom.box[2] * 0.5;
-  const double x0[numAtomsPerCell] = {0.0, 0.0, 0.5, 0.5};
-  const double y0[numAtomsPerCell] = {0.0, 0.5, 0.0, 0.5};
-  const double z0[numAtomsPerCell] = {0.0, 0.5, 0.5, 0.0};
-  int n = 0;
-  for (int ix = 0; ix < numCells; ++ix) {
-    for (int iy = 0; iy < numCells; ++iy) {
-      for (int iz = 0; iz < numCells; ++iz) {
-        for (int i = 0; i < numAtomsPerCell; ++i) {
-          atom.x[n] = (ix + x0[i]) * latticeConstant;
-          atom.y[n] = (iy + y0[i]) * latticeConstant;
-          atom.z[n] = (iz + z0[i]) * latticeConstant;
-          ++n;
-        }
-      }
-    }
-  }
-}
-
 void initializeVelocity(const double T0, Atom& atom)
 {
 #ifndef DEBUG
@@ -277,13 +234,71 @@ void readRun(int& numSteps, double& timeStep, double& temperature)
   input.close();
 }
 
-int main(int argc, char** argv)
+void readXyz(Atom& atom)
 {
-  if (argc != 2) {
-    printf("usage: %s numCells\n", argv[0]);
+  std::ifstream input("xyz.in");
+  if (!input.is_open()) {
+    std::cout << "Failed to open xyz.in." << std::endl;
     exit(1);
   }
-  const int numCells = atoi(argv[1]);
+
+  std::vector<std::string> tokens = getTokens(input);
+
+  // line 1
+  if (tokens.size() != 1) {
+    std::cout << "The first line of xyz.in should have one item." << std::endl;
+    exit(1);
+  }
+  atom.number = getInt(tokens[0]);
+  std::cout << "Number of atoms = " << atom.number << std::endl;
+
+  // allocate memory
+  atom.mass.resize(atom.number, 0.0);
+  atom.x.resize(atom.number, 0.0);
+  atom.y.resize(atom.number, 0.0);
+  atom.z.resize(atom.number, 0.0);
+  atom.vx.resize(atom.number, 0.0);
+  atom.vy.resize(atom.number, 0.0);
+  atom.vz.resize(atom.number, 0.0);
+  atom.fx.resize(atom.number, 0.0);
+  atom.fy.resize(atom.number, 0.0);
+  atom.fz.resize(atom.number, 0.0);
+  atom.pe.resize(atom.number, 0.0);
+
+  // line 2
+  tokens = getTokens(input);
+  if (tokens.size() != 3) {
+    std::cout << "The second line of xyz.in should have 3 items." << std::endl;
+    exit(1);
+  }
+  std::cout << "box length = ";
+  for (int d = 0; d < 3; ++d) {
+    atom.box[d] = getDouble(tokens[d]);
+    atom.box[d + 3] = atom.box[d] * 0.5;
+    std::cout << atom.box[d] << " ";
+  }
+  std::cout << std::endl;
+
+  // starting from line 3
+  for (int n = 0; n < atom.number; ++n) {
+    tokens = getTokens(input);
+    if (tokens.size() != 5) {
+      std::cout << "The 3rd line and later of xyz.in should have 5 items."
+                << std::endl;
+      exit(1);
+    }
+    // atom types not used
+    atom.x[n] = getDouble(tokens[1]);
+    atom.y[n] = getDouble(tokens[2]);
+    atom.z[n] = getDouble(tokens[3]);
+    atom.mass[n] = getDouble(tokens[4]);
+  }
+
+  input.close();
+}
+
+int main(int argc, char** argv)
+{
   int numSteps;
   double temperature;
   double timeStep;
@@ -292,8 +307,7 @@ int main(int argc, char** argv)
   timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
 
   Atom atom;
-  allocateMemory(numCells, atom);
-  initializePosition(numCells, atom);
+  readXyz(atom);
   initializeVelocity(temperature, atom);
 
   const clock_t tStart = clock();
