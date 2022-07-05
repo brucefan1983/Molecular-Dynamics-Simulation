@@ -1,15 +1,13 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    using O(N^2) neighbor list algorithm:
-        g++ neighbor.cpp -O3 -o neighbor
-    using O(N) neighbor list algorithm:
-        g++ neighbor.cpp -O3 -DUSE_ON1 -o neighbor
+    g++ md2.cpp -O3 -o md2 # using O(N^2) neighbor list algorithm
+    g++ md2.cpp -O3 -DUSE_ON1 -o md2 # using O(N) neighbor list algorithm
 Run:
-    command:
-        neighbor numCells numSteps temperature timeStep
-    example:
-        neighbor 6 20000 60 5
+    path/to/md2.out # Linux
+    path\to\md2.exe # Windows
+Inputs:
+    xyz.in and run.in
 ------------------------------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
@@ -17,8 +15,11 @@ Run:
 #include <fstream>  // file
 #include <iomanip>  // std::setprecision
 #include <iostream> // input/output
-#include <numeric>  // summation
-#include <vector>   // vector
+#include <iterator>
+#include <numeric> // std::accumulate
+#include <sstream> // std::istringstream
+#include <string>  // string
+#include <vector>  // vector
 
 const int Ns = 100;             // output frequency
 const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
@@ -55,28 +56,6 @@ void scaleVelocity(const double T0, Atom& atom)
     atom.vy[n] *= scaleFactor;
     atom.vz[n] *= scaleFactor;
   }
-}
-
-void allocateMemory(const int numCells, Atom& atom)
-{
-  const int numAtomsPerCell = 4;
-  atom.number = numCells * numCells * numCells * numAtomsPerCell;
-  atom.NN.resize(atom.number, 0);
-  atom.NL.resize(atom.number * atom.MN, 0);
-  atom.mass.resize(atom.number, 40.0); // argon mass
-  atom.x0.resize(atom.number, 0.0);
-  atom.y0.resize(atom.number, 0.0);
-  atom.z0.resize(atom.number, 0.0);
-  atom.x.resize(atom.number, 0.0);
-  atom.y.resize(atom.number, 0.0);
-  atom.z.resize(atom.number, 0.0);
-  atom.vx.resize(atom.number, 0.0);
-  atom.vy.resize(atom.number, 0.0);
-  atom.vz.resize(atom.number, 0.0);
-  atom.fx.resize(atom.number, 0.0);
-  atom.fy.resize(atom.number, 0.0);
-  atom.fz.resize(atom.number, 0.0);
-  atom.pe.resize(atom.number, 0.0);
 }
 
 double getDet(const double* box)
@@ -120,38 +99,6 @@ void getThickness(const Atom& atom, double* thickness)
   thickness[0] = volume / getArea(b, c);
   thickness[1] = volume / getArea(c, a);
   thickness[2] = volume / getArea(a, b);
-}
-
-void initializePosition(const int numCells, Atom& atom)
-{
-  const int numAtomsPerCell = 4;
-  const double latticeConstant = 5.385;
-  for (int d1 = 0; d1 < 3; ++d1) {
-    for (int d2 = 0; d2 < 3; ++d2) {
-      if (d1 == d2) {
-        atom.box[d1 * 3 + d2] = latticeConstant * numCells;
-      } else {
-        atom.box[d1 * 3 + d2] = 0.0;
-      }
-    }
-  }
-  getInverseBox(atom.box);
-  const double x0[numAtomsPerCell] = {0.0, 0.0, 0.5, 0.5};
-  const double y0[numAtomsPerCell] = {0.0, 0.5, 0.0, 0.5};
-  const double z0[numAtomsPerCell] = {0.0, 0.5, 0.5, 0.0};
-  int n = 0;
-  for (int ix = 0; ix < numCells; ++ix) {
-    for (int iy = 0; iy < numCells; ++iy) {
-      for (int iz = 0; iz < numCells; ++iz) {
-        for (int i = 0; i < numAtomsPerCell; ++i) {
-          atom.x[n] = (ix + x0[i]) * latticeConstant;
-          atom.y[n] = (iy + y0[i]) * latticeConstant;
-          atom.z[n] = (iz + z0[i]) * latticeConstant;
-          ++n;
-        }
-      }
-    }
-  }
 }
 
 void initializeVelocity(const double T0, Atom& atom)
@@ -469,21 +416,178 @@ void integrate(const bool isStepOne, const double timeStep, Atom& atom)
   }
 }
 
-int main(int argc, char** argv)
+std::vector<std::string> getTokens(std::ifstream& input)
 {
-  if (argc != 5) {
-    printf("usage: %s numCells numSteps temperature timeStep\n", argv[0]);
+  std::string line;
+  std::getline(input, line);
+  std::istringstream iss(line);
+  std::vector<std::string> tokens{
+    std::istream_iterator<std::string>{iss},
+    std::istream_iterator<std::string>{}};
+  return tokens;
+}
+
+int getInt(std::string& token)
+{
+  int value = 0;
+  try {
+    value = std::stoi(token);
+  } catch (const std::exception& e) {
+    std::cout << "Standard exception:" << e.what() << std::endl;
     exit(1);
   }
-  const int numCells = atoi(argv[1]);
-  const int numSteps = atoi(argv[2]);
-  const double temperature = atof(argv[3]);
-  double timeStep = atof(argv[4]);
+  return value;
+}
+
+double getDouble(std::string& token)
+{
+  float value = 0;
+  try {
+    value = std::stod(token);
+  } catch (const std::exception& e) {
+    std::cout << "Standard exception:" << e.what() << std::endl;
+    exit(1);
+  }
+  return value;
+}
+
+void readRun(int& numSteps, double& timeStep, double& temperature)
+{
+  std::ifstream input("run.in");
+  if (!input.is_open()) {
+    std::cout << "Failed to open run.in." << std::endl;
+    exit(1);
+  }
+
+  while (input.peek() != EOF) {
+    std::vector<std::string> tokens = getTokens(input);
+    if (tokens.size() > 0) {
+      if (tokens[0] == "time_step") {
+        timeStep = getDouble(tokens[1]);
+        if (timeStep < 0) {
+          std::cout << "timeStep should >= 0." << std::endl;
+          exit(1);
+        }
+        std::cout << "timeStep = " << timeStep << " fs." << std::endl;
+      } else if (tokens[0] == "run") {
+        numSteps = getInt(tokens[1]);
+        if (numSteps < 1) {
+          std::cout << "numSteps should >= 1." << std::endl;
+          exit(1);
+        }
+        std::cout << "numSteps = " << numSteps << std::endl;
+      } else if (tokens[0] == "velocity") {
+        temperature = getDouble(tokens[1]);
+        if (temperature < 0) {
+          std::cout << "temperature >= 0." << std::endl;
+          exit(1);
+        }
+        std::cout << "temperature = " << temperature << " K." << std::endl;
+      } else if (tokens[0][0] != '#') {
+        std::cout << tokens[0] << " is not a valid keyword." << std::endl;
+        exit(1);
+      }
+    }
+  }
+
+  input.close();
+}
+
+void readXyz(Atom& atom)
+{
+  std::ifstream input("xyz.in");
+  if (!input.is_open()) {
+    std::cout << "Failed to open xyz.in." << std::endl;
+    exit(1);
+  }
+
+  std::vector<std::string> tokens = getTokens(input);
+
+  // line 1
+  if (tokens.size() != 1) {
+    std::cout << "The first line of xyz.in should have one item." << std::endl;
+    exit(1);
+  }
+  atom.number = getInt(tokens[0]);
+  std::cout << "Number of atoms = " << atom.number << std::endl;
+
+  // allocate memory
+  atom.NN.resize(atom.number, 0);
+  atom.NL.resize(atom.number * atom.MN, 0);
+  atom.mass.resize(atom.number, 0.0);
+  atom.x0.resize(atom.number, 0.0);
+  atom.y0.resize(atom.number, 0.0);
+  atom.z0.resize(atom.number, 0.0);
+  atom.x.resize(atom.number, 0.0);
+  atom.y.resize(atom.number, 0.0);
+  atom.z.resize(atom.number, 0.0);
+  atom.vx.resize(atom.number, 0.0);
+  atom.vy.resize(atom.number, 0.0);
+  atom.vz.resize(atom.number, 0.0);
+  atom.fx.resize(atom.number, 0.0);
+  atom.fy.resize(atom.number, 0.0);
+  atom.fz.resize(atom.number, 0.0);
+  atom.pe.resize(atom.number, 0.0);
+
+  // line 2
+  tokens = getTokens(input);
+  if (tokens.size() != 9) {
+    std::cout << "The second line of xyz.in should have 9 items." << std::endl;
+    exit(1);
+  }
+
+  for (int d1 = 0; d1 < 3; ++d1) {
+    for (int d2 = 0; d2 < 3; ++d2) {
+      atom.box[d2 * 3 + d1] = getDouble(tokens[d1 * 3 + d2]);
+    }
+  }
+  getInverseBox(atom.box);
+
+  std::cout << "box matrix H = " << std::endl;
+  for (int d1 = 0; d1 < 3; ++d1) {
+    for (int d2 = 0; d2 < 3; ++d2) {
+      std::cout << atom.box[d1 * 3 + d2] << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  std::cout << "inverse box matrix G = " << std::endl;
+  for (int d1 = 0; d1 < 3; ++d1) {
+    for (int d2 = 0; d2 < 3; ++d2) {
+      std::cout << atom.box[9 + d1 * 3 + d2] << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  // starting from line 3
+  for (int n = 0; n < atom.number; ++n) {
+    tokens = getTokens(input);
+    if (tokens.size() != 5) {
+      std::cout << "The 3rd line and later of xyz.in should have 5 items."
+                << std::endl;
+      exit(1);
+    }
+    // atom types not used
+    atom.x[n] = getDouble(tokens[1]);
+    atom.y[n] = getDouble(tokens[2]);
+    atom.z[n] = getDouble(tokens[3]);
+    atom.mass[n] = getDouble(tokens[4]);
+  }
+
+  input.close();
+}
+
+int main(int argc, char** argv)
+{
+  int numSteps;
+  double temperature;
+  double timeStep;
+  readRun(numSteps, timeStep, temperature);
+
   timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
 
   Atom atom;
-  allocateMemory(numCells, atom);
-  initializePosition(numCells, atom);
+  readXyz(atom);
   initializeVelocity(temperature, atom);
 
   const clock_t tStart = clock();

@@ -1,11 +1,12 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ ljmd.cpp -O3 -o ljmd
+    g++ md1.cpp -O3 -o md1
 Run:
-    ljmd numCells numSteps temperature timeStep
-    such as
-        ljmd 4 20000 60 5
+    path/to/md1.out # Linux
+    path\to\md1.exe # Windows
+Inputs:
+    xyz.in and run.in
 ------------------------------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
