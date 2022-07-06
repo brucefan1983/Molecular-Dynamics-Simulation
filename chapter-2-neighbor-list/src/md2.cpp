@@ -368,34 +368,58 @@ void findForce(Atom& atom)
     const double xi = atom.x[i];
     const double yi = atom.y[i];
     const double zi = atom.z[i];
-#ifdef NO_NEIGHBOR
-    for (int j = i + 1; j < atom.number; ++j) {
-#else
-    for (int jj = 0; jj < atom.NN[i]; ++jj) {
-      const int j = atom.NL[i * atom.MN + jj];
-#endif
-      double xij = atom.x[j] - xi;
-      double yij = atom.y[j] - yi;
-      double zij = atom.z[j] - zi;
-      applyMic(atom.box, xij, yij, zij);
-      const double r2 = xij * xij + yij * yij + zij * zij;
-      if (r2 > cutoffSquare)
-        continue;
 
-      const double r2inv = 1.0 / r2;
-      const double r4inv = r2inv * r2inv;
-      const double r6inv = r2inv * r4inv;
-      const double r8inv = r4inv * r4inv;
-      const double r12inv = r4inv * r8inv;
-      const double r14inv = r6inv * r8inv;
-      const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
-      atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
-      atom.fx[i] += f_ij * xij;
-      atom.fx[j] -= f_ij * xij;
-      atom.fy[i] += f_ij * yij;
-      atom.fy[j] -= f_ij * yij;
-      atom.fz[i] += f_ij * zij;
-      atom.fz[j] -= f_ij * zij;
+    if (atom.neighbor_flag == 0) {
+      for (int j = i + 1; j < atom.number; ++j) {
+        double xij = atom.x[j] - xi;
+        double yij = atom.y[j] - yi;
+        double zij = atom.z[j] - zi;
+        applyMic(atom.box, xij, yij, zij);
+        const double r2 = xij * xij + yij * yij + zij * zij;
+        if (r2 > cutoffSquare)
+          continue;
+
+        const double r2inv = 1.0 / r2;
+        const double r4inv = r2inv * r2inv;
+        const double r6inv = r2inv * r4inv;
+        const double r8inv = r4inv * r4inv;
+        const double r12inv = r4inv * r8inv;
+        const double r14inv = r6inv * r8inv;
+        const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
+        atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
+        atom.fx[i] += f_ij * xij;
+        atom.fx[j] -= f_ij * xij;
+        atom.fy[i] += f_ij * yij;
+        atom.fy[j] -= f_ij * yij;
+        atom.fz[i] += f_ij * zij;
+        atom.fz[j] -= f_ij * zij;
+      }
+    } else {
+      for (int jj = 0; jj < atom.NN[i]; ++jj) {
+        const int j = atom.NL[i * atom.MN + jj];
+        double xij = atom.x[j] - xi;
+        double yij = atom.y[j] - yi;
+        double zij = atom.z[j] - zi;
+        applyMic(atom.box, xij, yij, zij);
+        const double r2 = xij * xij + yij * yij + zij * zij;
+        if (r2 > cutoffSquare)
+          continue;
+
+        const double r2inv = 1.0 / r2;
+        const double r4inv = r2inv * r2inv;
+        const double r6inv = r2inv * r4inv;
+        const double r8inv = r4inv * r4inv;
+        const double r12inv = r4inv * r8inv;
+        const double r14inv = r6inv * r8inv;
+        const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
+        atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
+        atom.fx[i] += f_ij * xij;
+        atom.fx[j] -= f_ij * xij;
+        atom.fy[i] += f_ij * yij;
+        atom.fy[j] -= f_ij * yij;
+        atom.fz[i] += f_ij * zij;
+        atom.fz[j] -= f_ij * zij;
+      }
     }
   }
 }
@@ -488,8 +512,8 @@ void readRun(int& numSteps, double& timeStep, double& temperature, Atom& atom)
         std::cout << "temperature = " << temperature << " K." << std::endl;
       } else if (tokens[0] == "neighbor_flag") {
         atom.neighbor_flag = getDouble(tokens[1]);
-        if (atom.neighbor_flag != 1 && atom.neighbor_flag != 2) {
-          std::cout << "neighbor_flag can only be 1 or 2." << std::endl;
+        if (atom.neighbor_flag<0 | atom.neighbor_flag> 2) {
+          std::cout << "neighbor_flag can only be 0 or 1 or 2." << std::endl;
           exit(1);
         }
         std::cout << "neighbor_flag = " << atom.neighbor_flag << std::endl;
@@ -604,9 +628,8 @@ int main(int argc, char** argv)
   ofile << std::fixed << std::setprecision(16);
 
   for (int step = 0; step < numSteps; ++step) {
-#ifndef NO_NEIGHBOR
-    findNeighbor(atom);
-#endif
+    if (atom.neighbor_flag != 0)
+      findNeighbor(atom);
     integrate(true, timeStep, atom);  // step 1 in the book
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
