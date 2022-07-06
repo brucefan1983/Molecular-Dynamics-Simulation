@@ -368,8 +368,12 @@ void findForce(Atom& atom)
     const double xi = atom.x[i];
     const double yi = atom.y[i];
     const double zi = atom.z[i];
+#ifdef NO_NEIGHBOR
+    for (int j = i + 1; j < atom.number; ++j) {
+#else
     for (int jj = 0; jj < atom.NN[i]; ++jj) {
       const int j = atom.NL[i * atom.MN + jj];
+#endif
       double xij = atom.x[j] - xi;
       double yij = atom.y[j] - yi;
       double zij = atom.z[j] - zi;
@@ -600,7 +604,9 @@ int main(int argc, char** argv)
   ofile << std::fixed << std::setprecision(16);
 
   for (int step = 0; step < numSteps; ++step) {
+#ifndef NO_NEIGHBOR
     findNeighbor(atom);
+#endif
     integrate(true, timeStep, atom);  // step 1 in the book
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
