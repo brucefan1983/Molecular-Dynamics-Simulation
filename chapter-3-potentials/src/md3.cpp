@@ -484,13 +484,10 @@ void find_b_and_bp(Atom& atom)
   }
 }
 
-void find_force_tersoff(Atom& atom, double prop[7])
+void find_force_tersoff(Atom& atom)
 {
-  for (int n = 0; n < 7; ++n) {
-    prop[n] = 0.0;
-  }
   for (int n = 0; n < atom.number; ++n) {
-    atom.fx[n] = atom.fy[n] = atom.fz[n] = 0.0;
+    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
   }
 
   for (int n1 = 0; n1 < atom.number; ++n1) {
@@ -498,7 +495,7 @@ void find_force_tersoff(Atom& atom, double prop[7])
       int n2 = atom.NL[n1 * atom.MN + i1];
       if (n2 < n1) {
         continue;
-      } // Will use Newton's 3rd law!!!
+      }
       double x12, y12, z12;
       x12 = atom.x[n2] - atom.x[n1];
       y12 = atom.y[n2] - atom.y[n1];
@@ -523,7 +520,6 @@ void find_force_tersoff(Atom& atom, double prop[7])
       double p12 = 0.0;                // U_ij
       double p21 = 0.0;                // U_ji
 
-      // accumulate_force_12
       b12 = atom.b[n1 * atom.MN + i1];
       double factor1 = -b12 * fa12 + fr12;
       double factor2 = -b12 * fap12 + frp12;
@@ -533,7 +529,6 @@ void find_force_tersoff(Atom& atom, double prop[7])
       f12[2] += z12 * factor3 * 0.5;
       p12 += factor1 * fc12;
 
-      // accumulate_force_21
       int offset = 0;
       for (int k = 0; k < atom.NN[n2]; ++k) {
         if (atom.NL[n2 * atom.MN + k] == n1) {
@@ -550,7 +545,6 @@ void find_force_tersoff(Atom& atom, double prop[7])
       f21[2] += -z12 * factor3 * 0.5;
       p21 += factor1 * fc12;
 
-      // accumulate_force_123
       bp12 = atom.bp[n1 * atom.MN + i1];
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
         int n3 = atom.NL[n1 * atom.MN + i2];
@@ -583,7 +577,6 @@ void find_force_tersoff(Atom& atom, double prop[7])
         f12[2] += (z12 * factor123b + factor123a * cos_z) * 0.5;
       }
 
-      // accumulate_force_213
       bp12 = atom.bp[n2 * atom.MN + offset];
       for (int i2 = 0; i2 < atom.NN[n2]; ++i2) {
         int n3 = atom.NL[n2 * atom.MN + i2];
@@ -616,89 +609,24 @@ void find_force_tersoff(Atom& atom, double prop[7])
         f21[2] += (-z12 * factor213b + factor213a * cos_z) * 0.5;
       }
 
-      // accumulate force: see Eq. (37) in [PRB 92, 094301 (2015)]
       double fx12 = f12[0] - f21[0];
       double fy12 = f12[1] - f21[1];
       double fz12 = f12[2] - f21[2];
+      atom.pe[n1] += (p12 + p21) * 0.5;
       atom.fx[n1] += fx12;
       atom.fy[n1] += fy12;
       atom.fz[n1] += fz12;
-      atom.fx[n2] -= fx12; // Newton's 3rd law used here
+      atom.fx[n2] -= fx12;
       atom.fy[n2] -= fy12;
       atom.fz[n2] -= fz12;
-
-      // accumulate potential energy:
-      prop[0] += (p12 + p21) * 0.5;
-
-      // accumulate virial; see Eq. (39) in [PRB 92, 094301 (2015)]
-      prop[1] -= fx12 * x12;
-      prop[2] -= fy12 * y12;
-      prop[3] -= fz12 * z12;
-
-      // accumulate heat current; see Eq. (43) in [PRB 92, 094301 (2015)]
-      double f12_dot_v2 =
-        f12[0] * atom.vx[n2] + f12[1] * atom.vy[n2] + f12[2] * atom.vz[n2];
-      double f21_dot_v1 =
-        f21[0] * atom.vx[n1] + f21[1] * atom.vy[n1] + f21[2] * atom.vz[n1];
-      prop[4] -= (f12_dot_v2 - f21_dot_v1) * x12;
-      prop[5] -= (f12_dot_v2 - f21_dot_v1) * y12;
-      prop[6] -= (f12_dot_v2 - f21_dot_v1) * z12;
     }
   }
-}
-
-void findForce(Atom& atom, double prop[7])
-{
-  find_b_and_bp(atom);
-  find_force_tersoff(atom, prop);
 }
 
 void findForce(Atom& atom)
 {
-  const double epsilon = 1.032e-2;
-  const double sigma = 3.405;
-  const double cutoff = 9.0;
-  const double cutoffSquare = cutoff * cutoff;
-  const double sigma3 = sigma * sigma * sigma;
-  const double sigma6 = sigma3 * sigma3;
-  const double sigma12 = sigma6 * sigma6;
-  const double e24s6 = 24.0 * epsilon * sigma6;
-  const double e48s12 = 48.0 * epsilon * sigma12;
-  const double e4s6 = 4.0 * epsilon * sigma6;
-  const double e4s12 = 4.0 * epsilon * sigma12;
-  for (int n = 0; n < atom.number; ++n)
-    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
-
-  for (int i = 0; i < atom.number; ++i) {
-    const double xi = atom.x[i];
-    const double yi = atom.y[i];
-    const double zi = atom.z[i];
-    for (int jj = 0; jj < atom.NN[i]; ++jj) {
-      const int j = atom.NL[i * atom.MN + jj];
-      double xij = atom.x[j] - xi;
-      double yij = atom.y[j] - yi;
-      double zij = atom.z[j] - zi;
-      applyMic(atom.box, xij, yij, zij);
-      const double r2 = xij * xij + yij * yij + zij * zij;
-      if (r2 > cutoffSquare)
-        continue;
-
-      const double r2inv = 1.0 / r2;
-      const double r4inv = r2inv * r2inv;
-      const double r6inv = r2inv * r4inv;
-      const double r8inv = r4inv * r4inv;
-      const double r12inv = r4inv * r8inv;
-      const double r14inv = r6inv * r8inv;
-      const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
-      atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
-      atom.fx[i] += f_ij * xij;
-      atom.fx[j] -= f_ij * xij;
-      atom.fy[i] += f_ij * yij;
-      atom.fy[j] -= f_ij * yij;
-      atom.fz[i] += f_ij * zij;
-      atom.fz[j] -= f_ij * zij;
-    }
-  }
+  find_b_and_bp(atom);
+  find_force_tersoff(atom);
 }
 
 void integrate(const bool isStepOne, const double timeStep, Atom& atom)
