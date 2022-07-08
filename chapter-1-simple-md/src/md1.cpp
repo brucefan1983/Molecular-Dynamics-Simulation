@@ -15,7 +15,6 @@ Inputs:
 #include <iomanip>  // std::setprecision
 #include <iostream> // input/output
 #include <iterator>
-#include <numeric> // std::accumulate
 #include <sstream> // std::istringstream
 #include <string>  // string
 #include <vector>  // vector
@@ -27,7 +26,8 @@ const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
 struct Atom {
   int number;
   double box[6];
-  std::vector<double> mass, x, y, z, vx, vy, vz, fx, fy, fz, pe;
+  double pe;
+  std::vector<double> mass, x, y, z, vx, vy, vz, fx, fy, fz;
 };
 
 double findKineticEnergy(const Atom& atom)
@@ -108,8 +108,10 @@ void findForce(Atom& atom)
   const double e48s12 = 48.0 * epsilon * sigma12;
   const double e4s6 = 4.0 * epsilon * sigma6;
   const double e4s12 = 4.0 * epsilon * sigma12;
-  for (int n = 0; n < atom.number; ++n)
-    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
+  atom.pe = 0.0;
+  for (int n = 0; n < atom.number; ++n) {
+    atom.fx[n] = atom.fy[n] = atom.fz[n] = 0.0;
+  }
 
   for (int i = 0; i < atom.number - 1; ++i) {
     for (int j = i + 1; j < atom.number; ++j) {
@@ -128,7 +130,7 @@ void findForce(Atom& atom)
       const double r12inv = r4inv * r8inv;
       const double r14inv = r6inv * r8inv;
       const double f_ij = e24s6 * r8inv - e48s12 * r14inv;
-      atom.pe[i] += e4s12 * r12inv - e4s6 * r6inv;
+      atom.pe += e4s12 * r12inv - e4s6 * r6inv;
       atom.fx[i] += f_ij * xij;
       atom.fx[j] -= f_ij * xij;
       atom.fy[i] += f_ij * yij;
@@ -264,7 +266,6 @@ void readXyz(Atom& atom)
   atom.fx.resize(atom.number, 0.0);
   atom.fy.resize(atom.number, 0.0);
   atom.fz.resize(atom.number, 0.0);
-  atom.pe.resize(atom.number, 0.0);
 
   // line 2
   tokens = getTokens(input);
@@ -320,9 +321,7 @@ int main(int argc, char** argv)
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
     if (step % Ns == 0) {
-      ofile << findKineticEnergy(atom) << " "
-            << std::accumulate(atom.pe.begin(), atom.pe.end(), 0.0)
-            << std::endl;
+      ofile << findKineticEnergy(atom) << " " << atom.pe << std::endl;
     }
   }
   ofile.close();
