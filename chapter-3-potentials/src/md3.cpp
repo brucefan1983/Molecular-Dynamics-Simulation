@@ -28,7 +28,7 @@ struct Atom {
   int numUpdates = 0;
   int neighbor_flag = 2;
   const int MN = 1000;
-  double cutoffNeighbor = 10.0;
+  double cutoffNeighbor = 3.1;
   double box[18];
   double pe;
   std::vector<int> NN, NL;
