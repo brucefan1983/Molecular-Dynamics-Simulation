@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ md2.cpp -O3 -o md2
+    g++ md3.cpp -O3 -o md3
 Run:
-    path/to/md2.out # Linux
-    path\to\md2.exe # Windows
+    path/to/md3.out # Linux
+    path\to\md3.exe # Windows
 Inputs:
     xyz.in and run.in
 ------------------------------------------------------------------------------*/
