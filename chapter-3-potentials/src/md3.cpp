@@ -15,7 +15,6 @@ Inputs:
 #include <iomanip>  // std::setprecision
 #include <iostream> // input/output
 #include <iterator>
-#include <numeric> // std::accumulate
 #include <sstream> // std::istringstream
 #include <string>  // string
 #include <vector>  // vector
@@ -31,9 +30,9 @@ struct Atom {
   const int MN = 1000;
   double cutoffNeighbor = 10.0;
   double box[18];
+  double pe;
   std::vector<int> NN, NL;
-  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, pe, b,
-    bp;
+  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz, b, bp;
 };
 
 double findKineticEnergy(const Atom& atom)
@@ -486,8 +485,9 @@ void find_b_and_bp(Atom& atom)
 
 void find_force_tersoff(Atom& atom)
 {
+  atom.pe = 0.0;
   for (int n = 0; n < atom.number; ++n) {
-    atom.fx[n] = atom.fy[n] = atom.fz[n] = atom.pe[n] = 0.0;
+    atom.fx[n] = atom.fy[n] = atom.fz[n] = 0.0;
   }
 
   for (int n1 = 0; n1 < atom.number; ++n1) {
@@ -612,7 +612,7 @@ void find_force_tersoff(Atom& atom)
       double fx12 = f12[0] - f21[0];
       double fy12 = f12[1] - f21[1];
       double fz12 = f12[2] - f21[2];
-      atom.pe[n1] += (p12 + p21) * 0.5;
+      atom.pe += (p12 + p21) * 0.5;
       atom.fx[n1] += fx12;
       atom.fy[n1] += fy12;
       atom.fz[n1] += fz12;
@@ -766,7 +766,6 @@ void readXyz(Atom& atom)
   atom.fx.resize(atom.number, 0.0);
   atom.fy.resize(atom.number, 0.0);
   atom.fz.resize(atom.number, 0.0);
-  atom.pe.resize(atom.number, 0.0);
 
   // line 2
   tokens = getTokens(input);
@@ -839,9 +838,7 @@ int main(int argc, char** argv)
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
     if (step % Ns == 0) {
-      ofile << findKineticEnergy(atom) << " "
-            << std::accumulate(atom.pe.begin(), atom.pe.end(), 0.0)
-            << std::endl;
+      ofile << findKineticEnergy(atom) << " " << atom.pe << std::endl;
     }
   }
   ofile.close();
