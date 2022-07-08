@@ -828,7 +828,7 @@ int main(int argc, char** argv)
   initializeVelocity(temperature, atom);
 
   const clock_t tStart = clock();
-  std::ofstream ofile("energy.txt");
+  std::ofstream ofile("thermo.out");
   ofile << std::fixed << std::setprecision(16);
 
   for (int step = 0; step < numSteps; ++step) {
@@ -838,7 +838,9 @@ int main(int argc, char** argv)
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
     if (step % Ns == 0) {
-      ofile << findKineticEnergy(atom) << " " << atom.pe << std::endl;
+      const double kineticEnergy = findKineticEnergy(atom);
+      const double T = kineticEnergy / (1.5 * K_B * atom.number);
+      ofile << T << " " << kineticEnergy << " " << atom.pe << std::endl;
     }
   }
   ofile.close();
