@@ -240,7 +240,7 @@ $$
 
 #### 主函数
 
-我们从该文件的主函数 \verb"main()" 看起。下面是主函数的全部代码：
+我们从该文件的主函数 `main()` 看起。下面是主函数的全部代码：
 
 ```C++
 int main(int argc, char** argv)
@@ -281,39 +281,34 @@ int main(int argc, char** argv)
 }
 ```
 
-首先，程序从命令行读入四个参数，分别是面心立方 固态氩单胞在每个方向的个数（\verb"numCells"）、整个分子动力学模拟的步数（\verb"numSteps"）、体系的目标温度（\verb"temperature"）和数值积分的时间步长（\verb"timeStep"）。在读入时间步长后，立刻将其单位从输入的 fs 转换至程序的自然单位。这种单位转换只需要在处理输入和输出时实施，在程序的其他地方任何物理量的单位都将是我们定义的自然单位。
+首先，程序从命令行读入四个参数，分别是面心立方 固态氩单胞在每个方向的个数（`numCells`）、整个分子动力学模拟的步数（`numSteps`）、体系的目标温度（`temperature`）和数值积分的时间步长（`timeStep`）。在读入时间步长后，立刻将其单位从输入的 fs 转换至程序的自然单位。这种单位转换只需要在处理输入和输出时实施，在程序的其他地方任何物理量的单位都将是我们定义的自然单位。
 
-接着，程序定义了一个结构体 \verb"Atom" 的变量 \verb"atom"。该结构体类型中定义了程序中用到的大部分数据。我们这里用了 C++ 标准模板库中的 \verb"std::vector" 来表示一些数组。
+接着，程序定义了一个结构体 `Atom` 的变量 `atom`。该结构体类型中定义了程序中用到的大部分数据。我们这里用了 C++ 标准模板库中的 `std::vector` 来表示一些数组。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 struct Atom {
   int number; // 总的粒子数（原子数）
   double box[6]; // 前三个数是三个盒子长度；后三个数是盒子长度的一半
   // 质量、坐标、速度、力、势能：
   std::vector<double> mass, x, y, z, vx, vy, vz, fx, fy, fz, pe;
 };
-\end{lstlisting}
-\end{small}
+```
 
 
-在定义 \verb"atom" 后，我们调用函数 \verb"allocateMemory()" 对一些数组分配内存，然后调用函数 \verb"initializePosition()" 初始化模拟体系的原子坐标，并调用函数 \verb"initializeVelocity()" 初始化体系的速度。
+在定义 `atom` 后，我们调用函数 `allocateMemory()` 对一些数组分配内存，然后调用函数 `initializePosition()` 初始化模拟体系的原子坐标，并调用函数 `initializeVelocity()` 初始化体系的速度。
 
-接下来，做一个次数为 \verb"numSteps" 的循环进行时间演化。在该循环中，我们实现前面讲述的速度-Verlet积分算法，一共三个步骤：
-\begin{itemize}
-    \item 语句 \verb"integrate(true, timeStep, atom);" 实现速度的部分更新和坐标的完全更新。
-    \item 语句 \verb"findForce(atom);" 实现力的更新。
-    \item 语句 \verb"integrate(false, timeStep, atom);" 实现剩下的速度更新
-\end{itemize}
+接下来，做一个次数为 `numSteps` 的循环进行时间演化。在该循环中，我们实现前面讲述的速度-Verlet积分算法，一共三个步骤：
+- 语句 \verb"integrate(true, timeStep, atom);" 实现速度的部分更新和坐标的完全更新。
+- 语句 \verb"findForce(atom);" 实现力的更新。
+- 语句 \verb"integrate(false, timeStep, atom);" 实现剩下的速度更新
 
-在循环过程中，每 \verb"Ns=100" 步计算一次体系的总动能和总势能并输出到文件 \verb"energy.txt"。程序将对演化过程计时，在结束程序之前报道演化过程所花的总时间。
+在循环过程中，每 `Ns=100` 步计算一次体系的总动能和总势能并输出到文件 `energy.txt`。程序将对演化过程计时，在结束程序之前报道演化过程所花的总时间。
 
-\subsubsection{内存分配}
+#### 内存分配
 
-本书代码基本上都用 C++ 的 \verb"std::vector" 容器来处理动态的内存分配与释放，而不是用 \verb"malloc" 和 \verb"free" 或者 \verb"new" 和 \verb"delete" 来处理。在函数 \verb"allocateMemory()" 中，我们用 \verb"std::vector" 的成员函数 \verb"resize()" 分配内存，并同时将每个数组元素初始化。除了原子质量初始化为 40 amu 之外，其它物理量都初始化为零。
+本书代码基本上都用 C++ 的 `std::vector` 容器来处理动态的内存分配与释放，而不是用 `malloc` 和 `free` 或者 `new` 和 `delete` 来处理。在函数 `allocateMemory()` 中，我们用 `std::vector` 的成员函数 `resize()` 分配内存，并同时将每个数组元素初始化。除了原子质量初始化为 40 amu 之外，其它物理量都初始化为零。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void allocateMemory(const int numCells, Atom& atom)
 {
   const int numAtomsPerCell = 4;
@@ -330,15 +325,13 @@ void allocateMemory(const int numCells, Atom& atom)
   atom.fz.resize(atom.number, 0.0);
   atom.pe.resize(atom.number, 0.0);
 }
-\end{lstlisting}
-\end{small}
+```
 
-\subsubsection{输入处理}
+#### 输入处理
 
-函数 \verb"initializePosition()" 根据每个方向扩包的次数 \verb"numCells" 对体系的坐标进行初始化。同时，与盒子大小有关的数据 \verb"box" 也在该函数中得到初始化。
+函数 `initializePosition()` 根据每个方向扩包的次数 `numCells` 对体系的坐标进行初始化。同时，与盒子大小有关的数据 `box` 也在该函数中得到初始化。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void initializePosition(const int numCells, Atom& atom)
 {
   const int numAtomsPerCell = 4;
@@ -364,15 +357,13 @@ void initializePosition(const int numCells, Atom& atom)
     }
   }
 }
-\end{lstlisting}
-\end{small}
+```
 
-\subsubsection{速度初始化}
+#### 速度初始化
 
-下面是速度初始化的函数 \verb"initializeVelocity()"。在该函数中，首先利用随机数获得分布在 $-1$ 到 $1$ 之间的随机速度分量，同时计算体系的质心速度 \verb"centerOfMassVelocity"。注意，函数 \verb"rand()" 返回一个从零到 \verb"RAND_MAX" 之间的整数。 接着，对速度进行修正，使得体系的整体动量为零。最后，调用 \verb"scaleVelocity()" 函数对速度进行标度变换，使得体系的温度达到目标值 \verb"T0"。
+下面是速度初始化的函数 `initializeVelocity()`。在该函数中，首先利用随机数获得分布在 -1 到 1 之间的随机速度分量，同时计算体系的质心速度 `centerOfMassVelocity`。注意，函数 `rand()` 返回一个从零到 `RAND_MAX` 之间的整数。 接着，对速度进行修正，使得体系的整体动量为零。最后，调用 `scaleVelocity()` 函数对速度进行标度变换，使得体系的温度达到目标值 `T0`。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void initializeVelocity(const double T0, Atom& atom)
 {
 #ifndef DEBUG
@@ -399,13 +390,11 @@ void initializeVelocity(const double T0, Atom& atom)
   }
   scaleVelocity(T0, atom);
 }
-\end{lstlisting}
-\end{small}
+```
 
-下面是函数 \verb"scaleVelocity()" 的定义。在该函数中，首先调用函数 \verb"findKineticEnergy()" 根据当前的速度计算当前的动能，进而得到当前的温度 \verb"temperature"，然后根据公式计算速度标度变换的因子 \verb"scaleFactor"，对速度进行标度变换。
+下面是函数 `scaleVelocity()` 的定义。在该函数中，首先调用函数 `findKineticEnergy()` 根据当前的速度计算当前的动能，进而得到当前的温度 `temperature`，然后根据公式计算速度标度变换的因子 `scaleFactor`，对速度进行标度变换。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void scaleVelocity(const double T0, Atom& atom)
 {
   const double temperature =
@@ -417,13 +406,11 @@ void scaleVelocity(const double T0, Atom& atom)
     atom.vz[n] *= scaleFactor;
   }
 }
-\end{lstlisting}
-\end{small}
+```
 
-下面是通过速度计算动能的函数 \verb"findKineticEnergy()"。注意，该函数计算的结果将通过一个值返回。
+下面是通过速度计算动能的函数 `findKineticEnergy()`。注意，该函数计算的结果将通过一个值返回。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 double findKineticEnergy(const Atom& atom)
 {
   double kineticEnergy = 0.0;
@@ -434,15 +421,13 @@ double findKineticEnergy(const Atom& atom)
   }
   return kineticEnergy * 0.5;
 }
-\end{lstlisting}
-\end{small}
+```
 
-\subsubsection{运动方程的数值积分}
+#### 运动方程的数值积分
 
-我们用函数 \verb"integrate()" 来实现速度-Verlet 积分算法的两个步骤。该函数的第一个输入参数 \verb"isStepOne" 是一个布尔型变量。当该变量为真时，就实行速度-Verlet 积分算法的第一个步骤，即部分地将速度更新，并完全地将坐标更新。当该变量为假时，就实行速度-Verlet 积分算法的第二个步骤，只更新速度，不再更新坐标。
+我们用函数 `integrate()` 来实现速度-Verlet 积分算法的两个步骤。该函数的第一个输入参数 `isStepOne` 是一个布尔型变量。当该变量为真时，就实行速度-Verlet 积分算法的第一个步骤，即部分地将速度更新，并完全地将坐标更新。当该变量为假时，就实行速度-Verlet 积分算法的第二个步骤，只更新速度，不再更新坐标。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void integrate(const bool isStepOne, const double timeStep, Atom& atom)
 {
   const double timeStepHalf = timeStep * 0.5;
@@ -461,21 +446,19 @@ void integrate(const bool isStepOne, const double timeStep, Atom& atom)
     }
   }
 }
-\end{lstlisting}
-\end{small}
+```
 
-\subsubsection{求势能与力}
+#### 求势能与力
 
-函数 \verb"findForce()" 负责求体系中各个粒子的势能和受到的力。在该函数的开头，我们定义了若干常量。这种常量的计算将在编译期间就完成。在循环之前尽可能多地计算常量可以省去很多不必要的计算。我们用了固态氩的 LJ 参数 $\epsilon = 0.01032e$ eV，$\sigma = 3.405$ A。并将截断距离取为 $R_c = 10$ A。
+函数 `findForce()` 负责求体系中各个粒子的势能和受到的力。在该函数的开头，我们定义了若干常量。这种常量的计算将在编译期间就完成。在循环之前尽可能多地计算常量可以省去很多不必要的计算。我们用了固态氩的 LJ 参数 $\epsilon = 0.01032e$ eV， $\sigma = 3.405$ A。并将截断距离取为 $R_c = 10$ A。
 
 接着，我们将每个原子的势能和受力初始化为零，因为在后面的循环中我们将对势能和力进行累加。
 
-接下来，是一个两重循环，因为们要计算每一对粒子之间的相互作用力。不过这里的两重循环有些特殊，排除了 \verb"i >= j" 的可能性，这就是利用牛顿第三定律节约一半的计算量。
+接下来，是一个两重循环，因为们要计算每一对粒子之间的相互作用力。不过这里的两重循环有些特殊，排除了 `i >= j` 的可能性，这就是利用牛顿第三定律节约一半的计算量。
 
-在循环体中，首先计算相对位置 $\vec{r}_{ij}$ 并对其实施最小镜像约定。紧接着计算两个粒子距离的平方并忽略截断距离之外的粒子对。最后，通过非常节约的方式计算两个粒子之间的势能和相互作用力，并存储在对应的数组中。这部分的计算要避免使用耗时的 \verb"sqrt()" 函数 和 \verb"pow()" 函数。在 LJ 势的编程中，虽然从公式来看好像需要使用，但是仔细思考后会发现这些都是可以避免的。还有一点值得注意，那就是除法运算大概是乘法运算的几倍耗时，所以在编写程序时，要将除法运算的个数最小化。
+在循环体中，首先计算相对位置 $\vec{r}_{ij}$  并对其实施最小镜像约定。紧接着计算两个粒子距离的平方并忽略截断距离之外的粒子对。最后，通过非常节约的方式计算两个粒子之间的势能和相互作用力，并存储在对应的数组中。这部分的计算要避免使用耗时的 `sqrt()` 函数 和 `pow()` 函数。在 LJ 势的编程中，虽然从公式来看好像需要使用，但是仔细思考后会发现这些都是可以避免的。还有一点值得注意，那就是除法运算大概是乘法运算的几倍耗时，所以在编写程序时，要将除法运算的个数最小化。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void findForce(Atom& atom)
 {
   const double epsilon = 1.032e-2;
@@ -519,13 +502,11 @@ void findForce(Atom& atom)
     }
   }
 }
-\end{lstlisting}
-\end{small}
+```
 
 最小镜像约定的实施由如下两个函数实现。注意，这里的函数参数用了 C++ 里面的引用（Reference）。
 
-\begin{small}
-\begin{lstlisting}[language=C++]
+```C++
 void applyMicOne(const double length, const double halfLength, double& x12)
 {
   if (x12 < -halfLength)
@@ -540,121 +521,105 @@ void applyMic(const double box[6], double& x12, double& y12, double& z12)
   applyMicOne(box[1], box[4], y12);
   applyMicOne(box[2], box[5], z12);
 }
-\end{lstlisting}
-\end{small}
+```
 
-\subsubsection{程序的编译与运行}
+#### 程序的编译与运行
 
 本书所开发的 C++ 程序都可以在 Linux 和 Windows 操作系统使用。我们推荐使用 GCC 工具。在命令行可以用如下方式编译本章的程序：
-\begin{verbatim}
+```shell
     $ g++ -O3 ljmd.cpp -o ljmd
-\end{verbatim}
-其中，\verb"-O3" 选项表示优化等级。编译完成后，将生成名为 \verb"ljmd" 的可执行文件（在 Windows 中为 \verb"ljmd.exe")。
+```
+其中，`-O3` 选项表示优化等级。编译完成后，将生成名为 `ljmd` 的可执行文件（在 Windows 中为 `ljmd.exe`)。
 
 然后，就可以在命令行使用该程序：
-\begin{verbatim}
+```shell
     $ ljmd  numCells numSteps temperature timeStep
-\end{verbatim}
+```
 如果使用时忘了给命令行参数，程序会提示正确的用法。
 
 具体地，笔者用如下命令运行程序：
-\begin{verbatim}
+```shell
     $ ljmd 4 20000 60 5
-\end{verbatim}
+```
 也就是说，考虑原子数为 $4^3 \times 4 = 256$ 的固态氩体系，运行 $2\times 10^4$ 步，初始温度为 60 K，积分步长为 5 fs。该模拟在笔者的计算机中运行的时间约为 10 秒钟。
 
-\subsection{能量守恒的测试}
-
+### 能量守恒的测试
 
 程序每隔100步输出系统的总动能 $K(t)$ 和总势能 $U(t)$，它们都是时间 $t$ 的函数。对于大小有限的体系，它们都是随时间 $t$ 涨落的。然而，根据能量守恒定律，系统动能和势能的和，即总能量 $E(t)=K(t)+V(t)$，应该是不随时间变化的。当然，我们的模拟中使用了具有一定误差的数值积分方法，故总能量也会有一定大小的涨落。这个涨落主要与积分的时间步长有关系。一般来说，积分的时间步长越大，总能量的涨落越大。
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\columnwidth]{energy.png}
-\caption{
+![energy](https://user-images.githubusercontent.com/24891193/221440926-806d9975-6cbc-41ee-9722-06e1194f821b.png)
+
    （a) 体系总动能随时间的变化；（b) 体系总势能随时间的变化；（c) 体系总能随时间的变化；（d) 相对总能量随时间的变化。
-}
-\label{fig:1-energy}
-\end{figure}
 
-图 \ref{fig:1-energy}（a-c）给出了系统的总动能、总势能和总能量随时间变化的情况。可以看出动能是正的，势能是负的，涨落相对较大；总能是负的，涨落较小。细心的读者可以注意到，体系的总动能在很短的时间内突然降低了大约一半。这是因为，我们的模拟体系一开始是完美的面心立方晶格，每个原子都处于受力为零的平衡状态，没有振动产生的额外势能。我们用某个温度（在我们的例子中是60 K）初始化了原子的速度，故该体系一开始是有一定的动能的。假设每个原子都会在其平衡位置做简谐振动（这就是所谓的简谐近似，它对很多问题的研究来说是一个很好的出发点），故根据能量均分定理，在达到热力学平衡后体系的动能会基本上等于体系的振动势能。也就是说，随着时间的推移，体系的动能平均值会减半，减少的部分变成了原子的振动势能。从图 \ref{fig:1-energy}（a-b）可以看到，这个过程是很快的。该过程实际上就是一个从非平衡态跑向平衡态的过程。在这个例子中，这个过程只需要 1 ps 的量级。
 
-图 \ref{fig:1-energy}（d）给出了 $(E(t)-\langle E\rangle)/|\langle E\rangle|$，即总能的相对涨落值。因为总能量在模拟的初期也有一个突然的变化，我们在计算总能的相对涨落时去掉了第一组输出的能量值（这相当于去掉了一个远离平衡态的时刻）。总能量相对涨落值在 $10^{-4}$ 量级。对于很小的体系来说，这是一个合理的值。
+上图（a-c）给出了系统的总动能、总势能和总能量随时间变化的情况。可以看出动能是正的，势能是负的，涨落相对较大；总能是负的，涨落较小。细心的读者可以注意到，体系的总动能在很短的时间内突然降低了大约一半。这是因为，我们的模拟体系一开始是完美的面心立方晶格，每个原子都处于受力为零的平衡状态，没有振动产生的额外势能。我们用某个温度（在我们的例子中是 60 K）初始化了原子的速度，故该体系一开始是有一定的动能的。假设每个原子都会在其平衡位置做简谐振动（这就是所谓的简谐近似，它对很多问题的研究来说是一个很好的出发点），故根据能量均分定理，在达到热力学平衡后体系的动能会基本上等于体系的振动势能。也就是说，随着时间的推移，体系的动能平均值会减半，减少的部分变成了原子的振动势能。从图（a-b）可以看到，这个过程是很快的。该过程实际上就是一个从非平衡态跑向平衡态的过程。在这个例子中，这个过程只需要 1 ps 的量级。
 
-\section{习题}
+图 （d）给出了 $(E(t)-\langle E\rangle)/|\langle E\rangle|$，即总能的相对涨落值。因为总能量在模拟的初期也有一个突然的变化，我们在计算总能的相对涨落时去掉了第一组输出的能量值（这相当于去掉了一个远离平衡态的时刻）。总能量相对涨落值在 $10^{-4}$ 量级。对于很小的体系来说，这是一个合理的值。
+
+## 习题
 
 1. 假设一个体系有 $N$ 个粒子，它们的速度是 $\{\vec{v}_i\}_{i=1}^N$，对应的体系温度是 $T$。请验证，当对速度做标度变换
-\begin{equation}
+ $$
     \vec{v}_i \rightarrow \vec{v}_i'= \vec{v}_i\sqrt{\frac{T_0}{T}}.
-\end{equation}
+$$
 之后，体系的温度将变成 $T_0$。提示：从温度的微观定义出发。
 
 
 2. 证明：如果在做速度标度变换
-\begin{equation}
+ $$
 \vec{v}_i \rightarrow \vec{v}_i'= \vec{v}_i\sqrt{\frac{T_0}{T}}.
-\end{equation}
+$$
 之前，系统的总动量已经为零，那么在做这个变换之后，系统的总动量也是零。
 
 
 3. 本书所讨论的力都是保守力。保守力可以表达为势能的负梯度。例如，在具有 $N$ 个粒子的系统中，粒子 $i$ 的受力可以写成如下形式
-\begin{equation}
+ 
+$$
 \vec{F}_i = - \nabla_i U
-\end{equation}
+$$
+
 这里，$U$ 是整个系统的总势能。请由此推导正文中两体势函数体系中力的表达式：
-\begin{equation}
+
+$$
 \vec{F}_{i} = \sum_{j \neq i}^N \frac{\partial U_{ij}(r_{ij})}{\partial r_{ij}}
 \frac{\vec{r}_{ij} }{r_{ij}}
-\end{equation}
+$$
 
 4. 修改程序，使得程序除了输出动能和势能，还输出温度。验证一个结果，即体系的温度会从最开始温度快速地降低约一倍。
 
 5. 对能量守恒的检验只是判断一个分子动力学模拟程序是否正确的方法之一。一个分子动力学模拟程序通过了能量守恒的检验，不代表就没有错误了。请读者修改本章的程序，每 100 步输出各个粒子的速度，然后检验如下两点：（1）体系的动量受否守恒？（2）粒子的速度是否满足麦克斯韦速度分布规律？
 
-\section{习题解答}
+## 习题解答
 
 1. 
 假设系统中粒子的质量为 $\{m_i\}_{i=1}^N$，则它们的速度为 $\{\vec{v}_i\}_{i=1}^N$ 时，体系具有总动能
-\begin{equation}
+ $$
 E_k = \frac{1}{2} \sum_i  \left( m_i \vec{v}_i^2 \right) = \frac{3}{2} N k_B T
-\end{equation}
+$$
 体系的温度和总动能有如下关系（能量均分定理）：
-\begin{equation}
+ $$
 \frac{3}{2} N k_B T = E_k
-\end{equation}
+$$ 
 于是有
-\begin{equation}
+ $$
 T = \frac{1}{3 N k_B} \sum_i \left( m_i \vec{v}_i^2 \right)
-\end{equation}
+$$
 当速度变为 $\{\vec{v}_i'\}_{i=1}^N$ 之后，体系的温度将变为
-\begin{equation}
+ $$
 T' = \frac{1}{3 N k_B} \sum_i \left(m_i \vec{v}_i'^2 \right) 
 =  \frac{1}{3 N k_B} \sum_i \left( m_i \vec{v}_i^2 \frac{T_0}{T} \right)
 =  \frac{1}{3 N k_B} \sum_i \left( m_i \vec{v}_i^2 \right) \frac{T_0}{T} 
 =  T \frac{T_0}{T} 
 = T_0.
-\end{equation}
+$$
 证毕。
 
 2. 待写。
 
 3. 待写。
 
-4. 笔者得到的结果见图 \ref{fig:1-temperature}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.5\columnwidth]{temperature.png}
-\caption{
-   体系温度随时间的变化。
-}
-\label{fig:1-temperature}
-\end{figure}
+4. 笔者得到的结果见
 
 5. 待写。
 
-\bibliographystyle{apalike}
 
-\bibliography{ref}
-
-\end{document}
