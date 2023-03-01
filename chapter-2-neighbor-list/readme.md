@@ -216,19 +216,19 @@ $$
 
 - 对于粒子 $i$ 和 $j$ 的相对坐标 
 
-  $$
-  \vec{r}__{ij} = (x_{ij}, y_{ij}, z_{ij})
+  $$ 
+  \vec{r}\_{ij} = (x_{ij}, y_{ij}, z_{ij}) 
   $$
   
   首先用盒子逆矩阵 $G$ 将其变换为分数相对坐标 
   
-  $$
-  \vec{s}__{ij} = (\xi_{ij}, \eta_{ij}, \zeta_{ij})
+  $$ 
+  \vec{s}\_{ij} = (\xi_{ij}, \eta_{ij}, \zeta_{ij})
   $$
   
   变换关系为：
   
-  $$
+  $$ 
   \left(
     \begin{array}{c}
     \xi_{ij}  \\
