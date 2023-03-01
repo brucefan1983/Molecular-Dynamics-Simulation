@@ -7,26 +7,36 @@
 ## 经典势函数的一般性质
 
 一个经典多粒子系统的势能可以写为
-\begin{equation}
+
+$$
 U=U\left(\{\vec{r}_i\}_{i=1}^N\right).
-\end{equation}
+$$
+
 该势能应该在欧几里得群的操作下保持不变。据此可以证明系统势能仅仅依赖于两两粒子对之间的距离：
-\begin{equation}
+
+$$
 U=U\left(\{r_{ij}\}_{i<j}\right).
-\end{equation}
+$$
+
 如果可以进一步将体系的势能写成
-\begin{equation}
+
+$$
 \label{equation:U-two-body}
 U= \frac{1}{2}\sum_{i}\sum_{j \neq i} U_{ij} \left(r_{ij} \right),
-\end{equation}
+$$
+
 其中，
-\begin{equation}
+
+$$
 U_{ij} \left(r_{ij} \right) = U_{ji} \left(r_{ji} \right),
-\end{equation}
-那么我们称该系统的相互作用势能为两体势。其中，$U_{ij} \left(r_{ij} \right)$ 代表粒子 $i$和 $j$ 之间的相互作用势能，仅仅依赖于两粒子的相对距离$r_{ij}$。两体势系统的势能也可以写成如下等价的形式：
-\begin{equation}
+$$
+
+那么我们称该系统的相互作用势能为两体势。其中， $U_{ij} \left(r_{ij} \right)$ 代表粒子 $i$和 $j$ 之间的相互作用势能，仅仅依赖于两粒子的相对距离 $r_{ij}$。前两章讨论的 LJ 势就是一个典型的两体势。两体势系统的势能也可以写成如下等价的形式：
+
+$$
 U= \sum_{i}\sum_{j > i} U_{ij} \left(r_{ij} \right).
-\end{equation}
+$$
+
 如果一个体系的势能无法写成以上形式，那么我们称该势能为多体势。
 
 原则上，一个材料体系中原子间的相互作用势是可以由量子力学计算出来的。相对而言，多体势比两体势更加接近量子力学计算的结果，故在各种材料体系中应用得较为成功。
