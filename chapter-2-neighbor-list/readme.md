@@ -41,9 +41,11 @@ $$
 $$
    \vec{a} = L_x \vec{e}_x + 0 \vec{e}_y + 0 \vec{e}_z;
 $$
+
 $$
    \vec{b} = 0 \vec{e}_x + L_y \vec{e}_y + 0 \vec{e}_z;
 $$
+
 $$
    \vec{c} = 0 \vec{e}_x + 0 \vec{e}_y + L_z \vec{e}_z.
 $$
