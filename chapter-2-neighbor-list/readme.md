@@ -228,23 +228,23 @@ $$
   
   变换关系为：
   
-  $$ 
-  \left(
+  $$
+\left(
     \begin{array}{c}
     \xi_{ij}  \\
     \eta_{ij}  \\
     \zeta_{ij} 
     \end{array}
     \right)=
-    G 
+    G
     \left(
     \begin{array}{c}
     x_{ij}  \\
     y_{ij}  \\
-    z_{ij} 
+    \z_{ij}
     \end{array}
-    \right)
-  $$
+    \right).
+$$
   
 - 对分数相对坐标实施如下最小镜像约定操作。例如，当 $\xi_{ij}<-1/2$ 时，将其换为 $\xi_{ij}+1$；当 $\xi_{ij}>1/2$ 时，将其换为 $\xi_{ij}-1$。
 - 将实施了最小镜像约定操作的分数相对坐标变换到普通相对坐标：
