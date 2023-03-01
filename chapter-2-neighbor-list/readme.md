@@ -30,11 +30,12 @@ $$
 $$
    \vec{b} = b_x \vec{e}_x + b_y \vec{e}_y + b_z \vec{e}_z;
 $$
+
 $$
    \vec{c} = c_x \vec{e}_x + c_y \vec{e}_y + c_z \vec{e}_z.
 $$
 
-这样具有9个自由度的盒子，叫做三斜盒子（triclinic box）。
+这样的具有9个自由度的盒子，叫做三斜盒子（triclinic box）。
 对于正交盒子，我们有
 
 $$
