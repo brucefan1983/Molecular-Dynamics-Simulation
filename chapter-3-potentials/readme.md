@@ -1,67 +1,10 @@
-\documentclass{ctexart}
 
-\setCJKmainfont{BabelStone Han}
+# 《分子动力学模拟入门》第三章：多体势函数
 
-\setlength{\oddsidemargin}{6mm}
-\setlength{\evensidemargin}{6mm}
-\setlength{\topmargin}{12mm}
-\textwidth 145mm
-\textheight 195mm
-\parindent=2\ccwd
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{bm}
-\usepackage{dcolumn}
-\usepackage{glossaries}
-\usepackage{graphicx}
-\usepackage{multirow}
-\usepackage{fancyvrb}
-\usepackage[linesnumbered,ruled]{algorithm2e}
-\usepackage{siunitx}
-
-\usepackage[usenames,dvipsnames,svgnames]{xcolor}
-\usepackage{hyperref}
-\hypersetup{
-    pdfnewwindow=true,      % links in new window
-    colorlinks=true,        % false: boxed links; true: colored links
-    linkcolor=Blue,         % color of internal links
-    citecolor=Blue,         % color of links to bibliography
-    filecolor=Blue,         % color of file links
-    urlcolor=Blue           % color of external links
-}
-
-\usepackage{listings}	
-\lstset{
-    basicstyle=\ttfamily,
-	language={[ISO]C++},			
-	commentstyle=\color{orange},    
-	keywordstyle=\color{purple},		
-	stringstyle=\color{blue},		
-	frame=single,			
-	xleftmargin=1.5em,	
-	xrightmargin=.5em,		
-    aboveskip=2em,
-    belowskip=2em,
-	numbers=left,		
-	numberstyle=\small,		
-	showstringspaces=false, 
-	breaklines=true,	
-	columns=flexible,	
-	tabsize=4				
-}
-
-\begin{document}
-\tableofcontents
-
-\begin{abstract}
-《分子动力学模拟入门》第三章：多体势函数\\
-
-本章介绍分子动力学模拟中势函数的一般性知识，重点讨论两个典型的多体势函数，包括 Embedded-atom-method (EAM) 势 和 Tersoff 势。其中，EAM 势广泛应用于金属材料，而 Tersoff 势广泛应用于半导体和绝缘体材料。
-\end{abstract}
+本章介绍分子动力学模拟中势函数的一般性知识，重点讨论几个典型的多体势函数，包括 Embedded-atom-method (EAM) 势、Tersoff 势以及一个机器学习势。其中，EAM 势广泛应用于金属材料，而 Tersoff 势广泛应用于半导体和绝缘体材料。
 
 
-\section{经验势函数的一般性质}
+## 经典势函数的一般性质
 
 一个经典多粒子系统的势能可以写为
 \begin{equation}
@@ -88,7 +31,7 @@ U= \sum_{i}\sum_{j > i} U_{ij} \left(r_{ij} \right).
 
 原则上，一个材料体系中原子间的相互作用势是可以由量子力学计算出来的。相对而言，多体势比两体势更加接近量子力学计算的结果，故在各种材料体系中应用得较为成功。
 
-\section{多体势中力的表达式}
+### 多体势中力的表达式
 
 为了推导多体势的一系列表达式，我们假设一个多体势系统的总能量可以写为各个粒子的能量之和
 \begin{equation}
@@ -147,7 +90,9 @@ U_i = U_i\left(\{\vec{r}_{ij}\}_j\right).
 \end{equation}
 证毕。
 
-\section{EAM 势}
+## 两个典型的经验势
+
+### EAM 势
 
 EAM 势由若干人同时提出 \cite{daw1984prb,finnis1984pma}。
 
@@ -169,7 +114,7 @@ U_i = \frac{1}{2} \sum_{j\neq i} \phi(r_{ij}) + F (\rho_i).
 F'(\rho_i)  f'(r_{ij}) \frac{\partial r_{ij}} {\partial \vec{r}_{ij}}.
 \end{equation}
 
-\section{Tersoff 势}
+### Tersoff 势
 
 Tersoff 势有几个稍有不同的变体。我这里介绍 Tersoff 在 1989 年发表的一篇文章中使用的形式 \cite{tersoff1989prb}。为简单起见，我们考虑单种元素的势函数。
 
@@ -210,7 +155,9 @@ g_{ijk} = 1 + \frac{c^2}{d^2} - \frac{c^2}{d^2+(h-\cos\theta_{ijk})^2}.
 
 未完待续。
 
-\section{习题}
+## NEP 机器学习势
+
+## 习题
 
 1. 证明公式 \ref{equation:eam_partial_force}.
 
