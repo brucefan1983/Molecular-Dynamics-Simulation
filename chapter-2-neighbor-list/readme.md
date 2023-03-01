@@ -567,7 +567,6 @@ void findNeighborON1(Atom& atom)
 ### 程序速度测试
   
 ![energy](examples/neighbor.png)
-图 1： 不同近邻列表方案下的程序速度对比。
 
 用本章的程序 `md2.cpp` 进行测试，得到如图 1 的结果。
 此图对比了三种近邻列表方案下程序跑 1000 步所花的时间和体系原子数的关系。
