@@ -34,61 +34,80 @@ $$
 ### 多体势中力的表达式
 
 为了推导多体势的一系列表达式，我们假设一个多体势系统的总能量可以写为各个粒子的能量之和
-\begin{equation}
+
+$$
 U = \sum_i U_i.
-\end{equation}
+$$
+
 其中，$U_i$ 称为粒子 $i$ 的能量，它依赖于各个从 $i$ 指向其它粒子的位置矢量差 $\{\vec{r}_{ij}\}_j$：
-\begin{equation}
+
+$$
 U_i = U_i\left(\{\vec{r}_{ij}\}_j\right).
-\end{equation}
+$$
+
 该表达式显然满足空间平移不变性，但我们还没有对其施加空间转动不变性。后面我们会看到，EAM 势和 Tersoff 势都满足这个假设，但它们都有额外的限制。以后我们还会看到，最近发展迅猛的机器学习势也满足这个假设。
 
 从以上假设出发，可以推导出如下力的表达式：
-\begin{equation}
+
+$$
 \vec{F}_{i} = \sum_{j \neq i} \vec{F}_{ij};
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \vec{F}_{ij} = - \vec{F}_{ji} =
 \frac{\partial U_{i}}{\partial \vec{r}_{ij}} -
 \frac{\partial U_{j}}{\partial \vec{r}_{ji}} =
 \frac{\partial \left(U_{i} + U_{j}\right) }{\partial \vec{r}_{ij}}.
-\end{equation}
+$$
+
 这里，
-\begin{equation}
+
+
+$$
 \partial U_{i}/\partial \vec{r}_{ij} =
 \partial U_{i}/\partial x_{ij} \vec{e}_x +
 \partial U_{i}/\partial y_{ij} \vec{e}_y +
 \partial U_{i}/\partial z_{ij} \vec{e}_z
-\end{equation}
+$$
+
 以上结果由笔者于 2015 年推导出来 \cite{fan2015prb}，详细证明如下。
 
 我们从保守力的定义出发。粒子 $i$ 的力等于体系总势能对粒子坐标的梯度的负值：
-\begin{equation}
+
+$$
 \vec{F}_{i} = - \frac{\partial U}{\partial \vec{r}_{i}}
-\end{equation}
+$$
+
 代入总能量表达式，得
-\begin{equation}
+
+$$
 \vec{F}_{i} = - \frac{\partial \sum_j U_j}{\partial \vec{r}_{i}}
-\end{equation}
+$$
+
 注意，为了避免混淆指标，上式中的求和不能写成原先的 $\sum_i U_i$，这是在推导公式时要特别注意的。接下来的任务就是推导 $\partial U_j/\partial \vec{r}_i$ 了。为此，我们注意到 $U_{j}$ 是所有 $\{\vec{r}_{jk}\}_k$ 的函数，于是有
-\begin{equation}
+
+$$
     \frac{\partial U_j}{\partial \vec{r}_{i}} = \sum_k \frac{\partial U_j}{\partial \vec{r}_{jk}} \frac{\partial \vec{r}_{jk}}{\partial \vec{r}_{i}}
-\end{equation}
+$$
+
 因为
-\begin{equation}
+
+$$
 \frac{\partial \vec{r}_{jk}}{\partial \vec{r}_{i}} = \frac{\partial (\vec{r}_{k} - \vec{r}_{j})}{\partial \vec{r}_{i}} = \frac{\partial \vec{r}_{k}}{\partial \vec{r}_{i}} - \frac{\partial \vec{r}_{j}}{\partial \vec{r}_{i}} = \delta_{ki}-
 \delta_{ji},
-\end{equation}
+$$
+
 所以有
-\begin{equation}
+
+$$
     \frac{\partial U_j}{\partial \vec{r}_{i}} =  \frac{\partial U_j}{\partial \vec{r}_{ji}} - \sum_k \frac{\partial U_j}{\partial \vec{r}_{jk}} \delta_{ji}
-\end{equation}
-最终得
-\begin{equation}
+$$
+
+$$
 \vec{F}_{i} = - \sum_j \left(\frac{\partial U_j}{\partial \vec{r}_{ji}} - \sum_k \frac{\partial U_j}{\partial \vec{r}_{jk}} \delta_{ji}\right) = \sum_k \frac{\partial U_i}{\partial \vec{r}_{ik}} - \sum_j \frac{\partial U_j}{\partial \vec{r}_{ji}}
 = \sum_j \left(\frac{\partial U_i}{\partial \vec{r}_{ij}} - \frac{\partial U_j}{\partial \vec{r}_{ji}} \right).
-\end{equation}
-证毕。
+$$
+
 
 ## 两个典型的经验势
 
