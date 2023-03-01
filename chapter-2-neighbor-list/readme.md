@@ -325,7 +325,7 @@ $$
 
 ### 构建近邻列表的平方标度算法
 
-我们先讨论一个简单的平方标度算法。首先，我们定义近邻列表。一个近邻列表指定了研究体系中每个原子的近邻个数，即与某个中心原子距离小于  $R_{\rm c}$ 的原子的个数。我们记原子 $i$ 的近邻个数为 $NN_{i}$。除此以外，确定一个近邻列表还需要知道原子 $i$ 的所有这 $NN_{i}$ 个近邻的指标。我们记原子 $i$ 的第 $k$ 个邻居的指标为 $NL_{ik}$。因为我们在求力的时候将利用牛顿第三定律，所以在构建近邻列表时也要求一个原子的近邻的指标大于原子本身的指标，即 $i < {ik}$。这样定义的近邻列表最早由 Verlet 提出 [Computer "Experiments" on Classical Fluids. I. Thermodynamical Properties of Lennard-Jones Molecules](https://doi.org/10.1103/PhysRev.159.98)，所以称为 Verlet 近邻列表。
+我们先讨论一个简单的平方标度算法。首先，我们定义近邻列表。一个近邻列表指定了研究体系中每个原子的近邻个数，即与某个中心原子距离小于  $R_{\rm c}$ 的原子的个数。我们记原子 $i$ 的近邻个数为 $NN_{i}$。除此以外，确定一个近邻列表还需要知道原子 $i$ 的所有这 $NN_{i}$ 个近邻的指标。我们记原子 $i$ 的第 $k$ 个邻居的指标为 $NL_{ik}$。因为我们在求力的时候将利用牛顿第三定律，所以在构建近邻列表时也要求一个原子的近邻的指标大于原子本身的指标，即 $i < NL_{ik}$。这样定义的近邻列表最早由 Verlet 提出 [Computer "Experiments" on Classical Fluids. I. Thermodynamical Properties of Lennard-Jones Molecules](https://doi.org/10.1103/PhysRev.159.98)，所以称为 Verlet 近邻列表。
 
 一个很自然的构建近邻列表的算法是检验所有的粒子对的距离。这显然是一个
 $O(N^2)$ 复杂度的算法。我们的 C++ 实现如下：
