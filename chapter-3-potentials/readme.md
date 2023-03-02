@@ -341,7 +341,7 @@ $$
    \end{cases}
 $$
 
-下图展示了前 5 个径向基函数，其中的 $f_0$ 实际上就是截断函数，因为 $T_0(x) = 1$。
+下图展示了前 5 个径向基函数，其中的 $f_0$ 实际上就是截断函数，因为 $T_0(x) = 1$。图中的横坐标是约化距离 $r_{ij}/r_\mathrm{c}^\mathrm{R}$，其中 $r_\mathrm{c}^\mathrm{R}$ 是径向描述符的截断距离。
 
 ![radial_basis_functions](fig/basis.png)
 
