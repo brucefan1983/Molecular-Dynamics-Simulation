@@ -329,7 +329,7 @@ $$
    f_\mathrm{c}(r_{ij}),
 $$
 
-这里的 $T_k(x)$ 是 $k$-阶第一类Chebyshev 多项式。上式中的 $f_\mathrm{c}(r_{ij})$ 是一个光滑截断函数，类似于 Tersoff 函数的截断函数：
+这里的 $T_k(x)$ 是 $k$-阶第一类 Chebyshev 多项式。上式中的 $f_\mathrm{c}(r_{ij})$ 是一个光滑截断函数，类似于 Tersoff 势的截断函数：
 
 $$
    f_\mathrm{c}(r_{ij}) 
