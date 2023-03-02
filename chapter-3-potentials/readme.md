@@ -137,7 +137,7 @@ $$
 从力的表达式出发，可以推导出如下位力的表达式：
 
 $$
-\mathbf{W}_{i} = \vec{r}_{ij}} \otimes \frac{\partial U_j}{\partial \vec{r}_{ji}} .
+\mathbf{W}_{i} = \vec{r}_{ij} \otimes \frac{\partial U_j}{\partial \vec{r}_{ji}} .
 $$
 
 ## 两个典型的经验多体势
