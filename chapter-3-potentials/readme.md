@@ -137,8 +137,24 @@ $$
 从力的表达式出发，可以推导出如下位力的表达式：
 
 $$
+\mathbf{W} = \sum_i \mathbf{W}_{i}.
+$$
+
+$$
 \mathbf{W}_{i} = \vec{r}_{ij} \otimes \frac{\partial U_j}{\partial \vec{r}_{ji}} .
 $$
+
+我们还可以推导出如下和相互作用有关的热流的表达式：
+
+$$
+\vec{J} = \sum_i \vec{J}_{i}.
+$$
+
+$$
+\vec{J}_i = \mathbf{W}_{i} \cdot \vec{v}_i.
+$$
+
+这里的 $\vec{v}_i$ 是粒子 $i$ 的速度。
 
 ## 两个典型的经验多体势
 
