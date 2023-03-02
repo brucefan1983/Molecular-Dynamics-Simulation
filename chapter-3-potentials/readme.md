@@ -123,11 +123,11 @@ $$
 
 ## 两个典型的经验多体势
 
-经验势（empirical potential）是用具有物理或者化学意义的数学函数表达的经典势。其中的参数一般通过拟合实验结果来确定。迄今已有众多的经验势多体势，其中最为广泛使用的当属 EAM 势和 Tersoff 势。
+经验势（empirical potential）是用具有物理或者化学意义的数学函数表达的经典势。其中的参数一般通过拟合实验结果来确定。迄今已有众多的经验多体势，其中最为广泛使用的当属 EAM 势和 Tersoff 势。
 
 ### EAM势
 
-EAM 势由若干人同时提出 \cite{daw1984prb,finnis1984pma}。
+EAM 势由若干人同时提出，包括 [Daw & Baskes](https://doi.org/10.1103/PhysRevLett.50.1285) 以及 [Finnis & Sinclair](https://doi.org/10.1080/01418618408244210)。
 
 原子 $i$ 的势能为
 \begin{equation}
