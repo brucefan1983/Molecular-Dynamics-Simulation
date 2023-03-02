@@ -39,10 +39,10 @@ $$
 U = \sum_i U_i.
 $$
 
-其中，$U_i$ 称为粒子 $i$ 的能量，它依赖于各个从 $i$ 指向其它粒子的位置矢量差 $\{\vec{r}_{ij}\}_j$：
+其中，$U_i$ 称为粒子 $i$ 的能量，它依赖于各个从 $i$ 指向其它粒子的位置矢量差 $\vec{r}_{ij}$：
 
 $$
-U_i = U_i\left(\{\vec{r}_{ij}\}_j\right).
+U_i = U_i\left(\vec{r}_{ij}\right).
 $$
 
 该表达式显然满足空间平移不变性，但我们还没有对其施加空间转动不变性。后面我们会看到，EAM 势和 Tersoff 势都满足这个假设，但它们都有额外的限制。以后我们还会看到，最近发展迅猛的机器学习势也满足这个假设。
@@ -84,7 +84,7 @@ $$
 \vec{F}_{i} = - \frac{\partial \sum_j U_j}{\partial \vec{r}_{i}}
 $$
 
-注意，为了避免混淆指标，上式中的求和不能写成原先的 $\sum_i U_i$，这是在推导公式时要特别注意的。接下来的任务就是推导 $\partial U_j/\partial \vec{r}_i$ 了。为此，我们注意到 $U_{j}$ 是所有 $\{\vec{r}_{jk}\}_k$ 的函数，于是有
+注意，为了避免混淆指标，上式中的求和不能写成原先的 $\sum_i U_i$，这是在推导公式时要特别注意的。接下来的任务就是推导上式中的偏导数了。为此，我们注意到 $U_{j}$ 是所有 $\vec{r}_{jk}$ 的函数，于是有
 
 $$
     \frac{\partial U_j}{\partial \vec{r}_{i}} = \sum_k \frac{\partial U_j}{\partial \vec{r}_{jk}} \frac{\partial \vec{r}_{jk}}{\partial \vec{r}_{i}}
