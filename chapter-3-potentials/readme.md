@@ -341,6 +341,10 @@ $$
    \end{cases}
 $$
 
+下图展示了前 5 个径向基函数，其中的 $f_0$ 实际上就是截断函数，因为 $T_0(x) = 1$。
+
+![radial_basis_functions](fig/basis.png)
+
 #### 角度描述符
 
 ### NEP机器学习势的训练
