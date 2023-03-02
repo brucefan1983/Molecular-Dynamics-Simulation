@@ -4,7 +4,7 @@
 - 第0章：物理基础（已经完成）。
 - [第1章：一个简单的分子动力学模拟程序（已经完成）](chapter-1-simple-md/readme.md)。
 - [第2章：模拟盒子；近邻列表（已经完成）](chapter-2-neighbor-list/readme.md)。
-- [第3章：势函数（包括经验势机器学习势）（在写）](chapter-3-potentials/readme.md)
+- [第3章：势函数（包括经验势和机器学习势）（在写）](chapter-3-potentials/readme.md)
 - 第4章：预计写控温算法、控压算法及一些平衡态性质的计算
 - 第5章：预计写时间关联函数、扩散系数、粘度、热导率等输运性质的计算
 - 第6章：预计写CUDA 加速、结合 GPUMD 介绍一些应用
