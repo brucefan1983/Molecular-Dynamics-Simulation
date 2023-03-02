@@ -153,6 +153,8 @@ $$
 
 ### Tersoff势
 
+#### 势函数形式
+
 Tersoff 势有几个稍有不同的变体。我这里介绍 [Tersoff 在 1989 年发表的一篇文章中使用的形式](https://doi.org/10.1103/PhysRevB.39.5566)。为简单起见，我们考虑单种元素的势函数。本书不会涉及多元素体系的 Tersoff 势。
 
 粒子 $i$ 的势能可以写为：
@@ -197,17 +199,19 @@ $$
 g_{ijk} = 1 + \frac{c^2}{d^2} - \frac{c^2}{d^2+(h-\cos\theta_{ijk})^2}.
 $$
 
-在以上表达式中，有如下参数：$A$, $B$, $\lambda$, $\mu$, $\beta$, $n$, $c$, $d$, $h$, $R$, $S$。
+在以上表达式中，有如下参数： $A$, $B$, $\lambda$, $\mu$, $\beta$, $n$, $c$, $d$, $h$, $R$, $S$。
 
-未完待续。
+#### 编程实现
+
+给出一个 C++ 程序。
 
 ## NEP机器学习势
 
 ## 习题
 
-1. 证明公式 \ref{equation:eam_partial_force}.
+1. 将本章的 tersoff_md.cpp 从单元素体系推广到多元素体系，使其能模拟比如 SiC 和 SiGe。
 
-\bibliographystyle{apalike}
-\bibliography{ref}
+2. 将本章的 eam_md.cpp 从单元素体系推广到多元素体系，使其能模拟高熵合金。
 
-\end{document}
+3. 
+
