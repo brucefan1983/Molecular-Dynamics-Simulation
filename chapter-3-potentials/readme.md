@@ -129,23 +129,25 @@ $$
 
 EAM 势由若干人同时提出，包括 [Daw & Baskes](https://doi.org/10.1103/PhysRevLett.50.1285) 以及 [Finnis & Sinclair](https://doi.org/10.1080/01418618408244210)。
 
-原子 $i$ 的势能为
-\begin{equation}
-U_i = \frac{1}{2} \sum_{j\neq i} \phi(r_{ij}) + F (\rho_i).
-\end{equation}
-这里，含有 $\phi(r_{ij})$ 的部分是两体势，$F(\rho_i)$ 即为嵌入势。嵌入势是 $i$ 粒子处电子密度 $\rho_i$ 的函数。粒子 $i$ 所在点的电子密度是由它的邻居贡献的：
-\begin{equation}
-\rho_i = \sum_{j\neq i} f(r_{ij}).
-\end{equation}
+在EAM势中，原子 $i$ 的势能为
 
+$$
+U_i = \frac{1}{2} \sum_{j\neq i} \phi(r_{ij}) + F (\rho_i).
+$$
+
+这里，含有 $\phi(r_{ij})$ 的部分是两体势， $F(\rho_i)$ 即为嵌入势。嵌入势是 $i$ 粒子处电子密度 $\rho_i$ 的函数。粒子 $i$ 所在点的电子密度是由它的邻居贡献的：
+
+$$
+\rho_i = \sum_{j\neq i} f(r_{ij}).
+$$
 
 可以推导如下表达式：
-\begin{equation}
-\label{equation:eam_partial_force}
+
+$$
 \frac{\partial U_i}{\partial \vec{r}_{ij}}
 = \frac{1}{2}  \phi'(r_{ij})  \frac{\partial r_{ij}} {\partial \vec{r}_{ij}} +
 F'(\rho_i)  f'(r_{ij}) \frac{\partial r_{ij}} {\partial \vec{r}_{ij}}.
-\end{equation}
+$$
 
 ### Tersoff势
 
