@@ -10,6 +10,7 @@
  	- [多体势中位力和热流的表达式](#多体势中位力和热流的表达式)
 - [两个典型的经验多体势](#两个典型的经验多体势)
   - [EAM势](#EAM势)
+    - [EAM势的通用表达式](#EAM势的通用表达式)
   - [Tesoff势](#Tersoff势)
 - [NEP机器学习势](#NEP机器学习势)
 - [习题](#习题)
@@ -136,6 +137,8 @@ $$
 
 ### EAM势
 
+#### EAM势的通用表达式
+
 EAM 势由若干人同时提出，包括 [Daw & Baskes](https://doi.org/10.1103/PhysRevLett.50.1285) 以及 [Finnis & Sinclair](https://doi.org/10.1080/01418618408244210)。
 
 在EAM势中，原子 $i$ 的势能为
@@ -159,6 +162,8 @@ $$
 = \frac{1}{2}  \phi'(r_{ij})  \frac{\partial r_{ij}} {\partial \vec{r}_{ij}} +
 F'(\rho_i)  f'(r_{ij}) \frac{\partial r_{ij}} {\partial \vec{r}_{ij}}.
 $$
+
+#### 一个解析EAM势的编程实现
 
 ### Tersoff势
 
