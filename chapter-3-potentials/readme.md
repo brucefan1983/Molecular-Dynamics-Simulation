@@ -155,38 +155,46 @@ $$
 
 Tersoff 势有几个稍有不同的变体。我这里介绍 [Tersoff 在 1989 年发表的一篇文章中使用的形式](https://doi.org/10.1103/PhysRevB.39.5566)。为简单起见，我们考虑单种元素的势函数。本书不会涉及多元素体系的 Tersoff 势。
 
-粒子$i$的势能可以写为：
-\begin{equation}
+粒子 $i$ 的势能可以写为：
+
+$$
 U_i =  \frac{1}{2} \sum_{j \neq i} f_C(r_{ij}) \left[ f_R(r_{ij}) - b_{ij} f_A(r_{ij}) \right].
-\end{equation}
-其中，$f_{C}$是一个截断函数，当$r_{ij}<R$ 时取值为 1，当$r_{ij}>S$时取值为 0。在这之间，该函数为
-\begin{equation}
+$$
+
+其中， $f_{C}$ 是一个截断函数，当 $r_{ij}<R$ 时取值为 1，当 $r_{ij}>S$ 时取值为 0。在这之间，该函数为
+$$
 f_{C}(r_{ij}) = \frac{1}{2}
 \left[
 1 + \cos \left( \pi \frac{r_{ij} - R_{ij}}{S_{ij} - R_{ij}} \right)
 \right].
-\end{equation}
+$$
 
-排斥函数$f_{R}$和吸引函数$f_{A}$为
-\begin{equation}
+排斥函数 $f_{R}$ 和吸引函数 $f_{A}$ 为
+
+$$
 f_{R}(r) = A e^{-\lambda r_{ij}};
-\end{equation}
-\begin{equation}
+$$
+
+$$
 f_{A}(r) = B e^{-\mu r_{ij}}.
-\end{equation}
+$$
 
 键序为
-\begin{equation}
+
+$$
 \label{equation:bij}
 b_{ij} = \left(1 + \beta^{n} \zeta^{n}_{ij}\right)^{-\frac{1}{2n}},
-\end{equation}
+$$
+
 其中，
-\begin{equation}
+
+$$
 \zeta_{ij} = \sum_{k\neq i, j}f_C(r_{ik}) g_{ijk},
-\end{equation}
-\begin{equation}
+$$
+
+$$
 g_{ijk} = 1 + \frac{c^2}{d^2} - \frac{c^2}{d^2+(h-\cos\theta_{ijk})^2}.
-\end{equation}
+$$
 
 在以上表达式中，有如下参数：$A$, $B$, $\lambda$, $\mu$, $\beta$, $n$, $c$, $d$, $h$, $R$, $S$。
 
