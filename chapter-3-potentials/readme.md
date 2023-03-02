@@ -25,9 +25,6 @@
 - [习题](#习题)
 
 
-NEP机器学习势的编程实现
-
-
 ## 经典势函数的一般性质
 
 经典势函数，简称经典势（classical potentials)，是相对于量子力学势（quantum-mechanical potentials) 来说的。一个经典多粒子系统的势能可以写为各个粒子坐标的函数。文献中也将经典势函数称为力场（force field）或者势能面（potential energy surface）。一般来说，物理学家更乐意用势函数的称呼，而化学家更乐意用力场的称呼。笔者不是化学家，故后面基本上都用势函数的说法。
