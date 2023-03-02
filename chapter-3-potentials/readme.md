@@ -11,7 +11,6 @@
 如果可以将体系的势能写成
 
 $$
-\label{equation:U-two-body}
 U= \frac{1}{2}\sum_{i}\sum_{j \neq i} U_{ij} \left(r_{ij} \right),
 $$
 
