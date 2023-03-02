@@ -321,7 +321,25 @@ $$
    g_n(r_{ij}) = \sum_{k=0}^{N_\mathrm{bas}^\mathrm{R}} c^{ij}_{nk} f_k(r_{ij}),
 $$
 
+其中的径向基函数通过 Chebyshev 多项式定义：
 
+$$
+   f_k(r_{ij}) = \frac{1}{2}
+   \left[T_k\left(2\left(r_{ij}/r_\mathrm{c}^\mathrm{R}-1\right)^2-1\right)+1\right]
+   f_\mathrm{c}(r_{ij}),
+$$
+
+这里的 $T_k(x)$ 是 $k$-阶第一类Chebyshev 多项式。上式中的 $f_\mathrm{c}(r_{ij})$ 是一个光滑截断函数，类似于 Tersoff 函数的截断函数：
+
+$$
+   f_\mathrm{c}(r_{ij}) 
+   = \begin{cases}
+   \frac{1}{2}\left[
+   1 + \cos\left( \pi \frac{r_{ij}}{r_\mathrm{c}^\mathrm{R}} \right) 
+   \right],& r_{ij}\leq r_\mathrm{c}^\mathrm{R}; \\
+   0, & r_{ij} > r_\mathrm{c}^\mathrm{R}.
+   \end{cases}
+$$
 
 #### 角度描述符
 
