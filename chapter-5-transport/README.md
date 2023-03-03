@@ -60,57 +60,51 @@ $$
 
 ## 线性响应理论
 
-这里要讲解更多理论基础（代写）
+这里要讲解更多理论基础（待写）
 
 格林-久保公式实际上是一类公式，它们将非平衡过程的输运系数与平衡态中相应物理量的涨落相联系。格林-久保公式是说，输运系数等于自关联函数对关联时间的积分。例如，扩散系数是速度自关联函数的积分；粘性系数是压力自关联函数的积分；热导率是热流自关联函数的积分、等等。
 
 ### 扩散系数
 
-Velocity autocorrelation (VAC) is an important quantity in MD simulations. On the one hand, its integral with respect to the correlation time gives the running diffusion constant, which is equivalent to that obtained by a time derivative of the mean square displacement (MSD). On the other hand, its Fourier transform is the phonon density of states (PDOS).
+速度自关联是单粒子关联函数。这就是说，我们可以为单个粒子定义速度自关联函数。对于粒子 $i$, 我们定义朝 $x$ 方向的速度自关联函数为：
 
-The VAC is a single-particle correlation function. This means that we can define the VAC for individual particles. For particle $i$, the VAC along the $x$ direction is defined as
-\begin{equation}
+$$
 \langle v_{xi}(0) v_{xi}(t) \rangle.
-\end{equation}
-Then, one can define the mean VAC for any number of particles. In the current version of GPUMD, it is assumed that one wants to calculate the mean VAC in the whole simulated system:
-\begin{equation}
-\boxed{
-\text{VAC}_{xx}(t) =
-\frac{1}{N} \sum_{i=1}^{N} \langle v_{xi}(0) v_{xi}(t) \rangle
-}.
-\end{equation}
+$$
+
+Then, one can define the mean VAC for any number of particles. VAC in the whole simulated system:
+
+$$
+\text{VAC}_{xx}(t) = \frac{1}{N} \sum_{i=1}^{N} \langle v_{xi}(0) v_{xi}(t) \rangle.
+$$
+
 The order between the time-average (denoted by $\langle \rangle$) and the space-average (the average over the particles) can be changed:
-\begin{equation}
+
+$$
 \boxed{
 \text{VAC}_{xx}(t) =
 \left\langle \frac{1}{N} \sum_{i=1}^{N}  v_{xi}(0) v_{xi}(t) \right\rangle
 }.
-\end{equation}
-Using the same conventions as in the case of HAC calculations, we have
-the following explicit expression for the VAC:
-\begin{equation}
-\label{equation:VAC}
-\text{VAC}_{xx}(n_c\Delta \tau) = \frac{1}{(N_d-N_c)N}
-\sum_{m=0}^{N_d-N_c-1} \sum_{i=1}^{N}
-v_{xi}(m\Delta \tau) v_{xi}((m+n_c)\Delta \tau),
-\end{equation}
-where $n_c = 0, 1, 2, \cdots, N_c-1$.
-The algorithm for calculating the VAC is quite similar to that for calculating the HAC and it thus omitted.
+$$
+
 
 After obtaining the VAC, we can calculate the running diffusion constant $D_{xx}(t)$ as
-\begin{equation}
-\boxed{
+
+$$
 D_{xx}(t) = \int_0^{t} dt' ~\text{VAC}_{xx}(t')
-}.
-\end{equation}
+$$
+
 One can prove that this is equivalent to the time-derivative of the MSD, i.e., the Einstein formula:
-\begin{equation}
+
+$$
 \boxed{
 D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t)
 },
-\end{equation}
+$$
+
 where the MSD $\Delta x^2(t)$ is defined as
-\begin{equation}
+
+$$
 \boxed{
 \Delta x^2(t) =
 \left\langle
@@ -121,112 +115,137 @@ where the MSD $\Delta x^2(t)$ is defined as
   \left[ x_i(t) - x_i(0) \right]^2
 \right\rangle
 }.
-\end{equation}
+$$
 
 Here is the proof. Starting from the relation between position and velocity,
-\begin{equation}
+
+$$
 x_i(t) - x_i(0) = \int_{0}^{t}dt' v_{xi}(t'),
-\end{equation}
+$$
+
 we have
-\begin{equation}
+
+$$
 [x_i(t) - x_i(0)]^2 =
 \int_{0}^{t} dt' v_{xi}(t') \int_{0}^{t}dt''  v_{xi}(t'')=
 \int_{0}^{t} dt' \int_{0}^{t}dt'' v_{xi}(t') v_{xi}(t'').
-\end{equation}
+$$
+
 Then, the MSD can be expressed as
-\begin{equation}
+
+$$
 \Delta x^2(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{0}^{t} dt' \int_{0}^{t}dt''
 \left\langle v_{xi}(t') v_{xi}(t'') \right\rangle.
-\end{equation}
+$$
+
 Using Lebniz's rule, we have
-\begin{equation}
+$$
 D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{0}^{t} dt'
 \left\langle v_{xi}(t) v_{xi}(t') \right\rangle,
-\end{equation}
+$$
+
 which can be rewritten as
-\begin{equation}
+$$
 D_{xx}(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{0}^{t} dt'
 \left\langle v_{xi}(0) v_{xi}(t'-t) \right\rangle.
-\end{equation}
+$$
+
 Letting $\tau=t'-t$, we get (note that here $t$ is considered as a constant)
-\begin{equation}
+
+$$
 D_{xx}(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{-t}^{0} d\tau
 \left\langle v_{xi}(0) v_{xi}(\tau) \right\rangle,
-\end{equation}
+$$
+
 which can be rewritten as
-\begin{equation}
+
+$$
 D_{xx}(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{-t}^{0} d\tau
 \left\langle v_{xi}(-\tau) v_{xi}(0) \right\rangle.
-\end{equation}
+$$
+
 Letting $t'=-\tau$, we finally get
-\begin{equation}
+
+$$
 D_{xx}(t) =
 \frac{1}{N}\sum_{i=1}^{N}
 \int_{0}^{t} dt'
 \left\langle v_{xi}(t') v_{xi}(0) \right\rangle
 =\int_0^t dt' ~\text{VAC}_{xx}(t').
-\end{equation}
+$$
+
 We thus have derived the Green-Kubo formula from the Einstein formula.
 
 In summary,
-\begin{itemize}
-\item The derivative of half of the MSD gives the running diffusion coefficient.
-\item The integral of the VAC gives the running diffusion coefficient.
-\item One can obtain the MSD by integrating the VAC twice (numerically).
-\end{itemize}
-
+- The derivative of half of the MSD gives the running diffusion coefficient.
+- The integral of the VAC gives the running diffusion coefficient.
+- One can obtain the MSD by integrating the VAC twice (numerically).
 
 It is interesting that the same VAC can be used to compute the PDOS, as first demonstrated by Dickey and Paskin. The PDOS is simply the Fourier transform of the normalized VAC:
-\begin{equation}
+
+$$
 \rho_x(\omega) = \int_{-\infty}^{\infty} dt e^{i\omega t}~\text{VAC}_{xx}(t).
-\end{equation}
+$$
+
 Here, $\text{VAC}_{xx}(t)$ should be understood as the normalized function $\text{VAC}_{xx}(t)/\text{VAC}_{xx}(0)$. Although it looks simple, it does not mean that one can get the correct PDOS by a naive fast Fourier transform (FFT) routine. Actually, this computation is very cheap and we do not need FFT at all. What we need is a discrete cosine transform. To see this, we first note that, by definition, $\text{VAC}_{xx}(-t) = \text{VAC}_{xx}(t)$. Using this, we have
-\begin{equation}
+
+$$
 \rho_x(\omega) = \int_{-\infty}^{\infty} dt \cos (\omega t)~\text{VAC}_{xx}(t).
-\end{equation}
+$$
+
 Because we only have the VAC data at the $N_c$ discrete time points, the above integral is approximated by the following discrete cosine transform:
-\begin{equation}
+
+$$
 \rho_x(\omega) \approx \sum_{n_c=0}^{N_c-1}
 (2-\delta_{n_c0}) \Delta \tau
 \cos (\omega n_c \Delta \tau)~\text{VAC}_{xx}(n_c \Delta \tau).
-\end{equation}
+$$
+
 Here, $\delta_{n_c0}$ is the Kronecker $\delta$ function and the factor $(2-\delta_{n_c0})$ accounts for the fact that there is only one point for $t = 0$ and there are two equivalent points for $t \neq 0$. Last, we note that a window function is needed to suppress the unwanted Gibbs oscillation in the calculated PDOS. In GPUMD, the Hann window $H(n_c)$ is applied:
-\begin{equation}
+
+$$
 \rho_x(\omega) \approx \sum_{n_c=0}^{N_c-1}
 (2-\delta_{n_c0}) \Delta \tau
 \cos (\omega n_c \Delta \tau)~\text{VAC}_{xx}(n_c \Delta \tau) H(n_c);
-\end{equation}
-\begin{equation}
+$$
+
+$$
 H(n_c) = \frac{1}{2}
 \left[ \cos \left( \frac{\pi n_c}{N_c} \right) + 1 \right].
-\end{equation}
+$$
 
 Here are some comments on the normalization of the PDOS. In the literature, one usually uses an arbitrary unit for the PDOS, but it actually has a dimension of [time], and an appropriate unit for it can be 1/THz or ps. The normalization of $\rho_x(\omega)$ can be determined by the inverse Fourier transform:
-\begin{equation}
+
+$$
 \text{VAC}_{xx}(t)
  = \int_{-\infty}^{\infty} \frac{d\omega}{2\pi} e^{-i\omega t}\rho_x(\omega).
-\end{equation}
+$$
+
 As we have normalized the VAC, we have
-\begin{equation}
+
+$$
 1 = \text{VAC}_{xx}(0)
  = \int_{-\infty}^{\infty}
  \frac{d\omega}{2\pi}\rho_x(\omega).
-\end{equation}
+$$
+
 Because $\rho_x(-\omega)=\rho_x(\omega)$, we have
-\begin{equation}
+
+$$
 \int_{0}^{\infty}
  \frac{d\omega}{2\pi}\rho_x(\omega) = \frac{1}{2}.
-\end{equation}
+$$
+
 The calculated PDOS should meet this normalization condition (approximately).
 
 ### 粘滞系数
