@@ -48,7 +48,7 @@ $$
 C(n \Delta \tau) = \frac{1}{M}\sum_{m=1}^{N_d - n} A(m \Delta \tau) B(m\Delta \tau+t).
 $$
 
-其中，$N_d - n$ 是求平均时用的时间原点数目。
+其中， $N_d - n$ 是求平均时用的时间原点数目。
 
 ## 线性响应理论
 
