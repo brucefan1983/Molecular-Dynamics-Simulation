@@ -344,6 +344,8 @@ $$
 
 #### 角度描述符
 
+NEP 中的角度描述符包含所谓的三体、四体和五体描述符。我们这里仅介绍三体描述符，关于NEP中四体和五体描述符的细节，请参考如下文章 [GPUMD: A package for constructing accurate machine-learned potentials and performing highly efficient atomistic simulations](https://doi.org/10.1063/5.0106617).
+
 ### NEP机器学习势的训练
 
 #### 损失函数
