@@ -382,20 +382,33 @@ $$
 根据以上考虑，我们在NEP中提出了如下损失函数：
 
 $$
-   L(\boldsymbol{z}) 
-   = \lambda_\mathrm{e} \left( 
-   \frac{1}{N_\mathrm{str}}\sum_{n=1}^{N_\mathrm{str}} \left( U^\mathrm{NEP}(n,\boldsymbol{z}) - U^\mathrm{tar}(n)\right)^2
-   \right)^{1/2} \nonumber \\
-   +  \lambda_\mathrm{f} \left( 
-   \frac{1}{3N}
-   \sum_{i=1}^{N} \left( \boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z}) - \boldsymbol{F}_i^\mathrm{tar}\right)^2
-   \right)^{1/2} \nonumber \\
-   +  \lambda_\mathrm{v} \left( 
+L(\boldsymbol{z}) = L(\boldsymbol{z}) + L(\boldsymbol{z})
+$$
+
+$$
+L_{\rm e}(\boldsymbol{z}) 
+= \lambda_\mathrm{e} 
+\left( \frac{1}{N_\mathrm{str}}\sum_{n=1}^{N_\mathrm{str}} \left( U^\mathrm{NEP}(n,\boldsymbol{z}) - U^\mathrm{tar}(n)\right)^2
+\right)^{1/2} 
+$$
+
+$$
+L_{\rm f}(\boldsymbol{z}) = \lambda_\mathrm{f} \left( \frac{1}{3N} \sum_{i=1}^{N} \left( \boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z}) - \boldsymbol{F}_i^\mathrm{tar}\right)^2 \right)^{1/2} 
+$$
+
+$$
+L_{\rm v}(\boldsymbol{z}) = \lambda_\mathrm{v} \left( 
    \frac{1}{6N_\mathrm{str}}
    \sum_{n=1}^{N_\mathrm{str}} \sum_{\mu\nu} \left( W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z}) - W_{\mu\nu}^\mathrm{tar}(n)\right)^2
-   \right)^{1/2} \nonumber \\
-   +  \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| \nonumber \\
-   +  \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
+   \right)^{1/2} 
+$$
+
+$$
+L_1(\boldsymbol{z}) \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| 
+$$
+
+$$
+L_2(\boldsymbol{z}) = \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
 $$
 
 Here, :math:`N_\mathrm{str}` is the number of structures in the training data set (if using a full batch) or the number of structures in a mini-batch (see the :ref:`batch keyword <kw_batch>` in the :ref:`nep.in input file <nep_in>`) and :math:`N` is the total number of atoms in these structures.
