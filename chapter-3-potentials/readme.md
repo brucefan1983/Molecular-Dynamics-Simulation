@@ -382,7 +382,7 @@ $$
 根据以上考虑，我们在NEP中提出了如下损失函数：
 
 $$
-L(\boldsymbol{z}) = L(\boldsymbol{z}) + L(\boldsymbol{z})
+L(\boldsymbol{z}) = L_{\rm e}(\boldsymbol{z}) + L_{\rm f}(\boldsymbol{z}) + L_{\rm v}(\boldsymbol{z}) + L_1(\boldsymbol{z}) + L_2(\boldsymbol{z})
 $$
 
 $$
@@ -404,20 +404,19 @@ L_{\rm v}(\boldsymbol{z}) = \lambda_\mathrm{v} \left(
 $$
 
 $$
-L_1(\boldsymbol{z}) \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| 
+L_1(\boldsymbol{z}) = \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| 
 $$
 
 $$
 L_2(\boldsymbol{z}) = \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
 $$
 
-Here, :math:`N_\mathrm{str}` is the number of structures in the training data set (if using a full batch) or the number of structures in a mini-batch (see the :ref:`batch keyword <kw_batch>` in the :ref:`nep.in input file <nep_in>`) and :math:`N` is the total number of atoms in these structures.
-:math:`U^\mathrm{NEP}(n,\boldsymbol{z})` and :math:`W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})` are the per-atom energy and virial tensor predicted by the :term:`NEP` model with parameters :math:`\boldsymbol{z}` for the :math:`n^\mathrm{th}` structure, and :math:`\boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z})` is the predicted force for the :math:`i^\mathrm{th}` atom.
-:math:`U^\mathrm{tar}(n)`, :math:`W_{\mu\nu}^\mathrm{tar}(n)`, and :math:`\boldsymbol{F}_i^\mathrm{tar}` are the corresponding target values.
-That is, the loss terms for energies, forces, and virials are defined as the respective :term:`RMSE` values between the :term:`NEP` predictions and the target values.
-The last two terms represent :math:`\mathcal{L}_1` and :math:`\mathcal{L}_2` regularization terms of the parameter vector.
-The weights :math:`\lambda_\mathrm{e}`, :math:`\lambda_\mathrm{f}`, :math:`\lambda_\mathrm{v}`, :math:`\lambda_1`, and :math:`\lambda_2` are tunable hyper-parameters (see the eponymous keywords in the :ref:`nep.in input file <nep_in>`).
-When calculating the loss function, we use eV/atom for energies and virials and eV/Å for force components.
+在公式中有如下符号：
+- $N_\mathrm{str}$ 是训练集中结构的数目。
+- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ are the per-atom energy and virial tensor predicted by the $\boldsymbol{z}$ for the $n$ structure, and 
+- $\boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z})$ is the predicted force for the $i^\mathrm{th}$.
+- $U^\mathrm{tar}(n)$, $W_{\mu\nu}^\mathrm{tar}(n)$, and $\boldsymbol{F}_i^\mathrm{tar}$.
+- $\mathcal{L}_1$ $\mathcal{L}_2$ 正则化
 
 #### 自然演化策略
 
