@@ -346,11 +346,15 @@ $$
 
 NEP 中的角度描述符包含所谓的三体、四体和五体描述符。我们这里仅介绍三体描述符，关于NEP中四体和五体描述符的细节，请参考如下文章 [GPUMD: A package for constructing accurate machine-learned potentials and performing highly efficient atomistic simulations](https://doi.org/10.1063/5.0106617).
 
-角度描述符需要有键角的信息，所以表达式中一定要有至少三个原子之间的键角。类似于径向描述符，我们可以构造出如下角度描述符：
+角度描述符需要有键角的信息，所以表达式中一定要有至少三个原子之间的键角。类似于径向描述符，我们可以构造出如下三体角度描述符：
 
 $$
    q^i_{nl} = \sum_{j \neq i} \sum_{k \neq i} g_n(r_{ij}) g_n(r_{ij}) P_l(\theta_{ijk}),
 $$
+
+可以看到，三体角度描述符相比两体的径向描述符多了一个下标 $l$。这个下标是勒让德多项式 $P_l(\theta_{ijk})$ 的阶数。勒让德多项式是键角 $\theta_{ijk}$ 的函数。该键角是以原子 $i$ 为中心，以键 $ij$ 和 $ik$ 为两边的夹角。该式中的函数 $g_n(r_{ij})$ 和径向描述符中的对应函数一致，只不过可能有不同的截断距离 $r_\mathrm{c}^\mathrm{A}$。
+
+上述表达式中的双重求和保证了同类原子置换的不变性，但导致计算量正比于近邻个数的平方。有一个办法可以在不改变结果的前提下降低计算复杂度，那就是利用球谐函数的加法定理。利用该定理（练习题），可以将上述三体角度描述符写成如下等价的形式：
 
 $$
    q^i_{nl} = \sum_{m=-l}^l (-1)^m A^i_{nlm} A^i_{nl(-m)},
@@ -360,7 +364,7 @@ $$
    A^i_{nlm} = \sum_{j\neq i} g_n(r_{ij}) Y_{lm}(\theta_{ij},\phi_{ij}),
 $$
 
-$Y_{lm}(\theta_{ij},\phi_{ij})$ 是球谐函数。 $\theta_{ij}$ 是极角， $\phi_{ij}$ 是方位角
+其中， $Y_{lm}(\theta_{ij},\phi_{ij})$ 是球谐函数。 $\theta_{ij}$ 是极角， $\phi_{ij}$ 是方位角。
 
 
 
