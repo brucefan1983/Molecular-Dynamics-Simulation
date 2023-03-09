@@ -371,9 +371,40 @@ $$
 
 ### NEP机器学习势的训练
 
-机器学习势的训练也成为拟合，目的是根据一些物理量的参考值优化NEP机器学习势模型中的参数。我们先看看NEP机器学习势中到底有多少个参数。考虑一个拥有 $N_{\rm typ}$ 个元素（即原子类型）的体系。
+机器学习势的训练也称为拟合，目的是根据一些物理量的参考值优化NEP机器学习势模型中的参数，包括人工神经网络中的权重和偏置参数，以及描述符中的 $g_n$ 函数所涉及的一些线性叠加参数。一般来说，一个元素一共有好几千个参数，对多元素体系则有更多参数。
 
 #### 损失函数
+
+为了优化模型中的参数，我们需要定义一个损失函数，优化的方向是得到尽可能小的损失函数值。也就是说，大的损失函数值对应精度差的模型，而小的损失函数值对应精度高的模型。很自然地，损失函数应该定义为由NEP计算的某些物理量相对参考值的“距离”。通常用方均根误差（root-mean-square error) 表示。
+
+那么，我们要考虑哪些物理量呢？我们知道，通过势函数，我们可以计算每个原子的能量、受力（矢量）以及位力（张量）。在NEP中我们就是使用这三个物理量进行训练。一般来说，参考值是通过量子力学密度泛函理论（DFT) 的方法计算的，其中能量和位力的一般来说只是针对整个构型来说的，而不是针对一个构型中的单个原子来说的。那么，我们需要针对 NEP 计算出整个构型的能量和位力，再和参考值对比。相反，力的对比可针对单个原子实现，因为 DFT 也可以计算单个原子的受力。
+
+根据以上考虑，我们在NEP中提出了如下损失函数：
+
+$$
+   L(\boldsymbol{z}) 
+   &= \lambda_\mathrm{e} \left( 
+   \frac{1}{N_\mathrm{str}}\sum_{n=1}^{N_\mathrm{str}} \left( U^\mathrm{NEP}(n,\boldsymbol{z}) - U^\mathrm{tar}(n)\right)^2
+   \right)^{1/2} \nonumber \\
+   &+  \lambda_\mathrm{f} \left( 
+   \frac{1}{3N}
+   \sum_{i=1}^{N} \left( \boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z}) - \boldsymbol{F}_i^\mathrm{tar}\right)^2
+   \right)^{1/2} \nonumber \\
+   &+  \lambda_\mathrm{v} \left( 
+   \frac{1}{6N_\mathrm{str}}
+   \sum_{n=1}^{N_\mathrm{str}} \sum_{\mu\nu} \left( W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z}) - W_{\mu\nu}^\mathrm{tar}(n)\right)^2
+   \right)^{1/2} \nonumber \\
+   &+  \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| \nonumber \\
+   &+  \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
+$$
+
+Here, :math:`N_\mathrm{str}` is the number of structures in the training data set (if using a full batch) or the number of structures in a mini-batch (see the :ref:`batch keyword <kw_batch>` in the :ref:`nep.in input file <nep_in>`) and :math:`N` is the total number of atoms in these structures.
+:math:`U^\mathrm{NEP}(n,\boldsymbol{z})` and :math:`W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})` are the per-atom energy and virial tensor predicted by the :term:`NEP` model with parameters :math:`\boldsymbol{z}` for the :math:`n^\mathrm{th}` structure, and :math:`\boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z})` is the predicted force for the :math:`i^\mathrm{th}` atom.
+:math:`U^\mathrm{tar}(n)`, :math:`W_{\mu\nu}^\mathrm{tar}(n)`, and :math:`\boldsymbol{F}_i^\mathrm{tar}` are the corresponding target values.
+That is, the loss terms for energies, forces, and virials are defined as the respective :term:`RMSE` values between the :term:`NEP` predictions and the target values.
+The last two terms represent :math:`\mathcal{L}_1` and :math:`\mathcal{L}_2` regularization terms of the parameter vector.
+The weights :math:`\lambda_\mathrm{e}`, :math:`\lambda_\mathrm{f}`, :math:`\lambda_\mathrm{v}`, :math:`\lambda_1`, and :math:`\lambda_2` are tunable hyper-parameters (see the eponymous keywords in the :ref:`nep.in input file <nep_in>`).
+When calculating the loss function, we use eV/atom for energies and virials and eV/Å for force components.
 
 #### 自然演化策略
 
