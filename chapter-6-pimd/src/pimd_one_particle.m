@@ -16,19 +16,9 @@ for j=1:n_beads
     end
 end
 p=linspace(-2,-1,n_beads); q=linspace(-1,1,n_beads); qq=zeros(n_step,n_beads);
-
-
 for step=1:n_step
     p=p-(dt/2)*m*lambda*lambda*q; 
-    p_normal=zeros(1,n_beads);
-    q_normal=zeros(1,n_beads);
-    for k=1:n_beads
-        for j=1:n_beads
-            p_normal(k)=p_normal(k)+p(j)*C(j,k);
-            q_normal(k)=q_normal(k)+q(j)*C(j,k);
-        end
-    end
-    
+    p_normal=p*C; q_normal=q*C;
     for k=0:n_beads-1
         omega_k=2*omega_n*sin(k*pi/n_beads); 
         if k==0
@@ -41,21 +31,14 @@ for step=1:n_step
             q_normal(k+1)=(1/m/omega_k)*s*p_temp+c*q_temp;
         end
     end
-    for j=1:n_beads
-        p(j)=0;q(j)=0;
-        for k=1:n_beads
-            p(j)=p(j)+p_normal(k)*C(j,k);
-            q(j)=q(j)+q_normal(k)*C(j,k);
-        end
-    end
-    
+    p=(C*p_normal.').'; q=(C*q_normal.').';
     p=p-(dt/2)*m*lambda*lambda*q;
     qq(step,:)=q;
 end
 figure;
-plot((1:n_step)*dt,qq,'linewidth',1);hold on;
-plot((1:n_step)*dt,mean(qq,2),'--','linewidth',3);
+plot((1:n_step)*dt,mean(qq,2),'r-','linewidth',3);hold on
+plot((1:n_step)*dt,qq,'linewidth',0.5);hold on;
 xlabel('time');
 ylabel('position');
-legend('bead-0','bead-1','bead-2','bead-3','bead-4','bead-5','bead-6','bead-7','centroid');
+legend('centroid');
 set(gca,'fontsize',16);
