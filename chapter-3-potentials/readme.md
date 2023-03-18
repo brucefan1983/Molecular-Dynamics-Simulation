@@ -22,6 +22,8 @@
     - [损失函数](#损失函数)
     - [自然演化策略](#自然演化策略)
   - [NEP机器学习势的编程实现](#NEP机器学习势的编程实现)
+    - [GPU实现](#GPU实现)
+    - [CPU实现](#CPU实现)
 - [习题](#习题)
 
 
@@ -344,16 +346,86 @@ $$
 
 #### 角度描述符
 
+NEP 中的角度描述符包含所谓的三体、四体和五体描述符。我们这里仅介绍三体描述符，关于NEP中四体和五体描述符的细节，请参考如下文章 [GPUMD: A package for constructing accurate machine-learned potentials and performing highly efficient atomistic simulations](https://doi.org/10.1063/5.0106617).
+
+角度描述符需要有键角的信息，所以表达式中一定要有至少三个原子之间的键角。类似于径向描述符，我们可以构造出如下三体角度描述符：
+
+$$
+   q^i_{nl} = \sum_{j \neq i} \sum_{k \neq i} g_n(r_{ij}) g_n(r_{ij}) P_l(\theta_{ijk}),
+$$
+
+可以看到，三体角度描述符相比两体的径向描述符多了一个下标 $l$。这个下标是勒让德多项式 $P_l(\theta_{ijk})$ 的阶数。勒让德多项式是键角 $\theta_{ijk}$ 的函数。该键角是以原子 $i$ 为中心，以键 $ij$ 和 $ik$ 为两边的夹角。该式中的函数 $g_n(r_{ij})$ 和径向描述符中的对应函数一致，只不过可能有不同的截断距离 $r_\mathrm{c}^\mathrm{A}$。
+
+上述表达式中的双重求和保证了同类原子置换的不变性，但导致计算量正比于近邻个数的平方。有一个办法可以在不改变结果的前提下降低计算复杂度，那就是利用球谐函数的加法定理。利用该定理（练习题），可以将上述三体角度描述符写成如下等价的形式：
+
+$$
+   q^i_{nl} = \sum_{m=-l}^l (-1)^m A^i_{nlm} A^i_{nl(-m)},
+$$
+
+$$
+   A^i_{nlm} = \sum_{j\neq i} g_n(r_{ij}) Y_{lm}(\theta_{ij},\phi_{ij}),
+$$
+
+其中， $Y_{lm}(\theta_{ij},\phi_{ij})$ 是球谐函数。 $\theta_{ij}$ 是极角， $\phi_{ij}$ 是方位角。
+
+
 ### NEP机器学习势的训练
 
+机器学习势的训练也称为拟合，目的是根据一些物理量的参考值优化NEP机器学习势模型中的参数，包括人工神经网络中的权重和偏置参数，以及描述符中的 $g_n$ 函数所涉及的一些线性叠加参数。一般来说，一个元素一共有好几千个参数，对多元素体系则有更多参数。
+
 #### 损失函数
+
+为了优化模型中的参数，我们需要定义一个损失函数，优化的方向是得到尽可能小的损失函数值。也就是说，大的损失函数值对应精度差的模型，而小的损失函数值对应精度高的模型。很自然地，损失函数应该定义为由NEP计算的某些物理量相对参考值的“距离”。通常用方均根误差（root-mean-square error) 表示。
+
+那么，我们要考虑哪些物理量呢？我们知道，通过势函数，我们可以计算每个原子的能量、受力（矢量）以及位力（张量）。在NEP中我们就是使用这三个物理量进行训练。一般来说，参考值是通过量子力学密度泛函理论（DFT) 的方法计算的，其中能量和位力的一般来说只是针对整个构型来说的，而不是针对一个构型中的单个原子来说的。那么，我们需要针对 NEP 计算出整个构型的能量和位力，再和参考值对比。相反，力的对比可针对单个原子实现，因为 DFT 也可以计算单个原子的受力。
+
+根据以上考虑，我们在NEP中提出了如下损失函数：
+
+$$
+L(\boldsymbol{z}) = L_{\rm e}(\boldsymbol{z}) + L_{\rm f}(\boldsymbol{z}) + L_{\rm v}(\boldsymbol{z}) + L_1(\boldsymbol{z}) + L_2(\boldsymbol{z})
+$$
+
+$$
+L_{\rm e}(\boldsymbol{z}) 
+= \lambda_\mathrm{e} 
+\left( \frac{1}{N_\mathrm{str}}\sum_{n=1}^{N_\mathrm{str}} \left( U^\mathrm{NEP}(n,\boldsymbol{z}) - U^\mathrm{tar}(n)\right)^2
+\right)^{1/2} 
+$$
+
+$$
+L_{\rm f}(\boldsymbol{z}) = \lambda_\mathrm{f} \left( \frac{1}{3N} \sum_{i=1}^{N} \left( \boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z}) - \boldsymbol{F}_i^\mathrm{tar}\right)^2 \right)^{1/2} 
+$$
+
+$$
+L_{\rm v}(\boldsymbol{z}) = \lambda_\mathrm{v} \left( 
+   \frac{1}{6N_\mathrm{str}}
+   \sum_{n=1}^{N_\mathrm{str}} \sum_{\mu\nu} \left( W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z}) - W_{\mu\nu}^\mathrm{tar}(n)\right)^2
+   \right)^{1/2} 
+$$
+
+$$
+L_1(\boldsymbol{z}) = \lambda_1 \frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} |z_n| 
+$$
+
+$$
+L_2(\boldsymbol{z}) = \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
+$$
+
+在公式中有如下符号：
+- $N_\mathrm{str}$ 是训练集中结构的数目。
+- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ are the per-atom energy and virial tensor predicted by the $\boldsymbol{z}$ for the $n$ structure, and 
+- $\boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z})$ is the predicted force for the $i^\mathrm{th}$.
+- $U^\mathrm{tar}(n)$, $W_{\mu\nu}^\mathrm{tar}(n)$, and $\boldsymbol{F}_i^\mathrm{tar}$.
+- $\mathcal{L}_1$ $\mathcal{L}_2$ 正则化
 
 #### 自然演化策略
 
 ### NEP机器学习势的编程实现
 
+#### GPU实现
 NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。本章暂不讨论 GPUMD 程序包的使用。
 
+#### CPU实现
 NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP_CPU 程序包](https://github.com/brucefan1983/NEP_CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。我们下面的测试将使用该 C++ 实现。
 
 ## 习题
@@ -362,5 +434,19 @@ NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP_CPU �
 
 2. 将本章的 eam_md.cpp 从单元素体系推广到多元素体系，使其能模拟高熵合金。
 
-3. 
+3. 利用球谐函数的加法定理，将三体角度描述符
+
+$$
+   q^i_{nl} = \sum_{j \neq i} \sum_{k \neq i} g_n(r_{ij}) g_n(r_{ij}) P_l(\theta_{ijk}),
+$$
+
+推导为如下形式：
+
+$$
+   q^i_{nl} = \sum_{m=-l}^l (-1)^m A^i_{nlm} A^i_{nl(-m)},
+$$
+
+$$
+   A^i_{nlm} = \sum_{j\neq i} g_n(r_{ij}) Y_{lm}(\theta_{ij},\phi_{ij}).
+$$
 
