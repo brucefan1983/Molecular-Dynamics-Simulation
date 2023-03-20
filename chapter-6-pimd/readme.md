@@ -42,7 +42,7 @@
 
 ### CMD 的概念
 
-centroid MD.
+[Jianshu Cao 和 Gregory A. Voth](https://doi.org/10.1063/1.467175) 于 1994 提出 centroid MD (CMD).
 
 （但本书可能不打算针对 CMD 编程）
 
