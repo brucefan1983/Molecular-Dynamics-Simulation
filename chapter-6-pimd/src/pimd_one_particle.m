@@ -1,6 +1,7 @@
 clear; close all;
-n_beads=8; beta=1; hbar=1; m=1; lambda=5; dt = 0.01; tau_T=100;
+n_beads=128; beta=1; hbar=1; m=1; lambda=1; dt=0.5; tau_T=100;
 omega_n=n_beads/beta/hbar; n_step=200000; n_step_pimd=100000;
+cayley=true; % cayley is much more stable
 C=zeros(n_beads,n_beads);
 for j=1:n_beads
     for k=0:n_beads-1
@@ -15,7 +16,7 @@ for j=1:n_beads
         end
     end
 end
-p=linspace(-2,-1,n_beads); q=linspace(-1,1,n_beads); 
+p=linspace(0,0,n_beads); q=linspace(1,1,n_beads); 
 pp=zeros(n_step,n_beads); qq=zeros(n_step,n_beads);
 for step=1:n_step   
     p_normal=p*C;
@@ -34,6 +35,10 @@ for step=1:n_step
             q_normal(k+1)=(dt/m)*p_normal(k+1)+q_normal(k+1);
         else
             c=cos(omega_k*dt); s=sin(omega_k*dt);
+            if cayley
+                c=(1-(omega_k*dt/2)^2)/(1+(omega_k*dt/2)^2);
+                s=omega_k*dt/(1+(omega_k*dt/2)^2);
+            end
             p_temp=p_normal(k+1);
             q_temp=q_normal(k+1);
             p_normal(k+1)=c*p_temp-m*omega_k*s*q_temp;
@@ -68,3 +73,5 @@ plot(mean(qq(end/2+1:end,:),2),mean(pp(end/2+1:end,:),2),'.','markersize',20);
 xlabel('position');
 ylabel('momentum');
 set(gca,'fontsize',16);
+
+
