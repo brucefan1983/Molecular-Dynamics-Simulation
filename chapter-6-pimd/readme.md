@@ -38,7 +38,7 @@
 
 ### RPMD 的概念
 
-ring-polymer MD.
+[Craig 和 Manolopoulos](https://doi.org/10.1063/1.1777575) 于2004 提出了 ring-polymer MD （RPMD).
 
 ### CMD 的概念
 
