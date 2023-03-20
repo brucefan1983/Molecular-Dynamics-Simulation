@@ -29,12 +29,16 @@
 
 ### RPMD 的概念
 
+ring-polymer MD.
+
 ### CMD 的概念
+
+centroid MD.
 
 （但本书可能不打算针对 CMD 编程）
 
 ## 路径积分分子动力学的算法
 
-首先讲 Ceriotti 等人针对PIMD的 PILE。然后讲PRMD 以及 TRPMD的实现。这里要重点介绍 Korol 等人的 Cayley 变换。
+首先讲 Ceriotti 等人针对PIMD的 PILE (path integral Langevin equation)。然后讲RPMD 以及 TRPMD (thermostatted RPMD) 的实现。这里要重点介绍 Korol 等人的 Cayley 变换。
 
 用简谐振子为例编程实现。MATLAB 即可。
