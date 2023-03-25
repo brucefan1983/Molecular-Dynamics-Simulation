@@ -1,6 +1,6 @@
-clear; %close all;
-n_beads=128; beta=1; hbar=1; m=1; lambda=1; dt=0.08; tau_T=100;
-omega_n=n_beads/beta/hbar; n_step=200; n_step_pimd=0;
+function energy=get_energy(n_beads,beta)
+hbar=1; m=1; lambda=1; dt=0.1; tau_T=100;
+omega_n=n_beads/beta/hbar; n_step=1000000; n_step_pimd=1000000;
 cayley=true; % cayley is much more stable
 C=zeros(n_beads,n_beads);
 for j=0:n_beads-1
@@ -17,7 +17,7 @@ for j=0:n_beads-1
     end
 end
 p=linspace(0,0,n_beads); q=linspace(1,1,n_beads); 
-pp=zeros(n_step,n_beads); qq=zeros(n_step,n_beads);
+energy=zeros(n_step,1);
 for step=1:n_step   
     p_normal=p*C;
     c1=exp(-dt*omega_n*sin((0:n_beads-1)*pi/n_beads));
@@ -55,23 +55,12 @@ for step=1:n_step
     c2=sqrt(1-c1.^2);
     p_normal=c1.*p_normal+sqrt(n_beads*m/beta)*c2.*randn(1,n_beads);
     p=(C*p_normal.').';
-    pp(step,:)=p; qq(step,:)=q;
+    q_ave=mean(q);
+    kinetic_energy=0.5/beta+0.5*m*lambda*lambda*mean((q-q_ave).*q);
+    potential_energy=0.5*m*lambda*lambda*mean(q.^2);
+    energy(step)=kinetic_energy+potential_energy;
 end
-figure;
-plot((1:n_step)*dt,qq,'linewidth',0.5);hold on;
-plot((1:n_step)*dt,mean(qq,2),'r-','linewidth',3);hold on
-xlabel('time');
-ylabel('position');
-set(gca,'fontsize',16);
-figure;
-plot(mean(qq(1:end/2,:),2),mean(pp(1:end/2,:),2),'.','markersize',20);
-xlabel('position');
-ylabel('momentum');
-set(gca,'fontsize',16);
-figure;
-plot(mean(qq(end/2+1:end,:),2),mean(pp(end/2+1:end,:),2),'.','markersize',20);
-xlabel('position');
-ylabel('momentum');
-set(gca,'fontsize',16);
+energy=mean(energy(end/2+1:end));
+
 
 
