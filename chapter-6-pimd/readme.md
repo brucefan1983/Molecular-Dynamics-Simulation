@@ -74,4 +74,4 @@
 
 用公开的 [NEP 势](https://gitlab.com/brucefan1983/nep-data) 计算水的径向分布函数，结果如下图所示。
 
-![water_rdf](src/water_rdf.jpg)
+![water_rdf](src/water_nep/water_rdf.jpg)
