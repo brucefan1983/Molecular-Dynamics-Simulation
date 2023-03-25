@@ -411,7 +411,7 @@ $$
 L_2(\boldsymbol{z}) = \lambda_2 \left(\frac{1}{N_\mathrm{par}} \sum_{n=1}^{N_\mathrm{par}} z_n^2\right)^{1/2}.
 $$
 
-在公式中有如下符号：
+在公式中有如下符号（在写。。。）：
 - $N_\mathrm{str}$ 是训练集中结构的数目。
 - $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W_{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ are the per-atom energy and virial tensor predicted by the $\boldsymbol{z}$ for the $n$ structure, and 
 - $\boldsymbol{F}_i^\mathrm{NEP}(\boldsymbol{z})$ is the predicted force for the $i^\mathrm{th}$.
