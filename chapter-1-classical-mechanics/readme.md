@@ -197,9 +197,9 @@ $$
 
 这就是说，在一个保守力的作用下，任意过程中粒子的动能与势能的和都不改变。这个不改变的量称为机械能:
 
-$
-E = T + U.
-$
+$$
+E = T + U
+$$
 
 所以，在保守力的作用下，粒子的机械能是守恒的。这就是机械能守恒原理。虽然称为原理，其实它并不是一个真正的原理，而是牛顿运动定律的推论。牛顿力学中真正的原理只有牛顿三大定律，其它的都是推论。
 
@@ -208,81 +208,113 @@ $
 在具体讨论粒子系的动力学行为之前必须先弄清楚内力和外力的区别。内力是系统中某个粒子作用于另一个粒子的，而外力来自于系统之外。内力满足牛顿第三定律。虽然外界施与粒子 $i$ 一个力 $\vec{F}^{\text{ext}}_{i}$ 的同时，粒子 $i$ 同时也施与外界一个大小相等、方向相反的反作用力，但由于我们的系统不包含外界，我们通常不会对外力利用第三定律。以上就是内力与外力的区别。
 
 对任意一个粒子 $i$，我们可以写下它的动力学方程：
-\begin{equation}
+
+$$
 m_i \ddot{\vec{x}}_i = \sum_{j\neq i} \vec{F}_{ij} + \vec{F}^{\text{ext}}_{i}.
-\end{equation}
+$$
+
 将上式左右两边都对指标 $i$ 求和，得
-\begin{equation}
+
+$$
 \sum_i m_i \ddot{\vec{x}}_i = \sum_i \sum_{j\neq i} \vec{F}_{ij} + \sum_i \vec{F}^{\text{ext}}_{i}.
-\end{equation}
-根据牛顿第三定律，等号右边的第一项等于零 (练习题)。系统的总质量定义为 $m = \sum_i m_i$。如果定义一个平均坐标
-\begin{equation}
+$$
+
+根据牛顿第三定律，等号右边的第一项等于零。系统的总质量定义为 $m = \sum_i m_i$。如果定义一个平均坐标
+
+$$
 \vec{x} = \frac{\sum_i m_i \vec{x}_i}{m},
-\end{equation}
+$$
+
 那么我们有
-\begin{equation}
+
+$$
 m \ddot{\vec{x}} = \sum_i \vec{F}^{\text{ext}}_{i}.
-\end{equation}
+$$
+
 这个式子看上去很像一个质量为系统总质量 $m$，坐标为平均坐标 $\vec{x}$ 的粒子的动力学方程；该粒子所受的合外力为整个粒子系所受的合外力。我们称这个等效的粒子为粒子系的质心。质心的质量就是整个系统的质量；质心坐标就是上述平均坐标；质心的运动满足上述等效的牛顿第二定律。
 
 由质心坐标可以定义质心速度
-\begin{equation}
+
+$$
 \dot{\vec{x}} = \frac{\sum_i m_i \dot{\vec{x}}_i}{m}
-\end{equation}
+$$
 和质心动量
-\begin{equation}
+
+$$
 \vec{p} = m \dot{\vec{x}} = \sum_i m_i \dot{\vec{x}}_i.
-\end{equation}
+$$
+
 于是，质心的牛顿第二定律可用质心动量表达为：
-\begin{equation}
+
+$$
 \frac{d \vec{p}}{dt} = \sum_i \vec{F}^{\text{ext}}_{i}.
-\end{equation}
+$$
+
 如果系统受到的合外力为零，那么系统的质心动量（即系统的总动量）是守恒的。这就是质点系的动量守恒定律。
 
 类似地，由牛顿第三定律可以证明内力对系统的总力矩的贡献也是零，即系统所受的总力矩等于外力的总力矩 $\vec{\tau}^{\text{ext}}$：
-\begin{equation}
+
+$$
 \vec{\tau}^{\text{ext}} = \sum_i^N \vec{x}_i \times \vec{F}_i^{\text{ext}}.
-\end{equation}
+$$
+
 如果定义系统的总角动量为
-\begin{equation}
+
+$$
 \vec{L} = \sum_i^N \vec{L}_i = \sum_i^N \vec{x}_i \times \vec{p}_i,
-\end{equation}
+$$
+
 那么可以证明如下的角动量定理：
-\begin{equation}
+
+$$
 \frac{d \vec{L}}{dt} = \vec{\tau}^{\text{ext}}.
-\end{equation}
+$$
+
 这就是说，外力产生的总力矩等于系统总角动量的时间变化率。如果外力产生的总力矩等于零，则有系统的总角动量守恒。这就是质点系的角动量守恒定理。
 
-不同于力和力矩，内力对系统中的粒子做的总功并不一定为零。例如，两个粒子在相互的排斥力的作用下从静止开始做反向的加速运动，它们之间的内力做了正功。在一个微小过程中，如果第$i$个粒子的微分位移为$d\vec{x}_i$，那么内力对系统中的粒子做的功为
-\begin{equation}
+不同于力和力矩，内力对系统中的粒子做的总功并不一定为零。例如，两个粒子在相互的排斥力的作用下从静止开始做反向的加速运动，它们之间的内力做了正功。在一个微小过程中，如果第 $i$ 个粒子的微分位移为 $d\vec{x}_i$ ，那么内力对系统中的粒子做的功为
+
+$$
 dW^{\text{int}} = \sum_i^N \vec{F}_i^{\text{int}} \cdot d\vec{x}_i,
-\end{equation}
+$$
+
 外力对系统中的粒子做的功为
-\begin{equation}
+$$
 dW^{\text{ext}} = \sum_i^N \vec{F}_i^{\text{ext}} \cdot d\vec{x}_i.
-\end{equation}
+$$
+
 系统中的粒子得到的总功为
-\begin{equation}
+
+$$
 dW = dW^{\text{ext}} + dW^{\text{int}}.
-\end{equation}
+$$
+
 因为对每一个粒子，有
-\begin{equation}
+
+$$
 (\vec{F}_i^{\text{int}} + \vec{F}_i^{\text{ext}}) \cdot d\vec{x}_i = d T_i,
-\end{equation}
+$$
+
 所以，综合起来有
-\begin{equation}
+
+$$
 dW=dT.
-\end{equation}
+$$
+
 其中，$T$ 定义为系统的总动能：
-\begin{equation}
+
+$$
 T = \sum_i^N T_i = \sum_i^N  \left( \frac{1}{2} m_i \vec{v}_i^2 \right).
-\end{equation}
+$$
+
 这就是说，内力和外力做的功的总和等于系统总动能的改变。只有内力和外力做的总功为零时，系统的动能才守恒。
 
 对于有相互作用的多粒子系统，如果内力和外力都是保守力，那么系统的总势能可以表达为
-\begin{equation}
+
+$$
 U = \sum_i U_i + \frac{1}{2} \sum_i^N \sum_{j\neq i}^N U_{ij},
-\end{equation}
+$$
+
 其中，$U_i$ 是第 $i$ 个粒子在外力场中的势能，$U_{ij}$ 是系统中由 $i$ 与 $j$ 的相互作用导致的势能。
 
 ## 分析力学
