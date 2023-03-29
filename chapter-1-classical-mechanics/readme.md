@@ -11,8 +11,6 @@
  	  - [速度-Verlet积分算法](#速度-Verlet积分算法)
  	- [简谐振子运动的数值求解](#简谐振子运动的数值求解)
 - [分析力学](#分析力学)
-  - [广义坐标](#广义坐标)
-  - [虚功原理和达朗伯原理](#虚功原理和达朗伯原理)
   - [拉格朗日方程](#拉格朗日方程)
   - [哈密顿方程](#哈密顿方程)
   - [相空间](#相空间)
@@ -324,7 +322,7 @@ end
 
 ## 分析力学
 
-### 广义坐标
+### 拉格朗日方程
 
 我们知道，一个由 $N$ 个质点构成的力学系统需要用 $3N$ 个坐标分量及其相应的速度分量来描述其运动状态。我们说，该系统的力学自由度为 $3N$。 但如果是一个由这 $N$ 个质点构成的刚体，则自由度只有 6：3 个平动自由度和 3 个转动自由度。刚体的自由度之所以小于自由质点系统的自由度，是因为刚体系统中有约束。
 
@@ -338,214 +336,19 @@ $$
 
 容易看出，一个原本有 $M$ 个自由度的体系，若受到 $m$ 个几何约束，则其自由度为 $s=M-m$。要描述该体系，我们不一定需要使用原来的 $M$ 个坐标和速度，而可以构造 $s$ 个新的坐标和速度。这 $s$ 个新的坐标不一定限于在原来的 $M$ 个老坐标中挑选，而完全可以另行选取。这样选取的新坐标叫做广义坐标。广义坐标不一定能三个一组地构成矢量，而且某个广义坐标也不一定具有长度的量纲。相应地，某个广义速度也不一定具有速度的量纲。
 
-### 虚功原理和达朗伯原理
-
-在有约束的情况下，力学系统各个部分虽然不能随心所欲地运动，但总能作某种运动。我们把考虑约束之前的某个自由度在有约束的情况下所具有的一切可能的位移叫做虚位移，记为 $\delta \vec{x}_i$。
-
-系统中某个质点 $i$ 除了可能受到普通的力 $\vec{F}_i$ （叫做主动力）之外，还可能受到约束反力 $\vec{N}_i$ 。若该质点保持力学平衡，则有
-
-$$
-\vec{F}_i + \vec{N}_i = 0.
-$$
-
-正如力与位移的标量积定义为功，力与虚位移的标量积定义为虚功。显然，质点 $i$ 平衡时主动力与约束反力的虚功之和 $\delta W_i$ 为零：
-
-$$
-\delta W_i = (\vec{F}_i + \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-$$
-
-对所有质点进行求和，则有
-
-$$
-\delta W = \sum_{i=1}^{N} \delta W_i = \sum_{i=1}^{N}
-(\vec{F}_i + \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-$$
-
-在很多重要的情况下，作为内力的各个约束反力做的总虚功为零：
-
-$$
-\sum_{i=1}^{N} \vec{N}_i \cdot\delta  \vec{x}_i = 0.
-$$
-
-这种情况下的约束叫做理想约束。在理想约束作用下，我们有
-
-$$
-\sum_{i=1}^{N}
-\vec{F}_i \cdot \delta \vec{x}_i = 0.
-$$
-
-该式表达的就是虚功原理。
-
-以上考虑的是静力学问题。在动力学问题中，质量为 $m_i$ 、坐标为 $\vec{x}_i$ 的质点的运动方程可以写为：
-
-$$
-\vec{F}_i + \vec{N}_i = m_i\ddot{\vec{x}}_i.
-$$
-
-若选取跟随质点一同运动的参考系，则上式可改写为
-
-$$
-\vec{F}_i - m_i\ddot{\vec{x}}_i + \vec{N}_i = 0.
-$$
-
-其中， $- m_i\ddot{\vec{x}}_i$ 可以理解为惯性力。类似于对虚功原理的推导，我们有如下等式：
-
-$$
-\sum_{i=1}^{N}
-(\vec{F}_i - m_i\ddot{\vec{x}}_i+ \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-$$
-
-在理想约束的作用下，我们有
-
-$$
-\sum_{i=1}^{N} \vec{F}_i \cdot \delta \vec{x}_i
-- \sum_{i=1}^{N} m_i\ddot{\vec{x}}_i \cdot \delta \vec{x}_i = 0.
-$$
-
-该式表达的就是达朗伯原理。它是下一小节讨论的出发点。
-
-### 拉格朗日方程
-
-考虑 $N$ 个质点组成的力学系统。质点 $i$ 的质量和坐标分别为 $m_i$ 和 $\vec{x}_i$，其中 $i=1, 2, \cdots, N$。 若有 $m$ 个理想的几何约束，则可以定义 $s=3N-m$ 个广义坐标 $q_1, q_2, \cdots q_s$。通常将这些坐标的集合简记为 $q$。原来的坐标可以表达为广义坐标的函数：
-
-$$
-\vec{x}_i = \vec{x}_i(q) \quad (i = 1, 2, \cdots, N).
-$$
-
-运用上述坐标变换，可以将达朗伯原理的表达式写成
-
-$$
-\vec{F}_i \cdot
-\frac{\partial \vec{x}_i}{\partial q_{\alpha}} \delta q_{\alpha} -
-m_i  \ddot{\vec{x}_i} \cdot
-\frac{\partial \vec{x}_i} {\partial q_{\alpha}} \delta q_{\alpha} = 0.
-$$
-
-从上式开始，我们用了爱因斯坦求和约定。另外要注意的是，虚位移不是原来的坐标所特有的，新的广义坐标也可以有虚位移，因为一个坐标如果没有虚位移那就没有让它成为坐标的必要了。
-
-因为新的广义坐标是相互独立（因为广义坐标个数等于自由度个数，我们总可以做到这一点）的，所以根据上式我们有下式：
-
-$$
-\vec{F}_i \cdot
-\frac{\partial \vec{x}_i}{\partial q_{\alpha}} -
-m_i  \ddot{\vec{x}_i} \cdot
-\frac{\partial \vec{x}_i} {\partial q_{\alpha}} = 0.
-\quad (\alpha = 1, 2, \cdots, s).
-$$
-
-下面的任务就是从该式出发推导拉格朗日方程。
-
-上式中的加速度 $\ddot{\vec{x}_i}$ 是比较讨厌的，我们可以用求导的乘积率换掉它：
-
-$$
-m_i \ddot{\vec{x}_i} \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}}
-= m_i \frac{d}{dt}
-\left( \dot{\vec{x}_i} \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right)
--m_i \dot{\vec{x}_i} \cdot \frac{d}{dt}
-\left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right)
-$$
-
-上面的等式中出现了速度 $\dot{\vec{x}_i}$ 和位置 $\vec{x}_i$ 的混合，还是比较讨厌。你是不是想：要是
-
-$$
-\frac{\partial \vec{x}_i} {\partial q_{\alpha}} =
-\frac{\partial \dot{\vec{x}}_i}{\partial \dot{q}_{\alpha}},
-$$
+将 $s$ 个广义坐标 $q_1, q_2, \cdots q_s$ 的集合简记为 $q$。对于保守力体系，可以从牛顿力学出发推导出如下拉格朗日方程：
 
 $$
 \frac{d}{dt}
-\left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) =
-\frac{\partial \dot{\vec{x}}_i}{\partial q_{\alpha}}
-$$
-
-就好了？这两个式子确实是成立的。对于第一个，我们证明右边等于左边：
-
-$$
-\frac{\partial \dot{\vec{x}}_i}{\partial \dot{q}_{\alpha}} =
-\frac{\partial}{\partial \dot{q}_{\alpha}} \left( \frac{\partial \vec{x}_i} {\partial q_{\beta}}  \dot{q}_{\beta}\right) =
-\frac{\partial \vec{x}_i} {\partial q_{\beta}} \delta_{\alpha\beta} =
-\frac{\partial \vec{x}_i} {\partial q_{\alpha}}.
-$$
-
-对于第二个，我们证明左边等于右边：
-
-$$
-\frac{d}{dt}
-\left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) =
-\frac{\partial}{\partial q_{\beta}} \left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) \dot{q}_{\beta} =
-\frac{\partial}{\partial q_{\alpha}} \left( \frac{\partial \vec{x}_i} {\partial q_{\beta}} \right) \dot{q}_{\beta} =
-\frac{\partial \dot{\vec{x}}_i}{\partial q_{\alpha}}
-$$
-
-利用它们，我们马上有：
-
-$$
-m_i \ddot{\vec{x}_i} \cdot
-\frac{\partial \vec{x}_i} {\partial q_{\alpha}}
-=& m_i \frac{d}{dt}
-\left(
-\dot{\vec{x}_i} \cdot \frac{\partial \dot{\vec{x}}_i}{\partial \dot{q}_{\alpha}}
-\right)
--m_i \dot{\vec{x}_i} \cdot \frac{\partial \dot{\vec{x}}_i}{\partial q_{\alpha}}
-\nonumber \\
-=&  \frac{d}{dt}
-\left[
-\frac{\partial}{\partial \dot{q}_{\alpha}}
-\left( \frac{m_i\dot{\vec{x}_i} \cdot \dot{\vec{x}}_i}{2}\right)
-\right]
--\frac{\partial}{\partial q_{\alpha}}
-\left( \frac{m_i\dot{\vec{x}_i} \cdot \dot{\vec{x}}_i}{2}\right)
-$$
-
-上式中第二个等号右边的两对小括号中的表达式都是系统的动能 $T$。于是，我们最终可以将达朗伯原理的表达式写成：
-
-$$
-\frac{d}{dt}
-\left(\frac{\partial T}{\partial \dot{q}_{\alpha}}\right)
--\frac{\partial T}{\partial q_{\alpha}}
-=\vec{F}_i \cdot \frac{\partial \vec{x}_i}{\partial q_{\alpha}}.
-\quad (\alpha = 1, 2, \cdots, s)
-$$
-
-这就是我们要推导的拉格朗日方程。右边的表达式叫做广义力。对于保守力，主动力的虚功可以写成
-
-$$
-\vec{F}_i \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \delta q_{\alpha}
-= \vec{F}_i \cdot \delta \vec{x}_i
-= -\delta V.
-$$
-
-其中，$V$ 是体系的势能函数。于是，
-
-$$
-\vec{F}_i \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}}
-= - \frac{ \delta V} {  \delta q_{\alpha} }
-= - \frac{ \partial V} {  \partial q_{\alpha} }.
-$$
-
-所以，对于保守力体系，拉格朗日方程可写为：
-
-$$
-\frac{d}{dt}
-\left(\frac{\partial T}{\partial \dot{q}_{\alpha}}\right)
--\frac{\partial T}{\partial q_{\alpha}}
-= - \frac{ \partial V} {  \partial q_{\alpha} }.
-\quad (\alpha = 1, 2, \cdots, s)
-$$
-
-势能 $V$ 仅仅是广义坐标的函数，而不是广义速度 $\dot{q}_{\alpha}$ 的函数, 故有
-
-$$
-\frac{d}{dt}
-\left(\frac{\partial (T-V)}{\partial \dot{q}_{\alpha}}\right)
--\frac{\partial (T-V)}{\partial q_{\alpha}} = 0.
+\left(\frac{\partial (T-U)}{\partial \dot{q}_{\alpha}}\right)
+-\frac{\partial (T-U)}{\partial q_{\alpha}} = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 $$
 
 这里出现的动能与势能的差是一个很重要的量，叫做拉格朗日量，记为
 
 $$
-L(q, \dot{q}) = T(\dot{q}) - V(q).
+L(q, \dot{q}) = T(\dot{q}) - U(q).
 $$
 
 用拉格朗日量可以将拉格朗日方程写成更加简洁的形式：
