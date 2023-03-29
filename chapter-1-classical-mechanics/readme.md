@@ -529,16 +529,13 @@ $$
 正如上面提到的，我们将相空间和其中的相点比作流体。对于这样的“流体”，我们有如下守恒定律：
 
 $$
-\frac{\partial \rho}{\partial t}
-+ \frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha})
-+ \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
+\frac{\partial \rho}{\partial t} + \frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha}) + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
 $$
 
 类似的公式在电磁学中叫做电荷守恒定律。因为相点是不会凭空产生和消失的，那么这个“流体”还不是一般的流体，而是不可压缩流体。对于不可压缩流体，上式中的“散度”处处为零：
 
 $$
-\frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha})
-+ \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
+\frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha}) + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
 $$
 
 于是，我们有
@@ -552,18 +549,13 @@ $$
 要证明刘维尔定理，就是要证明下式：
 
 $$
-\frac{d \rho}{dt} =
-\frac{\partial \rho}{\partial q_{\alpha}} \dot{q}_{\alpha}
-+ \frac{\partial \rho}{\partial p_{\alpha}} \dot{p}_{\alpha}
-= 0.
+\frac{d \rho}{dt} = \frac{\partial \rho}{\partial q_{\alpha}} \dot{q}_{\alpha} + \frac{\partial \rho}{\partial p_{\alpha}} \dot{p}_{\alpha} = 0.
 $$
 
 将此式与上面“散度”为零的式子比较可知，只要能证明下式就大功告成了：
 
 $$
-\frac{\partial \dot{q}_{\alpha} }{\partial q_{\alpha}}
-+ \frac{\partial \dot{p}_{\alpha} }{\partial p_{\alpha}}
-= 0.
+\frac{\partial \dot{q}_{\alpha} }{\partial q_{\alpha}} + \frac{\partial \dot{p}_{\alpha} }{\partial p_{\alpha}} = 0.
 $$
 
 根据哈密顿正则方程，该式显然是恒成立的。刘维尔定理证毕。
