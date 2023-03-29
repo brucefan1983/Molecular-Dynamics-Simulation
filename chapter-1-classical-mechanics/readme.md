@@ -255,6 +255,7 @@ dW^{\text{int}} = \sum_i^N \vec{F}_i^{\text{int}} \cdot d\vec{x}_i,
 $$
 
 外力对系统中的粒子做的功为
+
 $$
 dW^{\text{ext}} = \sum_i^N \vec{F}_i^{\text{ext}} \cdot d\vec{x}_i.
 $$
