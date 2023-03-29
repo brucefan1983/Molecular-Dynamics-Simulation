@@ -392,10 +392,7 @@ $$
 虽然广义动量出现在拉格朗日方程中，但我们要清楚的是拉格朗日量是广义坐标和广义速度的函数，而不是广义动量的函数。用勒让德变换可以改变一个多元函数的独立变量。为此，我们先写下拉格朗日量的全微分：
 
 $$
-d L(q, \dot{q})
-= \frac{\partial L}{\partial q_{\alpha}} d q_{\alpha}
-+ \frac{\partial L}{\partial \dot{q}_{\alpha}} d \dot{q}_{\alpha}
-= \dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}.
+d L(q, \dot{q}) = \frac{\partial L}{\partial q_{\alpha}} d q_{\alpha} + \frac{\partial L}{\partial \dot{q}_{\alpha}} d \dot{q}_{\alpha} = \dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}.
 $$
 
 下面的勒让德变换能将独立变量从广义速度变成广义动量：
@@ -455,6 +452,8 @@ $$
 这 $2s$ 个函数将在 $2s$ 维的相空间给出一条轨迹，叫做相轨迹。随着时间的推移，一条相轨迹会在相空间跑动，历经很多不同的相点。一个系统中不同的初始条件会给出不同的相轨迹，而两条不同的相轨迹绝对不会相交于某一个相点（请读者自行证明）。
 
 例子：简谐振子的相空间。
+
+![phase_space](src/phase_space.png)
 
 ### 泊松括号和刘维尔算符
 
