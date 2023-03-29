@@ -323,125 +323,158 @@ $$
 
 我们知道，一个由 $N$ 个质点构成的力学系统需要用 $3N$ 个坐标分量及其相应的速度分量来描述其运动状态。我们说，该系统的力学自由度为 $3N$。 但如果是一个由这 $N$ 个质点构成的刚体，则自由度只有 6：3 个平动自由度和 3 个转动自由度。刚体的自由度之所以小于自由质点系统的自由度，是因为刚体系统中有约束。
 
-约束的分类很复杂，但我们只关注最简单的一种：稳定的几何约束。考虑一个由 $N$ 个质点构成的力学系统，其中第 $i$ 个质点的位置为 $\vec{x}_i$。一个稳定的几何约束一般可以表达为：
-\begin{equation}
+约束的分类很复杂，但我们只关注最简单的一种：稳定的几何约束。考虑一个由 $N$ 个质点构成的力学系统，其中第 $i$ 个质点的位置为 $\vec{x}_i$ 。一个稳定的几何约束一般可以表达为：
+
+$$
 f(\vec{x}_1, \vec{x}_2,\cdots) = 0.
-\end{equation}
-其中，$f$ 是个一般的函数。
+$$
+
+其中， $f$ 是个一般的函数。
 
 容易看出，一个原本有 $M$ 个自由度的体系，若受到 $m$ 个几何约束，则其自由度为 $s=M-m$。要描述该体系，我们不一定需要使用原来的 $M$ 个坐标和速度，而可以构造 $s$ 个新的坐标和速度。这 $s$ 个新的坐标不一定限于在原来的 $M$ 个老坐标中挑选，而完全可以另行选取。这样选取的新坐标叫做广义坐标。广义坐标不一定能三个一组地构成矢量，而且某个广义坐标也不一定具有长度的量纲。相应地，某个广义速度也不一定具有速度的量纲。
 
-### 虚功原理和达朗伯 (d'Alembert) 原理
+### 虚功原理和达朗伯原理
 
-在有约束的情况下，力学系统各个部分虽然不能随心所欲地运动，但总能作某种运动。我们把考虑约束之前的某个自由度在有约束的情况下所具有的一切可能的位移叫做虚位移，记为$\delta \vec{x}_i$。
+在有约束的情况下，力学系统各个部分虽然不能随心所欲地运动，但总能作某种运动。我们把考虑约束之前的某个自由度在有约束的情况下所具有的一切可能的位移叫做虚位移，记为 $\delta \vec{x}_i$。
 
-系统中某个质点$i$除了可能受到普通的力$\vec{F}_i$（叫做主动力）之外，还可能受到约束反力$\vec{N}_i$。若该质点保持力学平衡，则有
-\begin{equation}
+系统中某个质点 $i$ 除了可能受到普通的力 $\vec{F}_i$ （叫做主动力）之外，还可能受到约束反力 $\vec{N}_i$ 。若该质点保持力学平衡，则有
+
+$$
 \vec{F}_i + \vec{N}_i = 0.
-\end{equation}
+$$
 
 正如力与位移的标量积定义为功，力与虚位移的标量积定义为虚功。显然，质点 $i$ 平衡时主动力与约束反力的虚功之和 $\delta W_i$ 为零：
-\begin{equation}
+
+$$
 \delta W_i = (\vec{F}_i + \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-\end{equation}
+$$
+
 对所有质点进行求和，则有
-\begin{equation}
+
+$$
 \delta W = \sum_{i=1}^{N} \delta W_i = \sum_{i=1}^{N}
 (\vec{F}_i + \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-\end{equation}
+$$
+
 在很多重要的情况下，作为内力的各个约束反力做的总虚功为零：
-\begin{equation}
+
+$$
 \sum_{i=1}^{N} \vec{N}_i \cdot\delta  \vec{x}_i = 0.
-\end{equation}
+$$
+
 这种情况下的约束叫做理想约束。在理想约束作用下，我们有
-\begin{equation}
+
+$$
 \sum_{i=1}^{N}
 \vec{F}_i \cdot \delta \vec{x}_i = 0.
-\end{equation}
+$$
+
 该式表达的就是虚功原理。
 
-以上考虑的是静力学问题。在动力学问题中，质量为 $m_i$、坐标为 $\vec{x}_i$ 的质点的运动方程可以写为：
-\begin{equation}
+以上考虑的是静力学问题。在动力学问题中，质量为 $m_i$ 、坐标为 $\vec{x}_i$ 的质点的运动方程可以写为：
+
+$$
 \vec{F}_i + \vec{N}_i = m_i\ddot{\vec{x}}_i.
-\end{equation}
+$$
+
 若选取跟随质点一同运动的参考系，则上式可改写为
-\begin{equation}
+
+$$
 \vec{F}_i - m_i\ddot{\vec{x}}_i + \vec{N}_i = 0.
-\end{equation}
-其中，$- m_i\ddot{\vec{x}}_i$可以理解为惯性力。类似于对虚功原理的推导，我们有如下等式：
-\begin{equation}
+$$
+
+其中， $- m_i\ddot{\vec{x}}_i$ 可以理解为惯性力。类似于对虚功原理的推导，我们有如下等式：
+
+$$
 \sum_{i=1}^{N}
 (\vec{F}_i - m_i\ddot{\vec{x}}_i+ \vec{N}_i) \cdot \delta \vec{x}_i = 0.
-\end{equation}
+$$
+
 在理想约束的作用下，我们有
-\begin{equation}
+
+$$
 \sum_{i=1}^{N} \vec{F}_i \cdot \delta \vec{x}_i
 - \sum_{i=1}^{N} m_i\ddot{\vec{x}}_i \cdot \delta \vec{x}_i = 0.
-\end{equation}
+$$
+
 该式表达的就是达朗伯原理。它是下一小节讨论的出发点。
 
-### 拉格朗日 (Lagrange) 方程
+### 拉格朗日方程
 
-考虑 $N$ 个质点组成的力学系统。质点 $i$ 的质量和坐标分别为 $m_i$ 和 $\vec{x}_i$，其中$i=1, 2, \cdots, N$。 若有 $m$个理想的几何约束，则可以定义$s=3N-m$个广义坐标$q_1, q_2, \cdots q_s$。通常将这些坐标的集合简记为$q$。原来的坐标可以表达为广义坐标的函数：
-\begin{equation}
+考虑 $N$ 个质点组成的力学系统。质点 $i$ 的质量和坐标分别为 $m_i$ 和 $\vec{x}_i$，其中 $i=1, 2, \cdots, N$。 若有 $m$ 个理想的几何约束，则可以定义 $s=3N-m$ 个广义坐标 $q_1, q_2, \cdots q_s$。通常将这些坐标的集合简记为 $q$。原来的坐标可以表达为广义坐标的函数：
+
+$$
 \vec{x}_i = \vec{x}_i(q) \quad (i = 1, 2, \cdots, N).
-\end{equation}
+$$
 
 运用上述坐标变换，可以将达朗伯原理的表达式写成
-\begin{equation}
+
+$$
 \vec{F}_i \cdot
 \frac{\partial \vec{x}_i}{\partial q_{\alpha}} \delta q_{\alpha} -
 m_i  \ddot{\vec{x}_i} \cdot
 \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \delta q_{\alpha} = 0.
-\end{equation}
+$$
+
 从上式开始，我们用了爱因斯坦求和约定。另外要注意的是，虚位移不是原来的坐标所特有的，新的广义坐标也可以有虚位移，因为一个坐标如果没有虚位移那就没有让它成为坐标的必要了。
 
 因为新的广义坐标是相互独立（因为广义坐标个数等于自由度个数，我们总可以做到这一点）的，所以根据上式我们有下式：
-\begin{equation}
+
+$$
 \vec{F}_i \cdot
 \frac{\partial \vec{x}_i}{\partial q_{\alpha}} -
 m_i  \ddot{\vec{x}_i} \cdot
 \frac{\partial \vec{x}_i} {\partial q_{\alpha}} = 0.
 \quad (\alpha = 1, 2, \cdots, s).
-\end{equation}
+$$
+
 下面的任务就是从该式出发推导拉格朗日方程。
 
-上式中的加速度$\ddot{\vec{x}_i}$是比较讨厌的，我们可以用求导的乘积率换掉它：
-\begin{equation}
+上式中的加速度 $\ddot{\vec{x}_i}$ 是比较讨厌的，我们可以用求导的乘积率换掉它：
+
+$$
 m_i \ddot{\vec{x}_i} \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}}
 = m_i \frac{d}{dt}
 \left( \dot{\vec{x}_i} \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right)
 -m_i \dot{\vec{x}_i} \cdot \frac{d}{dt}
 \left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right)
-\end{equation}
+$$
 
-上面的等式中出现了速度$\dot{\vec{x}_i}$和位置 $\vec{x}_i$ 的混合，还是比较讨厌。你是不是想：要是
-\begin{equation}
+上面的等式中出现了速度 $\dot{\vec{x}_i}$ 和位置 $\vec{x}_i$ 的混合，还是比较讨厌。你是不是想：要是
+
+$$
 \frac{\partial \vec{x}_i} {\partial q_{\alpha}} =
 \frac{\partial \dot{\vec{x}}_i}{\partial \dot{q}_{\alpha}},
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \frac{d}{dt}
 \left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) =
 \frac{\partial \dot{\vec{x}}_i}{\partial q_{\alpha}}
-\end{equation}
+$$
+
 就好了？这两个式子确实是成立的。对于第一个，我们证明右边等于左边：
-\begin{equation}
+
+$$
 \frac{\partial \dot{\vec{x}}_i}{\partial \dot{q}_{\alpha}} =
 \frac{\partial}{\partial \dot{q}_{\alpha}} \left( \frac{\partial \vec{x}_i} {\partial q_{\beta}}  \dot{q}_{\beta}\right) =
 \frac{\partial \vec{x}_i} {\partial q_{\beta}} \delta_{\alpha\beta} =
 \frac{\partial \vec{x}_i} {\partial q_{\alpha}}.
-\end{equation}
+$$
+
 对于第二个，我们证明左边等于右边：
-\begin{equation}
+
+$$
 \frac{d}{dt}
 \left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) =
 \frac{\partial}{\partial q_{\beta}} \left( \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \right) \dot{q}_{\beta} =
 \frac{\partial}{\partial q_{\alpha}} \left( \frac{\partial \vec{x}_i} {\partial q_{\beta}} \right) \dot{q}_{\beta} =
 \frac{\partial \dot{\vec{x}}_i}{\partial q_{\alpha}}
-\end{equation}
+$$
+
 利用它们，我们马上有：
-\begin{align}
+
+$$
 m_i \ddot{\vec{x}_i} \cdot
 \frac{\partial \vec{x}_i} {\partial q_{\alpha}}
 =& m_i \frac{d}{dt}
@@ -457,143 +490,181 @@ m_i \ddot{\vec{x}_i} \cdot
 \right]
 -\frac{\partial}{\partial q_{\alpha}}
 \left( \frac{m_i\dot{\vec{x}_i} \cdot \dot{\vec{x}}_i}{2}\right)
-\end{align}
+$$
 
 上式中第二个等号右边的两对小括号中的表达式都是系统的动能 $T$。于是，我们最终可以将达朗伯原理的表达式写成：
-\begin{equation}
+
+$$
 \frac{d}{dt}
 \left(\frac{\partial T}{\partial \dot{q}_{\alpha}}\right)
 -\frac{\partial T}{\partial q_{\alpha}}
 =\vec{F}_i \cdot \frac{\partial \vec{x}_i}{\partial q_{\alpha}}.
 \quad (\alpha = 1, 2, \cdots, s)
-\end{equation}
+$$
+
 这就是我们要推导的拉格朗日方程。右边的表达式叫做广义力。对于保守力，主动力的虚功可以写成
-\begin{equation}
+
+$$
 \vec{F}_i \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}} \delta q_{\alpha}
 = \vec{F}_i \cdot \delta \vec{x}_i
 = -\delta V.
-\end{equation}
+$$
+
 其中，$V$ 是体系的势能函数。于是，
-\begin{equation}
+
+$$
 \vec{F}_i \cdot \frac{\partial \vec{x}_i} {\partial q_{\alpha}}
 = - \frac{ \delta V} {  \delta q_{\alpha} }
 = - \frac{ \partial V} {  \partial q_{\alpha} }.
-\end{equation}
+$$
+
 所以，对于保守力体系，拉格朗日方程可写为：
-\begin{equation}
+
+$$
 \frac{d}{dt}
 \left(\frac{\partial T}{\partial \dot{q}_{\alpha}}\right)
 -\frac{\partial T}{\partial q_{\alpha}}
 = - \frac{ \partial V} {  \partial q_{\alpha} }.
 \quad (\alpha = 1, 2, \cdots, s)
-\end{equation}
+$$
+
 势能 $V$ 仅仅是广义坐标的函数，而不是广义速度 $\dot{q}_{\alpha}$ 的函数, 故有
-\begin{equation}
+
+$$
 \frac{d}{dt}
 \left(\frac{\partial (T-V)}{\partial \dot{q}_{\alpha}}\right)
 -\frac{\partial (T-V)}{\partial q_{\alpha}} = 0.
 \quad (\alpha = 1, 2, \cdots, s)
-\end{equation}
+$$
+
 这里出现的动能与势能的差是一个很重要的量，叫做拉格朗日量，记为
-\begin{equation}
+
+$$
 L(q, \dot{q}) = T(\dot{q}) - V(q).
-\end{equation}
+$$
+
 用拉格朗日量可以将拉格朗日方程写成更加简洁的形式：
-\begin{equation}
+
+$$
 \boxed{
 \frac{d}{dt}
 \left(\frac{\partial L}{\partial \dot{q}_{\alpha}}\right)
 -\frac{\partial L}{\partial q_{\alpha}} = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 }
-\end{equation}
+$$
 
 例子：简谐振子的拉格朗日量为
-\begin{equation}
+
+$$
 L = \frac{1}{2} m \dot{x}^2 - \frac{1}{2} k \dot{x}^2
-\end{equation}
+$$
+
 由此可以推导出简谐振子的运动方程。
 
 
 ### 哈密顿 (Hamilton) 方程
 
 由于拉格朗日量具有能量的量纲，故当广义坐标具有长度的量纲时，偏导数 $\frac{\partial L}{\partial \dot{q}_{\alpha}}$ 具有动量的量纲。我们称这个偏导数为广义动量，记为
-\begin{equation}
+
+$$
 \boxed{p_{\alpha} = \frac{\partial L}{\partial \dot{q}_{\alpha}}}.
-\end{equation}
+$$
+
 注意，当广义坐标不具有长度的量纲时，相应的广义动量也不具有动量的量纲。运用广义动量可以将拉格朗日方程写成更加简洁的形式：
-\begin{equation}
+
+$$
 \boxed{
 \dot{p}_{\alpha}
 -\frac{\partial L}{\partial q_{\alpha}} = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 }
-\end{equation}
+$$
 
 虽然广义动量出现在拉格朗日方程中，但我们要清楚的是拉格朗日量是广义坐标和广义速度的函数，而不是广义动量的函数。用勒让德变换可以改变一个多元函数的独立变量。为此，我们先写下拉格朗日量的全微分：
-\begin{equation}
+
+$$
 d L(q, \dot{q})
 = \frac{\partial L}{\partial q_{\alpha}} d q_{\alpha}
 + \frac{\partial L}{\partial \dot{q}_{\alpha}} d \dot{q}_{\alpha}
 = \dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}.
-\end{equation}
+$$
+
 下面的勒让德变换能将独立变量从广义速度变成广义动量：
-\begin{equation}
+
+$$
 L \rightarrow p_{\alpha} \dot{q}_{\alpha} - L.
-\end{equation}
+$$
+
 该式箭头右边的表达式是一个很重要的量，记为
-\begin{equation}
+
+$$
 H= p_{\alpha} \dot{q}_{\alpha} - L.
-\end{equation}
+$$
+
 该量称为哈密顿量。我们来看看它是不是真的是广义动量的函数了。为此，我们计算它的全微分：
-\begin{equation}
+
+$$
 d H =
 p_{\alpha} d\dot{q}_{\alpha} + \dot{q}_{\alpha} d p_{\alpha}
 - (\dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha})
 =\dot{q}_{\alpha} d p_{\alpha} - \dot{p}_{\alpha} d q_{\alpha}.
-\end{equation}
+$$
+
 看来哈密顿量确实是广义动量以及广义坐标的函数，而不是广义速度的函数了。
 
 既然哈密顿量是广义动量和广义坐标的函数，那么根据全微分的定义，我们又有
-\begin{equation}
+
+$$
 d H = \frac{\partial H}{\partial q_{\alpha}} d q_{\alpha}
 + \frac{\partial H}{\partial p_{\alpha}} d p_{\alpha}.
-\end{equation}
+$$
+
 对比以上两个式子，我们得到如下两组重要的方程：
-\begin{equation}
+
+$$
 \boxed{\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}},
 \quad (\alpha = 1 , 2, \cdots, s)}
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \boxed{\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}.
 \quad (\alpha = 1 , 2, \cdots, s)}
-\end{equation}
-这$2s$个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
+$$
+
+这 $2s$ 个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
 
 例子：简谐振子的哈密顿量。
 
 ### 相空间
 
-广义坐标和广义动量是相互独立的变量。我们可以将$s$个广义坐标$\{q_{\alpha}\}_{\alpha=1}^{s}$和$s$个广义动量$\{p_{\alpha}\}_{\alpha=1}^{s}$看成一个$2s$维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下$2s$个函数：
-\begin{equation}
+广义坐标和广义动量是相互独立的变量。我们可以将$s$个广义坐标 $\{q_{\alpha}\}_{\alpha=1}^{s}$和$s$个广义动量$\{p_{\alpha}\}_{\alpha=1}^{s}$ 看成一个 $2s$ 维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下 $2s$ 个函数：
+
+$$
 q_{\alpha} = q_{\alpha}(t), \quad p_{\alpha} = p_{\alpha}(t). \quad (\alpha = 1, 2, \cdots, s)
-\end{equation}
-这$2s$个函数将在$2s$维的相空间给出一条轨迹，叫做相轨迹。随着时间的推移，一条相轨迹会在相空间跑动，历经很多不同的相点。一个系统中不同的初始条件会给出不同的相轨迹，而两条不同的相轨迹绝对不会相交于某一个相点（请读者自行证明）。
+$$
+
+这 $2s$ 个函数将在 $2s$ 维的相空间给出一条轨迹，叫做相轨迹。随着时间的推移，一条相轨迹会在相空间跑动，历经很多不同的相点。一个系统中不同的初始条件会给出不同的相轨迹，而两条不同的相轨迹绝对不会相交于某一个相点（请读者自行证明）。
 
 例子：简谐振子的相空间。
 
-### 泊松 (Poisson) 括号和刘维尔算符
+### 泊松括号和刘维尔算符
 
 一个一般的物理量可以表达为相空间坐标的函数
+
 $$
 A=A(q_{\alpha}, p_{\alpha})
 $$
+
 我们求它的时间导数
+
 $$
 \frac{dA}{dt}=\frac{\partial A}{\partial q_{\alpha} } \dot{q}_{\alpha} 
 +\frac{\partial A}{\partial p_{\alpha} } \dot{p}_{\alpha}
 $$
+
 利用哈密顿正则方程，可得
+
 $$
 \frac{dA}{dt}=\frac{\partial A}{\partial q_{\alpha} } 
 \frac{\partial H}{\partial p_{\alpha} }
@@ -602,24 +673,30 @@ $$
 $$
 
 定义任意两个物理量之间的泊松括号
+
 $$
 \{A,B\}=\frac{\partial A}{\partial q_{\alpha} } 
 \frac{\partial B}{\partial p_{\alpha} }
 -\frac{\partial A}{\partial p_{\alpha} } 
 \frac{\partial B}{\partial q_{\alpha} }
 $$
+
 我们有
+
 $$
 \frac{dA}{dt}=
 \{A,H\}
 $$
 
 一个物理量A和哈密顿量之间的泊松括号运算也常用刘维尔算符表示
+
 $$
 \frac{dA}{dt}=
 \{A,H\}\equiv iLA
 $$
+
 该方程的形式解为
+
 $$
 A(t)=e^{iL}A(t=0)
 $$
@@ -629,50 +706,66 @@ $$
 ### 刘维尔定理
 
 就像可以定义质量密度和电荷密度一样，也可以定义相空间的相点密度。首先定义相空间的体积元
-\begin{equation}
+
+$$
 d \Gamma = dq_1  dq_2 \cdots dq_s dp_1  dp_2 \cdots dp_s
 = dq dp
-\end{equation}
+$$
+
 体积元并不是数学上严格的微分，其大小的选取满足“宏观小”和“微观大”的要求。上式中第二个等号右边是常用的简写形式。如果在该体积元中相点的个数为$dN$，那么就可以定义该体积元所在之处的相点密度：
-\begin{equation}
+
+$$
 \rho(q, p) = \frac{dN}{d \Gamma}
-\end{equation}
-上式中的相点$(q, p)$可以是体积元$d\Gamma$中的任意一点。如果将相空间类比于普通三维空间，将相点类比为三维空间中流体的质点，那么相点密度就对应于流体的质量密度。这个类比对下面的讨论是非常有用的。
+$$
+
+上式中的相点 $(q, p)$ 可以是体积元 $d\Gamma$ 中的任意一点。如果将相空间类比于普通三维空间，将相点类比为三维空间中流体的质点，那么相点密度就对应于流体的质量密度。这个类比对下面的讨论是非常有用的。
 
 下面我们来证明在统计物理中非常重要刘维尔定理：
-\begin{equation}
+
+$$
 \frac{d \rho}{dt} = 0.
-\end{equation}
+$$
+
 这个定理是说：相点密度不随时间的变化而变化。首先，我们要清楚的是，虽然我们上面将相点密度写成了广义坐标和广义动量的函数，并不能说相点密度对时间的导数显然是零，因为广义坐标和广义动量可以是时间的函数。确切地讲，刘维尔定理说的是对任意的相轨迹， 相点密度是一个常量。
 
 正如上面提到的，我们将相空间和其中的相点比作流体。对于这样的“流体”，我们有如下守恒定律：
-\begin{equation}
+
+$$
 \frac{\partial \rho}{\partial t}
 + \frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha})
 + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
-\end{equation}
+$$
+
 类似的公式在电磁学中叫做电荷守恒定律。因为相点是不会凭空产生和消失的，那么这个“流体”还不是一般的流体，而是不可压缩流体。对于不可压缩流体，上式中的“散度”处处为零：
-\begin{equation}
+
+$$
 \frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha})
 + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
-\end{equation}
+$$
+
 于是，我们有
-\begin{equation}
+
+$$
 \frac{\partial \rho}{\partial t} = 0.
-\end{equation}
-这就是说，相点密度不显含时间。这也是我们将相点密度写成$\rho(q, p)$，而不是 $\rho(q, p, t)$的原因。
+$$
+
+这就是说，相点密度不显含时间。这也是我们将相点密度写成 $\rho(q, p)$ ，而不是 $\rho(q, p, t)$ 的原因。
 
 要证明刘维尔定理，就是要证明下式：
-\begin{equation}
+
+$$
 \frac{d \rho}{dt} =
 \frac{\partial \rho}{\partial q_{\alpha}} \dot{q}_{\alpha}
 + \frac{\partial \rho}{\partial p_{\alpha}} \dot{p}_{\alpha}
 = 0.
-\end{equation}
+$$
+
 将此式与上面“散度”为零的式子比较可知，只要能证明下式就大功告成了：
-\begin{equation}
+
+$$
 \frac{\partial \dot{q}_{\alpha} }{\partial q_{\alpha}}
 + \frac{\partial \dot{p}_{\alpha} }{\partial p_{\alpha}}
 = 0.
-\end{equation}
+$$
+
 根据哈密顿正则方程，该式显然是恒成立的。刘维尔定理证毕。
