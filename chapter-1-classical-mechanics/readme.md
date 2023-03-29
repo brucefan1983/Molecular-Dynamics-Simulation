@@ -328,6 +328,25 @@ $$
 
 ### 简谐振子运动的数值求解
 
+我们用一个简谐振子模型来展示速度-Verlet算法的实现，Matlab 代码如下：
+```matlab
+m=1; lambda=1; dt=0.01; n_step=1000;
+p=0; q=1; 
+pp=zeros(n_step,1); qq=zeros(n_step,1);
+for step=1:n_step
+    p=p-(dt/2)*m*lambda*lambda*q; 
+    q=q+(dt/m)*p;
+    p=p-(dt/2)*m*lambda*lambda*q;
+    pp(step,:)=p; qq(step,:)=q;
+end
+```
+
+下面是坐标和动量随时间变化的图：
+
+
+
+![position_and_momentum](src/position_and_monemtum.png)
+
 ## 分析力学
 
 ### 广义坐标
