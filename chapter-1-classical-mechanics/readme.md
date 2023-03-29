@@ -344,8 +344,7 @@ end
 下面是坐标和动量随时间变化的图：
 
 
-
-![position_and_momentum](src/position_and_monemtum.png)
+![position_and_momentum](src/position_and_momentum.png)
 
 ## 分析力学
 
