@@ -410,10 +410,7 @@ $$
 该量称为哈密顿量。我们来看看它是不是真的是广义动量的函数了。为此，我们计算它的全微分：
 
 $$
-d H =
-p_{\alpha} d\dot{q}_{\alpha} + \dot{q}_{\alpha} d p_{\alpha}
-- (\dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha})
-=\dot{q}_{\alpha} d p_{\alpha} - \dot{p}_{\alpha} d q_{\alpha}.
+d H = p_{\alpha} d\dot{q}_{\alpha} + \dot{q}_{\alpha} d p_{\alpha} - (\dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}) =\dot{q}_{\alpha} d p_{\alpha} - \dot{p}_{\alpha} d q_{\alpha}.
 $$
 
 看来哈密顿量确实是广义动量以及广义坐标的函数，而不是广义速度的函数了。
@@ -421,20 +418,17 @@ $$
 既然哈密顿量是广义动量和广义坐标的函数，那么根据全微分的定义，我们又有
 
 $$
-d H = \frac{\partial H}{\partial q_{\alpha}} d q_{\alpha}
-+ \frac{\partial H}{\partial p_{\alpha}} d p_{\alpha}.
+d H = \frac{\partial H}{\partial q_{\alpha}} d q_{\alpha} + \frac{\partial H}{\partial p_{\alpha}} d p_{\alpha}.
 $$
 
 对比以上两个式子，我们得到如下两组重要的方程：
 
 $$
-\boxed{\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}},
-\quad (\alpha = 1 , 2, \cdots, s)}
+\boxed{\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}}, \quad (\alpha = 1 , 2, \cdots, s)}
 $$
 
 $$
-\boxed{\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}.
-\quad (\alpha = 1 , 2, \cdots, s)}
+\boxed{\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}. \quad (\alpha = 1 , 2, \cdots, s)}
 $$
 
 这 $2s$ 个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
@@ -443,7 +437,7 @@ $$
 
 ### 相空间
 
-广义坐标和广义动量是相互独立的变量。我们可以将$s$个广义坐标 $\{q_{\alpha}\}_{\alpha=1}^{s}$和$s$个广义动量$\{p_{\alpha}\}_{\alpha=1}^{s}$ 看成一个 $2s$ 维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下 $2s$ 个函数：
+广义坐标和广义动量是相互独立的变量。我们可以将$s$个广义坐标 $\{q_{\alpha}\}_{\alpha=1}^{s}$ 和 $s$ 个广义动量 $\{p_{\alpha}\}_{\alpha=1}^{s}$ 看成一个 $2s$ 维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下 $2s$ 个函数：
 
 $$
 q_{\alpha} = q_{\alpha}(t), \quad p_{\alpha} = p_{\alpha}(t). \quad (\alpha = 1, 2, \cdots, s)
@@ -491,15 +485,13 @@ $$
 我们有
 
 $$
-\frac{dA}{dt}=
-\{A,H\}
+\frac{dA}{dt}=\{A,H\}
 $$
 
 一个物理量A和哈密顿量之间的泊松括号运算也常用刘维尔算符表示
 
 $$
-\frac{dA}{dt}=
-\{A,H\}\equiv iLA
+\frac{dA}{dt}=\{A,H\}\equiv iLA
 $$
 
 该方程的形式解为
@@ -515,8 +507,7 @@ $$
 就像可以定义质量密度和电荷密度一样，也可以定义相空间的相点密度。首先定义相空间的体积元
 
 $$
-d \Gamma = dq_1  dq_2 \cdots dq_s dp_1  dp_2 \cdots dp_s
-= dq dp
+d \Gamma = dq_1  dq_2 \cdots dq_s dp_1  dp_2 \cdots dp_s = dq dp
 $$
 
 体积元并不是数学上严格的微分，其大小的选取满足“宏观小”和“微观大”的要求。上式中第二个等号右边是常用的简写形式。如果在该体积元中相点的个数为$dN$，那么就可以定义该体积元所在之处的相点密度：
