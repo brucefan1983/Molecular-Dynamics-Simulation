@@ -304,7 +304,13 @@ $$
 我们对粒子 $i$ 在 $t+\Delta t$ 时刻的坐标做泰勒级数展开：
 
 $$
-\vec{r}_i(t+\Delta t) \approx \vec{r}_i(t) + \vec{v}_i \Delta t + \frac{1}{2} \frac{\vec{F}_i}{m_i} \Delta t^2.
+\vec{r}_i(t+\Delta t) \approx \vec{r}_i(t) + \vec{v}_i(t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
+$$
+
+我们也可考虑一个过去的时刻 $t+\Delta t$ 并做类似的展开
+
+$$
+\vec{r}_i(t-\Delta t) \approx \vec{r}_i(t) - \vec{v}_i(t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
 $$
 
 #### 速度Verlet积分算法
