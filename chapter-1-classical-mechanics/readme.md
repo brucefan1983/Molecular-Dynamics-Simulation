@@ -8,7 +8,7 @@
  	- [粒子系力学](#粒子系力学)
  	- [运动方程的数值积分](#粒子系力学)
  	  - [Verlet积分算法](#Verlet积分算法)
- 	  - [速度-Verlet积分算法](#速度-Verlet积分算法)
+ 	  - [速度Verlet积分算法](#速度-Verlet积分算法)
  	- [简谐振子运动的数值求解](#简谐振子运动的数值求解)
 - [分析力学](#分析力学)
   - [拉格朗日方程](#拉格朗日方程)
@@ -334,13 +334,41 @@ $$
 $$
 
 $$
-\vec{r}_i(t) \approx \vec{r}_i(t+Delta t) - \vec{v}_i(t+\Delta t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t+\Delta t)}{m_i} \Delta t^2.
+\vec{r}_i(t) \approx \vec{r}_i(t+\Delta t) - \vec{v}_i(t+\Delta t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t+\Delta t)}{m_i} \Delta t^2.
 $$
 
 由此可得到如下速度计算公式：
 
 $$
 \vec{v}_i(t+\Delta t) \approx \vec{v}_i(t) + \Delta t \frac{ \vec{F}_i(t) + \vec{F}_i(t+\Delta t) }{2m_i}.
+$$
+
+以上就是速度-Verlet 积分算法。
+
+可以看出， $t+\Delta t$ 时刻的坐标仅依赖于 $t$ 时刻的坐标、速度和力，但 $t+\Delta t$ 时刻的速度依赖于 $t$ 时刻的速度、力及 $t+\Delta t$ 时刻的力。所以，从算法的角度来说，速度-Verlet 积分算法对应如下的计算流程：
+
+第一步：部分地更新速度并完全地更新坐标（注意，我们引入了一个中间的速度变量 $\vec{v}_i(t+\Delta t/2)$）：
+
+$$
+\vec{v}_i(t) \rightarrow \vec{v}_i(t+\Delta t/2)=\vec{v}_i(t)+\frac{1}{2}\frac{\vec{F}_i(t)}{m_i}\Delta t
+$$
+
+$$
+\vec{r}_i(t)\rightarrow \vec{r}_i(t+\Delta t)
+=\vec{r}_i(t)
++\vec{v}_i(t+\Delta t/2)\Delta t
+$$
+
+第二步：用更新后的坐标计算新的力
+
+$$
+\vec{F}_i(t)\rightarrow \vec{F}_i(t+\Delta t)
+$$
+
+第三步：用更新后的力完成速度的更新：
+
+$$
+\vec{v}_i(t+\Delta t/2) \rightarrow \vec{v}_i(t+\Delta t)=\vec{v}_i(t+\Delta t/2)+\frac{1}{2}\frac{\vec{F}_i(t+\Delta t)}{m_i}\Delta t
 $$
 
 ### 简谐振子运动的数值求解
