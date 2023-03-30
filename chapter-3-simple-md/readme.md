@@ -190,6 +190,7 @@ $$
 $$
 \frac{d\vec{r}_i}{dt} = \vec{v}_i
 $$
+
 $$
 \frac{d\vec{v}_i}{dt} = \frac{\vec{F}_i}{m_i}
 $$
@@ -199,6 +200,7 @@ $$
 $$
 \vec{v}_i(t+\Delta t)=\vec{v}_i(t)+\frac{1}{2}\frac{\vec{F}_i(t)+\vec{F}_i(t+\Delta t)}{m_i}\Delta t
 $$
+
 $$
 \vec{r}_i(t+\Delta t)
 =\vec{r}_i(t)
