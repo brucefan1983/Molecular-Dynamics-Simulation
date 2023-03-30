@@ -373,16 +373,18 @@ $$
 
 ### 简谐振子运动的数值求解
 
-我们用一个简谐振子模型来展示速度-Verlet算法的实现，Matlab 代码如下：
+我们用一个简谐振子模型来展示速度-Verlet算法的实现。简谐振子偏离平衡位置的坐标为 $x$ ， 受力为 $-kx$ ，$k$ 是弹簧的劲度系数。
+
+Matlab 代码如下：
 ```matlab
-m=1; lambda=1; dt=0.01; n_step=1000;
-p=0; q=1; 
-pp=zeros(n_step,1); qq=zeros(n_step,1);
+m=1; k=1; dt=0.01; n_step=1000;
+v=0; x=1; 
+v_vector=zeros(n_step,1); x_vector=zeros(n_step,1);
 for step=1:n_step
-    p=p-(dt/2)*m*lambda*lambda*q; 
-    q=q+(dt/m)*p;
-    p=p-(dt/2)*m*lambda*lambda*q;
-    pp(step,:)=p; qq(step,:)=q;
+    v=v-(dt/2)*k*x; 
+    x=x+dt*v;
+    v=v-(dt/2)*k*x; 
+    v_vector(step,:)=v; x_vector(step,:)=x;
 end
 ```
 
