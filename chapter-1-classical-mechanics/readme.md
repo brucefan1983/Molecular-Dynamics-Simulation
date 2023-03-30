@@ -319,7 +319,7 @@ $$
 \vec{r}_i(t+\Delta t) \approx 2\vec{r}_i(t) - \vec{r}_i(t-\Delta t) + \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
 $$
 
-这就是所谓的[Verlet积分算法](https://journals.aps.org/pr/abstract/10.1103/PhysRev.159.98)，它只涉及坐标，不涉及速度。如果要获得速度，需要通过如下差分求得：
+这就是所谓的 [Verlet积分算法](https://doi.org/10.1103/PhysRev.159.98)，它只涉及坐标，不涉及速度。如果要获得速度，需要通过如下差分求得：
 
 $$
 \vec{v}_i(t) \approx \frac{ \vec{r}_i(t+\Delta t) - \vec{r}_i(t-\Delta t) }{2\Delta t}.
@@ -343,7 +343,7 @@ $$
 \vec{v}_i(t+\Delta t) \approx \vec{v}_i(t) + \Delta t \frac{ \vec{F}_i(t) + \vec{F}_i(t+\Delta t) }{2m_i}.
 $$
 
-以上就是[速度-Verlet 积分算法](https://doi.org/10.1063/1.442716)。
+以上就是 [速度-Verlet 积分算法](https://doi.org/10.1063/1.442716)。
 
 可以看出， $t+\Delta t$ 时刻的坐标仅依赖于 $t$ 时刻的坐标、速度和力，但 $t+\Delta t$ 时刻的速度依赖于 $t$ 时刻的速度、力及 $t+\Delta t$ 时刻的力。所以，从算法的角度来说，速度-Verlet 积分算法对应如下的计算流程：
 
