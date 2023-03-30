@@ -319,10 +319,10 @@ $$
 \vec{r}_i(t+\Delta t) \approx 2\vec{r}_i(t) - \vec{r}_i(t-\Delta t) + \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
 $$
 
-这就是所谓的Verlet积分算法（Verlt 1967），它只涉及坐标，不涉及速度。如果要获得速度，需要通过如下差分求得：
+这就是所谓的Verlet积分算法（Verlet 1967），它只涉及坐标，不涉及速度。如果要获得速度，需要通过如下差分求得：
 
 $$
-\vec{v}_i(t) \approx \farc{\vec{r}_i(t+\Delta t) - \vec{r}_i(t-\Delta t)}{2\Delta t}.
+\vec{v}_i(t) \approx \frac{ \vec{r}_i(t+\Delta t) - \vec{r}_i(t-\Delta t) }{2\Delta t}.
 $$
 
 #### 速度Verlet积分算法
