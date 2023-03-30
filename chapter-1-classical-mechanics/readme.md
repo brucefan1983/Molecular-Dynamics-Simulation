@@ -327,6 +327,22 @@ $$
 
 #### 速度Verlet积分算法
 
+Verlet积分算法种的速度计算涉及到时间上相差 $2\Delta t$ 的坐标，不是很方便。为了得到更加方便的速度计算方式，我们考虑如下两个展开：
+
+$$
+\vec{r}_i(t+\Delta t) \approx \vec{r}_i(t) + \vec{v}_i(t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
+$$
+
+$$
+\vec{r}_i(t) \approx \vec{r}_i(t+Delta t) - \vec{v}_i(t+\Delta t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t+\Delta t)}{m_i} \Delta t^2.
+$$
+
+由此可得到如下速度计算公式：
+
+$$
+\vec{v}_i(t+\Delta t) \approx \vec{v}_i(t) + \Delta t \frac{ \vec{F}_i(t) + \vec{F}_i(t+\Delta t) }{2m_i}.
+$$
+
 ### 简谐振子运动的数值求解
 
 我们用一个简谐振子模型来展示速度-Verlet算法的实现，Matlab 代码如下：
