@@ -1,39 +1,41 @@
 clear; close all;
-m=1; lambda=1; dt=0.01; n_step=1000;
-p=0; q=1; 
-pp=zeros(n_step,1); qq=zeros(n_step,1);
+m=1; k=1; dt=0.01; n_step=1000;
+v=0; x=1; 
+v_vector=zeros(n_step,1); x_vector=zeros(n_step,1);
 for step=1:n_step
-    p=p-(dt/2)*m*lambda*lambda*q; 
-    q=q+(dt/m)*p;
-    p=p-(dt/2)*m*lambda*lambda*q;
-    pp(step,:)=p; qq(step,:)=q;
+    v=v-(dt/2)*k*x; 
+    x=x+dt*v;
+    v=v-(dt/2)*k*x; 
+    v_vector(step,:)=v; x_vector(step,:)=x;
 end
 
 figure;
-plot((1:n_step)*dt,qq,'linewidth',2);hold on;
-plot((1:n_step)*dt,pp,'--','linewidth',2);hold on;
+plot((1:n_step)*dt,x_vector,'linewidth',2);hold on;
+plot((1:n_step)*dt,v_vector,'--','linewidth',2);hold on;
 xlabel('time');
-ylabel('position or momentum');
-legend('position','momentum');
+ylabel('position or velocity');
+legend('position','velocity');
 set(gca,'fontsize',16);
 
+potential=0.5*k*x_vector.^2;
+kinetic=0.5*m*v_vector.^2;
 figure;
-plot((1:n_step)*dt,0.5*m*qq.^2,'linewidth',2);hold on;
-plot((1:n_step)*dt,pp.^2/m/2,'--','linewidth',2);hold on;
-plot((1:n_step)*dt,0.5*m*qq.^2+pp.^2/m/2,'-.','linewidth',3);hold on;
+plot((1:n_step)*dt,potential,'linewidth',2);hold on;
+plot((1:n_step)*dt,kinetic,'--','linewidth',2);hold on;
+plot((1:n_step)*dt,potential+kinetic,'-.','linewidth',3);hold on;
 xlabel('time');
 ylabel('Energy');
 legend('potential','kinetic','total');
 set(gca,'fontsize',16);
 
 figure;
-plot((1:n_step)*dt,0.5*m*qq.^2+pp.^2/m/2,'-.','linewidth',3);hold on;
+plot((1:n_step)*dt,potential+kinetic,'-.','linewidth',3);hold on;
 xlabel('time');
 ylabel('Total Energy');
 set(gca,'fontsize',16);
 
 figure;
-plot(qq,pp,'.','markersize',20);
+plot(x_vector,v_vector,'.','markersize',20);
 xlabel('position');
 ylabel('momentum');
 set(gca,'fontsize',16);
