@@ -86,7 +86,7 @@ $$
 对于 $3 \times 3$ 的矩阵的行列式，有如下计算公式：
 
 $$
-\det(H) = a_x  (b_x  c_z - c_y  b_z) +
+\det(H) = a_x  (b_y  c_z - c_y  b_z) +
           b_x  (c_y  a_z - a_y  c_z) +
           c_x  (a_y  b_z - b_y  a_z).
 $$
