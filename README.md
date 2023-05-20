@@ -7,9 +7,10 @@
 - [第4章：模拟盒子；近邻列表（已经完成）](chapter-4-neighbor-list/readme.md)。
 - [第5章：势函数（包括经验势和机器学习势）（在写）](chapter-5-potentials/readme.md)。
 - [第6章：控温算法、控压算法及一些平衡态性质的计算 (在写)](chapter-6-ensembles/readme.md)。
+- [第7章：蒙特卡洛-分子动力学混合模拟（待写）](chapter-7-mcmd)。
 - [第7章：输运性质的分子动力学模拟（在写）](chapter-7-transport)。
 - [第8章：路径积分MD (在写)](chapter-8-pimd/readme.md)。
-- 第9章：预计写自由能计算。
+- 第9章：自由能计算。
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
