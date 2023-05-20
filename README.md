@@ -4,7 +4,7 @@
 - [第1章：经典力学基础（在写）](chapter-01-classical-mechanics/readme.md)。
 - [第2章：热力学与经典统计力学基础（在写）](chapter-02-statistical-mechanics/readme.md)。
 - [第3章：一个简单的分子动力学模拟程序（已经完成）](chapter-03-simple-md/readme.md)。
-- [第4章：模拟盒子；近邻列表（已经完成）](chapter-04-neighbor-list/readme.md)。
+- [第4章：高效的分子动力学模拟（部分完成）](chapter-04-neighbor-list/readme.md)。
 - [第5章：势函数（包括经验势和机器学习势）（在写）](chapter-05-potentials/readme.md)。
 - [第6章：控温算法、控压算法及一些平衡态性质的计算 (在写)](chapter-06-ensembles/readme.md)。
 - [第7章：蒙特卡洛-分子动力学混合模拟（待写）](chapter-07-mcmd)。
