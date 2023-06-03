@@ -48,7 +48,20 @@
 
 ## 路径积分分子动力学的算法
 
-首先讲 Ceriotti 等人针对PIMD的 PILE (path integral Langevin equation)。然后讲RPMD 以及 TRPMD (thermostatted RPMD) 的实现。这里要重点介绍 Korol 等人的 Cayley 变换。
+首先讲 Ceriotti 等人针对PIMD的 PILE (path integral Langevin equation)。
+
+[Efficient stochastic thermostatting of path integral molecular dynamics](https://doi.org/10.1063/1.3489925)
+
+然后讲RPMD 以及 TRPMD (thermostatted RPMD) 的实现。
+
+RPMD: [Quantum statistics and classical mechanics: Real time correlation functions from ring polymer molecular dynamics](https://doi.org/10.1063/1.1777575)
+
+Lecture notes:
+https://www.tugraz.at/fileadmin/user_upload/Institute/PTC/WTC/WTC_2019/2_Manolopoulos_19.L2.pdf
+
+TRPMD: [How to remove the spurious resonances from ring polymer molecular dynamics](https://doi.org/10.1063/1.4883861)
+
+这里要重点介绍 Korol 等人的 Cayley 变换。[Cayley modification for strongly stable path-integral and ring-polymer molecular dynamics](https://doi.org/10.1063/1.5120282)
 
 用简谐振子为例编程实现。MATLAB 即可。
 
