@@ -497,11 +497,11 @@ $$
 对比以上两个式子，我们得到如下两组重要的方程：
 
 $$
-\boxed{\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}}, \quad (\alpha = 1 , 2, \cdots, s)}
+\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}}, \quad (\alpha = 1 , 2, \cdots, s)
 $$
 
 $$
-\boxed{\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}. \quad (\alpha = 1 , 2, \cdots, s)}
+\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}. \quad (\alpha = 1 , 2, \cdots, s)
 $$
 
 这 $2s$ 个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
