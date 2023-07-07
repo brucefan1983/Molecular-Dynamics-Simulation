@@ -192,7 +192,7 @@ $$
 将上式左右两边都对指标 $i$ 求和，得
 
 $$
-\sum_i m_i \ddot{\vec{x}}_i = \sum_i \sum_{j\neq i} \vec{F}_i{}_j + \sum_i \vec{F}^{\text{ext}}_{i}.
+\sum_i m_i \ddot{\vec{x}}_i = \sum_i \sum _{{j \neq i}} \vec{F}_i{}_j + \sum_i \vec{F} ^{\text{ext}} _i.
 $$
 
 根据牛顿第三定律，等号右边的第一项等于零。系统的总质量定义为 $m = \sum_i m_i$。如果定义一个平均坐标
