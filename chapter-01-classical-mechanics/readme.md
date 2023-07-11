@@ -214,6 +214,7 @@ $$
 $$
 \dot{\vec{x}} = \frac{\sum_i m_i \dot{\vec{x}}_i}{m}
 $$
+
 和质心动量
 
 $$
@@ -414,7 +415,7 @@ $$
 $$
 \frac{d}{dt}
 \left(\frac{\partial (T-U)}{\partial \dot{q}_{\alpha}}\right)
--\frac{\partial (T-U)}{\partial q_{\alpha}} = 0.
+-\frac{\partial (T-U)}{\partial q _{\alpha} } = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 $$
 
@@ -429,8 +430,8 @@ $$
 $$
 \boxed{
 \frac{d}{dt}
-\left(\frac{\partial L}{\partial \dot{q}_{\alpha}}\right)
--\frac{\partial L}{\partial q_{\alpha}} = 0.
+\left(\frac{\partial L}{\partial \dot{q} _{\alpha} }\right)
+-\frac{\partial L}{\partial q _{\alpha} } = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 }
 $$
@@ -456,8 +457,8 @@ $$
 
 $$
 \boxed{
-\dot{p}_{\alpha}
--\frac{\partial L}{\partial q_{\alpha}} = 0.
+\dot{p} _{\alpha}
+-\frac{\partial L}{\partial q _{\alpha} } = 0.
 \quad (\alpha = 1, 2, \cdots, s)
 }
 $$
@@ -465,7 +466,7 @@ $$
 虽然广义动量出现在拉格朗日方程中，但我们要清楚的是拉格朗日量是广义坐标和广义速度的函数，而不是广义动量的函数。用勒让德变换可以改变一个多元函数的独立变量。为此，我们先写下拉格朗日量的全微分：
 
 $$
-d L(q, \dot{q}) = \frac{\partial L}{\partial q_{\alpha}} d q_{\alpha} + \frac{\partial L}{\partial \dot{q}_{\alpha}} d \dot{q}_{\alpha} = \dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}.
+d L(q, \dot{q}) = \frac{\partial L}{\partial q _{\alpha} } d q _{\alpha}  + \frac{\partial L}{\partial \dot{q} _{\alpha} } d \dot{q} _{\alpha} = \dot{p} _{\alpha} d q _{\alpha} + p _{\alpha} d \dot{q} _{\alpha}.
 $$
 
 下面的勒让德变换能将独立变量从广义速度变成广义动量：
@@ -483,7 +484,7 @@ $$
 该量称为哈密顿量。我们来看看它是不是真的是广义动量的函数了。为此，我们计算它的全微分：
 
 $$
-d H = p_{\alpha} d\dot{q}_{\alpha} + \dot{q}_{\alpha} d p_{\alpha} - (\dot{p}_{\alpha} d q_{\alpha} + p_{\alpha} d \dot{q}_{\alpha}) =\dot{q}_{\alpha} d p_{\alpha} - \dot{p}_{\alpha} d q_{\alpha}.
+d H = p _{\alpha} d\dot{q} _{\alpha} + \dot{q} _{\alpha} d p _{\alpha} - (\dot{p} _{\alpha} d q _{\alpha} + p _{\alpha} d \dot{q} _{\alpha}) =\dot{q} _{\alpha} d p _{\alpha} - \dot{p} _{\alpha} d q _{\alpha}.
 $$
 
 看来哈密顿量确实是广义动量以及广义坐标的函数，而不是广义速度的函数了。
@@ -491,17 +492,17 @@ $$
 既然哈密顿量是广义动量和广义坐标的函数，那么根据全微分的定义，我们又有
 
 $$
-d H = \frac{\partial H}{\partial q_{\alpha}} d q_{\alpha} + \frac{\partial H}{\partial p_{\alpha}} d p_{\alpha}.
+d H = \frac{\partial H}{\partial q _{\alpha}} d q _{\alpha} + \frac{\partial H}{\partial p _{\alpha} } d p _{\alpha}.
 $$
 
 对比以上两个式子，我们得到如下两组重要的方程：
 
 $$
-\dot{q}_{\alpha} = \frac{\partial H}{\partial p_{\alpha}}, \quad (\alpha = 1 , 2, \cdots, s)
+\dot{q} _{\alpha} = \frac{\partial H}{\partial p _{\alpha}}, \quad (\alpha = 1 , 2, \cdots, s)
 $$
 
 $$
-\dot{p}_{\alpha} = - \frac{\partial H}{\partial q_{\alpha}}. \quad (\alpha = 1 , 2, \cdots, s)
+\dot{p} _{\alpha} = - \frac{\partial H}{\partial q _{\alpha}}. \quad (\alpha = 1 , 2, \cdots, s)
 $$
 
 这 $2s$ 个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
@@ -510,10 +511,10 @@ $$
 
 ### 相空间
 
-广义坐标和广义动量是相互独立的变量。我们可以将$s$个广义坐标 $\{q_{\alpha}\}_{\alpha=1}^{s}$ 和 $s$ 个广义动量 $\{p_{\alpha}\}_{\alpha=1}^{s}$ 看成一个 $2s$ 维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下 $2s$ 个函数：
+广义坐标和广义动量是相互独立的变量。我们可以将 $s$ 个广义坐标 $\{q _{\alpha} \} _{\alpha=1} ^{s}$ 和 $s$ 个广义动量 $\{p _{\alpha} \} _{\alpha=1}^{s}$ 看成一个 $2s$ 维“空间”的“坐标”。这个抽象的“空间”叫做相空间。一组给定的广义坐标和广义动量叫做相空间的一个相点。另外，根据哈密顿正则方程，只要给定一个初始条件，即初始时刻的各个广义坐标和广义动量，就可以唯一地确定任意时刻的各个广义坐标和广义动量，即如下 $2s$ 个函数：
 
 $$
-q_{\alpha} = q_{\alpha}(t), \quad p_{\alpha} = p_{\alpha}(t). \quad (\alpha = 1, 2, \cdots, s)
+q _{\alpha} = q _{\alpha}(t), \quad p _{\alpha} = p _{\alpha}(t). \quad (\alpha = 1, 2, \cdots, s)
 $$
 
 这 $2s$ 个函数将在 $2s$ 维的相空间给出一条轨迹，叫做相轨迹。随着时间的推移，一条相轨迹会在相空间跑动，历经很多不同的相点。一个系统中不同的初始条件会给出不同的相轨迹，而两条不同的相轨迹绝对不会相交于某一个相点（请读者自行证明）。
@@ -533,26 +534,26 @@ $$
 我们求它的时间导数
 
 $$
-\frac{dA}{dt}=\frac{\partial A}{\partial q_{\alpha} } \dot{q}_{\alpha} 
-+\frac{\partial A}{\partial p_{\alpha} } \dot{p}_{\alpha}
+\frac{dA}{dt}=\frac{\partial A}{\partial q _{\alpha} } \dot{q} _{\alpha} 
++\frac{\partial A}{\partial p _{\alpha} } \dot{p} _{\alpha}
 $$
 
 利用哈密顿正则方程，可得
 
 $$
-\frac{dA}{dt}=\frac{\partial A}{\partial q_{\alpha} } 
-\frac{\partial H}{\partial p_{\alpha} }
--\frac{\partial A}{\partial p_{\alpha} } 
-\frac{\partial H}{\partial q_{\alpha} }
+\frac{dA}{dt}=\frac{\partial A}{\partial q _{\alpha} } 
+\frac{\partial H}{\partial p _{\alpha} }
+-\frac{\partial A}{\partial p _{\alpha} } 
+\frac{\partial H}{\partial q _{\alpha} }
 $$
 
 定义任意两个物理量之间的泊松括号
 
 $$
-\{A,B\}=\frac{\partial A}{\partial q_{\alpha} } 
-\frac{\partial B}{\partial p_{\alpha} }
--\frac{\partial A}{\partial p_{\alpha} } 
-\frac{\partial B}{\partial q_{\alpha} }
+\{A,B\}=\frac{\partial A}{\partial q _{\alpha} } 
+\frac{\partial B}{\partial p _{\alpha} }
+-\frac{\partial A}{\partial p _{\alpha} } 
+\frac{\partial B}{\partial q _{\alpha} }
 $$
 
 我们有
@@ -583,7 +584,7 @@ $$
 d \Gamma = dq_1  dq_2 \cdots dq_s dp_1  dp_2 \cdots dp_s = dq dp
 $$
 
-体积元并不是数学上严格的微分，其大小的选取满足“宏观小”和“微观大”的要求。上式中第二个等号右边是常用的简写形式。如果在该体积元中相点的个数为$dN$，那么就可以定义该体积元所在之处的相点密度：
+体积元并不是数学上严格的微分，其大小的选取满足“宏观小”和“微观大”的要求。上式中第二个等号右边是常用的简写形式。如果在该体积元中相点的个数为 $dN$ ，那么就可以定义该体积元所在之处的相点密度：
 
 $$
 \rho(q, p) = \frac{dN}{d \Gamma}
@@ -602,13 +603,13 @@ $$
 正如上面提到的，我们将相空间和其中的相点比作流体。对于这样的“流体”，我们有如下守恒定律：
 
 $$
-\frac{\partial \rho}{\partial t} + \frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha}) + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
+\frac{\partial \rho}{\partial t} + \frac{\partial}{\partial q _{\alpha}} (\rho \dot{q} _{\alpha}) + \frac{\partial}{\partial p _{\alpha}} (\rho \dot{p} _{\alpha}) = 0.
 $$
 
 类似的公式在电磁学中叫做电荷守恒定律。因为相点是不会凭空产生和消失的，那么这个“流体”还不是一般的流体，而是不可压缩流体。对于不可压缩流体，上式中的“散度”处处为零：
 
 $$
-\frac{\partial}{\partial q_{\alpha}} (\rho \dot{q}_{\alpha}) + \frac{\partial}{\partial p_{\alpha}} (\rho \dot{p}_{\alpha}) = 0.
+\frac{\partial}{\partial q _{\alpha}} (\rho \dot{q} _{\alpha}) + \frac{\partial}{\partial p _{\alpha}} (\rho \dot{p} _{\alpha}) = 0.
 $$
 
 于是，我们有
@@ -622,13 +623,13 @@ $$
 要证明刘维尔定理，就是要证明下式：
 
 $$
-\frac{d \rho}{dt} = \frac{\partial \rho}{\partial q_{\alpha}} \dot{q}_{\alpha} + \frac{\partial \rho}{\partial p_{\alpha}} \dot{p}_{\alpha} = 0.
+\frac{d \rho}{dt} = \frac{\partial \rho}{\partial q _{\alpha}} \dot{q} _{\alpha} + \frac{\partial \rho}{\partial p _{\alpha}} \dot{p} _{\alpha} = 0.
 $$
 
 将此式与上面“散度”为零的式子比较可知，只要能证明下式就大功告成了：
 
 $$
-\frac{\partial \dot{q}_{\alpha} }{\partial q_{\alpha}} + \frac{\partial \dot{p}_{\alpha} }{\partial p_{\alpha}} = 0.
+\frac{\partial \dot{q} _{\alpha} }{\partial q _{\alpha}} + \frac{\partial \dot{p} _{\alpha} }{\partial p _{\alpha}} = 0.
 $$
 
 根据哈密顿正则方程，该式显然是恒成立的。刘维尔定理证毕。
