@@ -234,7 +234,6 @@ $$
 键序为
 
 $$
-\label{equation:bij}
 b _{ij} = \left(1 + \beta ^{n} \zeta ^{n} _{ij} \right) ^{-\frac{1}{2n}},
 $$
 
