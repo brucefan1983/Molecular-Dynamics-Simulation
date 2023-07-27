@@ -259,180 +259,238 @@ $$
 
 ### 热力学函数和关系
 
-到目前为止，我们只研究了与环境没有物质交换的孤立和闭合系统。对于开放系统，其粒子数$N$是允许变化的。为了能处理粒子数变化的过程，我们将$N$也视作一个热力学变量并将热力学基本方程推广为
-\begin{equation}
-\boxed{dE = T dS - P dV + \mu dN}.
-\end{equation}
+到目前为止，我们只研究了与环境没有物质交换的孤立和闭合系统。对于开放系统，其粒子数 $N$ 是允许变化的。为了能处理粒子数变化的过程，我们将 $N$ 也视作一个热力学变量并将热力学基本方程推广为
 
-这里，我们引入了一个新的强度量，$\mu$，叫做化学势。从上述内能的全微分可以看出，
-\begin{equation}
+$$
+dE = T dS - P dV + \mu dN.
+$4
+
+这里，我们引入了一个新的强度量， $\mu$， 叫做化学势。从上述内能的全微分可以看出，
+
+$$
 \mu = \left( \frac{\partial E}{\partial N} \right)_{S, V}.
-\end{equation}
-这个式子可以看作是化学势的一个定义。可以证明，理想气体的化学势是负的。理想气体的熵是随着$N$、$E$和$V$这些变量的增大而增大的。因此，如果要在增大$N$的同时将 $S$和$V$固定，必须将$E$减小。因此，根据化学势的定义式，理想气体的化学势必然是负的。
+$$
+
+这个式子可以看作是化学势的一个定义。可以证明，理想气体的化学势是负的。理想气体的熵是随着 $N$、 $E$ 和 $V$ 这些变量的增大而增大的。因此，如果要在增大 $N$ 的同时将 $S$ 和 $V$ 固定，必须将 $E$ 减小。因此，根据化学势的定义式，理想气体的化学势必然是负的。
 
 热力学基本方程告诉我们内能是熵、体积以及粒子数的一个函数：
-\begin{equation}
+
+$$
 E=E(S, V, N).
-\end{equation}
+$$
+
 该式中所有的变量都是广延量，意味着内能是这些变量的齐次函数，即
-\begin{equation}
+
+$$
 E(\lambda S, \lambda V, \lambda N) =  \lambda E(S, V, N).
-\end{equation}
-其中，$\lambda$ 是一个任意的参数。将该式对参数 $\lambda$求导可得
-\begin{align}
+$$
+
+其中，$\lambda$ 是一个任意的参数。将该式对参数 $\lambda$ 求导可得
+
+$$
 &\frac {\partial E(\lambda S, \lambda V, \lambda N)}{ \partial(\lambda S)} \frac {\partial (\lambda S)} {\partial \lambda} +
 \frac {\partial E(\lambda S, \lambda V, \lambda N)}{\partial (\lambda V)} \frac {\partial (\lambda V)} {\partial \lambda} +
 \frac {\partial E(\lambda S, \lambda V, \lambda N)}{\partial (\lambda N)} \frac {\partial (\lambda N)} {\partial \lambda}
 \nonumber \\
 &= E(S, V, N).
-\end{align}
-再将$\lambda$取为 1，可得
-\begin{equation}
+$$
+
+再将 $\lambda$ 取为 1，可得
+
+$$
 E = \frac {\partial E}{\partial S} S  + \frac {\partial E}{ \partial V} V  + \frac {\partial E}{\partial N} N.
-\end{equation}
+$$
+
 另外，从推广的热力学基本方程可知如下关系：
+
 $$
 T = \left( \frac{\partial E}{\partial S} \right)_{V, N}
 $$
+
 $$
 p = -\left( \frac{\partial E}{\partial V} \right)_{S, N}
 $$
+
 以及
+
 $$
 \mu = \left( \frac{\partial E}{\partial N} \right)_{S, V}
 $$
+
 于是，我们得到一个重要的方程：
-\begin{equation}
-\boxed{E = TS  - pV  + \mu N}.
-\end{equation}
+
+$$
+E = TS  - pV  + \mu N.
+$$
+
 该方程被称为欧拉 (Euler) 方程。
 
 由欧拉方程可以推导另一个重要的关系式。对欧拉方程两边作全微分，可得
-\begin{equation}
+
+$$
 dE = T dS + SdT - p dV -V dp + \mu dN + N d \mu.
-\end{equation}
+$$
+
 将此与推广的热力学基本方程对照便知
-\begin{equation}
-\boxed{SdT - V dp + N d \mu = 0}.
-\end{equation}
+
+$$
+SdT - V dp + N d \mu = 0.
+$$
+
 该方程被称为吉布斯-杜安（Gibbs-Duhem）关系。这个关系告诉我们：三个强度量 (压强，温度，化学势) 中只有两个是独立的。因此，我们可以说：这样的系统的热力学自由度为 2。
 
 根据欧拉方程，我们可以将熵表达为能量、体积以及粒子数的函数：
-\begin{equation}
+
+$$
 S = S(E, V, N) = \frac{E+pV-\mu N}{T}.
-\end{equation}
+$$
+
 其全微分可由热力学基本方程得到：
-\begin{equation}
+
+$$
 dS = \frac{1}{T} dE + \frac{p}{T} dV - \frac{\mu}{T} dN.
-\end{equation}
+$$
+
 于是，我们从能量函数过渡到了熵函数。从熵函数的全微分出发，可以更方便地讨论热力学第二定律，因为热力学第二定律更多地是与熵，而不是能量相联系。
 
 我们在本讲第一节就提到了三个热力学平衡：热平衡，力平衡，以及扩散平衡。热力学第零定律告诉我们一个系统达到热平衡时内部温度处处相等，而基于力学的直觉告诉我们系统达到力平衡时应该处处压强相等。在这一小节，我们将从热力学第二定律的数学表述之一，即熵增加原理来更为严格地推导热平衡与力平衡的条件，以及我们还没有讨论过的扩散平衡条件。
 
 一个孤立系统是不受外界干扰的，无论它的初始条件如何，在等待足够长的时间之后，它总会达到一个固定的状态，宏观上表现为达到热力学平衡。这与上一节得到的孤立系统的熵总是趋于最大化的结论不谋而合。所以，对热力学平衡的向往是孤立系统中熵增加的动力。如果孤立系统的熵在增加，那么它就还未达到热力学平衡；如果孤立系统的熵达到了一个最大值，不再增加了，它就达到了热力学平衡；在达到热力学平衡之后，孤立系统的熵就会保持最大值，不再变化。
 
-为简单起见，我们考虑一个孤立系统，并用一个假想的边界将该系统分为两个子系统：$A$和 $B$。显然，这个两个子系统都是开放系统，它们之间能够交换物质与能量。我们用下标$A$和$B$表示两个子系统中的热力学量。由于熵是可加量，故整个孤立系统的熵的全微分可写为
-\begin{equation}
+为简单起见，我们考虑一个孤立系统，并用一个假想的边界将该系统分为两个子系统： $A$ 和 $B$。显然，这个两个子系统都是开放系统，它们之间能够交换物质与能量。我们用下标 $A$ 和 $B$ 表示两个子系统中的热力学量。由于熵是可加量，故整个孤立系统的熵的全微分可写为
+
+$$
 d S = d S_A+d S_B =  \frac{1}{T_A} dE_A + \frac{p_A}{T_A} dV_A - \frac{\mu_A}{T_A} dN_A +
 \frac{1}{T_B} dE_B + \frac{p_B}{T_B} dV_B - \frac{\mu_B}{T_B} dN_B.
-\end{equation}
+$$
+
 因为整个系统的粒子数、体积、以及内能都是守恒的，我们有
-\begin{equation}
+
+$$
 d S = \left(\frac{1}{T_A} - \frac{1}{T_B} \right) dE_A
 + \left(\frac{p_A}{T_A} - \frac{p_B}{T_B} \right) dV_A
 - \left(\frac{\mu_A}{T_A} - \frac{\mu_B}{T_B} \right) dN_A.
-\end{equation}
+$$
 
-若整个孤立系统达到了热力学平衡，则有$dS=0$，从而有如下平衡条件：
-\begin{equation}
+若整个孤立系统达到了热力学平衡，则有 $dS=0$ ，从而有如下平衡条件：
+
+$$
 T_A = T_B \quad (\text{热平衡}),
-\end{equation}
-\begin{equation}
+$$
+
+$$
 p_A = p_B  \quad (\text{力平衡}),
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \mu_A = \mu_B  \quad (\text{扩散平衡}).
-\end{equation}
+$$
+
 前两个平衡条件与我们的之前的结果是一致的。最后一个平衡条件是说孤立系统在达到扩散平衡时，其内部的化学势处处相等。
 
 如果系统仍未达到平衡态，熵增加原理告诉我们整个系统的广延量（即内能、体积及粒子数）会在子系统之间按照如下规则重新分配：
-\begin{equation}
+
+$$
 T_A > T_B \Longrightarrow d E_A < 0,
-\end{equation}
-\begin{equation}
+$$
+
+$$
 T_A = T_B ~\text{且}~ p_A > p_B \Longrightarrow d V_A > 0,
-\end{equation}
-\begin{equation}
+$$
+
+$$
 T_A = T_B ~\text{且}~ \mu_A > \mu_B \Longrightarrow d N_A < 0.
-\end{equation}
+$$
+
 也就是说，在趋向平衡的过程中，具有较高温度的子系统会失去内能以降低温度，具有较高压强的子系统会扩展体积以降低压强，具有较高化学势的子系统会失去物质 (粒子) 以降低化学势。所以，化学势是对粒子扩散趋势的一种量度。
 
 无论是能量的全微分还是熵的全微分，其独立变量（也叫自然变量）都是广延量。然而，实验上更容易控制的是强度量。有没有一种方法将部分或全部独立变量用强度量替代呢？勒让德变换可以帮助我们做到这一点。勒让德变换可以将一个函数变换为另外相关的一个函数。具体地，新的函数是将原来的函数减去该函数的一个独立变量与对应的偏导数的乘积而得到的。
 
-考虑能量函数$E = E(S, V, N)$并取$V$为需要变换的独立变量，对应的勒让德变换将能量函数变换为焓函数：
-\begin{equation}
+考虑能量函数 $E = E(S, V, N)$ 并取 $V$ 为需要变换的独立变量，对应的勒让德变换将能量函数变换为焓函数：
+
+$$
 H = H(S,p,N)=E - \left(\frac{\partial E}{\partial V}\right)_{S,N} V= E + p V = TS + \mu N.
-\end{equation}
-其中，我们在最后一步用了欧拉公式。你可能也注意到上式暗示了焓函数的独立变量是$S$、$p$ 和 $N$。这一论断能由下式证实 (第二个等号运用了热力学基本方程)：
-\begin{equation}
+$$
+其中，我们在最后一步用了欧拉公式。你可能也注意到上式暗示了焓函数的独立变量是 $S$、 $p$ 和 $N$ 。这一论断能由下式证实 (第二个等号运用了热力学基本方程)：
+
+$$
 dH = dE + pdV + Vdp = T dS + V dp + \mu dN.
-\end{equation}
+$$
 
-取$S$为需要变换的独立变量，对能量函数进行勒让德变换，就可以得到亥姆霍兹 (Helmholtz) 自由能函数：
-\begin{equation}
+取 $S$ 为需要变换的独立变量，对能量函数进行勒让德变换，就可以得到亥姆霍兹 (Helmholtz) 自由能函数：
+
+$$
 F = F(T,V,N)=E - \left(\frac{\partial E}{\partial S}\right)_{V,N} S= E - T S = -pV + \mu N.
-\end{equation}
-它的独立变量为$T$、$V$ 和 $N$，因为
-\begin{equation}
+$$
+
+它的独立变量为 $T$、 $V$ 和 $N$ ，因为
+
+$$
 dF = dE - TdS - S dT = -S dT - pdV + \mu dN.
-\end{equation}
+$$
 
-如果同时针对$V$和$S$两个变量进行勒让德变换，则可得到吉布斯 (Gibbs) 函数：
-\begin{equation}
+如果同时针对 $V$ 和 $S$ 两个变量进行勒让德变换，则可得到吉布斯 (Gibbs) 函数：
+
+$$
 G = G(T, p, N) = E - T S + p V = \mu N.
-\end{equation}
-它的独立变量为$T$、$p$和$N$，因为
-\begin{equation}
-dG = - S d T + V dp + \mu dN.
-\end{equation}
+$$
 
-最后，如果取$N$为需要变换的独立变量并对亥姆霍兹自由能进行勒让德变换，我们将得到巨正则函数：
-\begin{equation}
+它的独立变量为 $T$、 $p$ 和 $N$ ，因为
+
+$$
+dG = - S d T + V dp + \mu dN.
+$$
+
+最后，如果取 $N$ 为需要变换的独立变量并对亥姆霍兹自由能进行勒让德变换，我们将得到巨正则函数：
+
+$$
 \Phi = \Phi(T, V, \mu) = F - \mu N = - p V.
-\end{equation}
-它的独立变量为$T$、$V$和$\mu$，因为
-\begin{equation}
+$$
+
+它的独立变量为 $T$、 $V$ 和 $\mu$ ，因为
+
+$$
 d\Phi = - S d T - p d V - N d \mu.
-\end{equation}
+$$
 
 内能和上述四个通过勒让德变换得到的函数统称为热力学势。 我们能用勒让德变换定义更多的函数，但我们以后只会用到这几个。
 
 因为热力学势都是系统的状态变量，它们的全微分都是恰当的。这意味着它们对任何两个独立变量的二阶偏导数与求偏导的次序无关。例如，根据
+
 $$dE = T dS - p dV + \mu dN$$
+
 我们有
-\begin{equation}
+
+$$
 \frac{\partial}{\partial V} \left(\frac{\partial E}{\partial S}\right) =
 \frac{\partial}{\partial S} \left(\frac{\partial E}{\partial V}\right).
-\end{equation}
+$$
+
 将等式两边括号内的一阶偏导数用合适的变量替代，可得
-\begin{equation}
+
+$$
 \left( \frac{\partial T}{\partial V} \right)_{S, N} = -
 \left( \frac{\partial p}{\partial S} \right)_{V, N}.
-\end{equation}
+$$
+
 这样得到的关系称为麦克斯韦 (Maxwell) 关系。显然，可以有很多麦克斯韦关系，我们就不一一列举了。
 
 前面，我们根据熵增加原理讨论了孤立系统趋于平衡的过程。然而，孤立系统的模型往往不是讨论一个特定问题时的最佳选择。这里，我们来考察其它类型的系统 (闭合系统和开放系统) 趋于平衡的过程。
 
-一个常见的例子是体积和粒子数固定的闭合系统，它与一个热浴接触而保持一个恒定的温度。对这样的非孤立系统，熵增加原理不再适用，因为系统与环境 (主要是热源) 可能会交换热量。为了研究此时系统的热力学演化行为，我们必须从热力学第二定律的更为一般的表达式，即$TdS \geq \delta Q$出发。一方面，由于温度是恒定的，我们有$TdS = d(TS)$；另一方面，由于粒子数和体积固定，热力学第一定律告诉我们$\delta Q = dE$。结合这三个式子，并注意到亥姆霍兹自由能的定义，我们得到如下不等式：
-\begin{equation}
+一个常见的例子是体积和粒子数固定的闭合系统，它与一个热浴接触而保持一个恒定的温度。对这样的非孤立系统，熵增加原理不再适用，因为系统与环境 (主要是热源) 可能会交换热量。为了研究此时系统的热力学演化行为，我们必须从热力学第二定律的更为一般的表达式，即 $TdS \geq \delta Q$ 出发。一方面，由于温度是恒定的，我们有 $TdS = d(TS)$ ；另一方面，由于粒子数和体积固定，热力学第一定律告诉我们 $\delta Q = dE$ 。结合这三个式子，并注意到亥姆霍兹自由能的定义，我们得到如下不等式：
+
+$$
 d F \leq 0.
-\end{equation}
+$$
+
 该式被称为自由能最小原理。它是说，一个粒子数、体积和温度固定的系统总是朝着自由能减小的方向演化的。如果系统的自由能还未达到最小值，那么它还未达到热力学平衡；如果系统的自由能达到了最小值，那么它就达到了热力学平衡。
 
-另一个常见的例子是粒子数、压强和温度固定的系统。类似地，我们可以根据热力学第一和第二定律得到不等式$d (TS) \geq dE + d(pV)$。利用吉布斯函数的定义可以将该不等式表达为
-\begin{equation}
+另一个常见的例子是粒子数、压强和温度固定的系统。类似地，我们可以根据热力学第一和第二定律得到不等式 $d (TS) \geq dE + d(pV)$ 。利用吉布斯函数的定义可以将该不等式表达为
+
+$$
 d G \leq 0.
-\end{equation}
+$$
+
 这就是吉布斯函数最小原理，即一个粒子数、压强和温度固定的系统总是朝着吉布斯函数减小的方向演化。吉布斯函数减小时体系还未达到热力学平衡，吉布斯函数不变时体系便达到了热力学平衡。
 
 以上两个原理统称为最小能量原理，它是力学中的最小势能原理在热力学中的推广。由于我们是从热力学第一和第二定律出发推导该原理的，它也可以被当做是热力学第二定律的数学表述之一。它与熵增加原理在本质上是等价的，而且在应用中是互为补充的。
