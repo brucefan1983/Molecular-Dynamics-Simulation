@@ -552,19 +552,17 @@ $$
 亦即
 
 $$
-\left( \frac{\partial \ln [\Omega_1(E_1)]}  {\partial E_1} \right)_{N_1V_1}=
-\left( \frac{\partial \ln [\Omega_2(E_2)]}  {\partial E_2} \right)_{N_2V_2}.
+\left( \frac{\partial \ln [\Omega_1(E_1)]}  {\partial E_1} \right)=
+\left( \frac{\partial \ln [\Omega_2(E_2)]}  {\partial E_2} \right).
 $$
-
-注意：我们在两边的求导操作中加上了之前省略不写的条件。
 
 上式就是两个子系统达到热力学平衡的条件。因为子系统之间不能传粒子也不能做功，这个条件具体地说就是热平衡的条件。这不就是热力学第零定律吗？因此，我们从统计力学推导出了热力学第零定律：两个子系统达到热平衡时必有某个量相等，而这个量就是温度。
 
 热平衡时子系统之间的温度相等，即 $T_1=T_2$ ，或者 $1/T_1=1/T_2$ 。运用热力学基本方程，我有
 
 $$
-\left( \frac{\partial S_1}  {\partial E_1} \right)_{N_1V_1} =
-\left( \frac{\partial S_2}  {\partial E_2} \right)_{N_2V_2}.
+\left( \frac{\partial S_1}  {\partial E_1} \right) =
+\left( \frac{\partial S_2}  {\partial E_2} \right).
 $$
 
 比较以上两式，完全可以作出如下猜测：
