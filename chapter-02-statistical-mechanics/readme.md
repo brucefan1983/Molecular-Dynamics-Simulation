@@ -263,7 +263,7 @@ $$
 
 $$
 dE = T dS - P dV + \mu dN.
-$4
+$$
 
 这里，我们引入了一个新的强度量， $\mu$， 叫做化学势。从上述内能的全微分可以看出，
 
@@ -285,14 +285,13 @@ $$
 E(\lambda S, \lambda V, \lambda N) =  \lambda E(S, V, N).
 $$
 
-其中，$\lambda$ 是一个任意的参数。将该式对参数 $\lambda$ 求导可得
+其中， $\lambda$ 是一个任意的参数。将该式对参数 $\lambda$ 求导可得
 
 $$
-&\frac {\partial E(\lambda S, \lambda V, \lambda N)}{ \partial(\lambda S)} \frac {\partial (\lambda S)} {\partial \lambda} +
+\frac {\partial E(\lambda S, \lambda V, \lambda N)}{ \partial(\lambda S)} \frac {\partial (\lambda S)} {\partial \lambda} +
 \frac {\partial E(\lambda S, \lambda V, \lambda N)}{\partial (\lambda V)} \frac {\partial (\lambda V)} {\partial \lambda} +
 \frac {\partial E(\lambda S, \lambda V, \lambda N)}{\partial (\lambda N)} \frac {\partial (\lambda N)} {\partial \lambda}
-\nonumber \\
-&= E(S, V, N).
+= E(S, V, N).
 $$
 
 再将 $\lambda$ 取为 1，可得
@@ -367,9 +366,7 @@ $$
 因为整个系统的粒子数、体积、以及内能都是守恒的，我们有
 
 $$
-d S = \left(\frac{1}{T_A} - \frac{1}{T_B} \right) dE_A
-+ \left(\frac{p_A}{T_A} - \frac{p_B}{T_B} \right) dV_A
-- \left(\frac{\mu_A}{T_A} - \frac{\mu_B}{T_B} \right) dN_A.
+d S = \left(\frac{1}{T_A} - \frac{1}{T_B} \right) dE_A + \left(\frac{p_A}{T_A} - \frac{p_B}{T_B} \right) dV_A - \left(\frac{\mu_A}{T_A} - \frac{\mu_B}{T_B} \right) dN_A.
 $$
 
 若整个孤立系统达到了热力学平衡，则有 $dS=0$ ，从而有如下平衡条件：
@@ -411,6 +408,7 @@ $$
 $$
 H = H(S,p,N)=E - \left(\frac{\partial E}{\partial V}\right)_{S,N} V= E + p V = TS + \mu N.
 $$
+
 其中，我们在最后一步用了欧拉公式。你可能也注意到上式暗示了焓函数的独立变量是 $S$、 $p$ 和 $N$ 。这一论断能由下式证实 (第二个等号运用了热力学基本方程)：
 
 $$
@@ -453,27 +451,7 @@ $$
 d\Phi = - S d T - p d V - N d \mu.
 $$
 
-内能和上述四个通过勒让德变换得到的函数统称为热力学势。 我们能用勒让德变换定义更多的函数，但我们以后只会用到这几个。
-
-因为热力学势都是系统的状态变量，它们的全微分都是恰当的。这意味着它们对任何两个独立变量的二阶偏导数与求偏导的次序无关。例如，根据
-
-$$dE = T dS - p dV + \mu dN$$
-
-我们有
-
-$$
-\frac{\partial}{\partial V} \left(\frac{\partial E}{\partial S}\right) =
-\frac{\partial}{\partial S} \left(\frac{\partial E}{\partial V}\right).
-$$
-
-将等式两边括号内的一阶偏导数用合适的变量替代，可得
-
-$$
-\left( \frac{\partial T}{\partial V} \right)_{S, N} = -
-\left( \frac{\partial p}{\partial S} \right)_{V, N}.
-$$
-
-这样得到的关系称为麦克斯韦 (Maxwell) 关系。显然，可以有很多麦克斯韦关系，我们就不一一列举了。
+内能和上述四个通过勒让德变换得到的函数统称为热力学势。 
 
 前面，我们根据熵增加原理讨论了孤立系统趋于平衡的过程。然而，孤立系统的模型往往不是讨论一个特定问题时的最佳选择。这里，我们来考察其它类型的系统 (闭合系统和开放系统) 趋于平衡的过程。
 
