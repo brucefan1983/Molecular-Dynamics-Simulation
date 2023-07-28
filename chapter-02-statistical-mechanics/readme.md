@@ -631,366 +631,494 @@ $$
 
 下面我们要问：哪个分布 $\{M_i\}$ 的概率最大？那个具有最大概率的分布就对应于平衡态。根据等概率原理，肯定是微观状态数最大的分布概率最大。因为微观状态数往往是巨大的，所以一般不直接求 $\Omega$ 的最大值，而是求 $\ln\Omega$ 的最大值。
 
-对于一个多元函数$\Omega(M_1, M_2, \cdots)$，要使其取最大值，自然的想法是令其对所有变量的导数都等于零：
-\begin{equation}
+对于一个多元函数 $\Omega(M_1, M_2, \cdots)$ ，要使其取最大值，自然的想法是令其对所有变量的导数都等于零：
+
+$$
 \frac{\partial \ln \Omega}{\partial M_i}  = 0.
-\end{equation}
-然而，这个式子是错的，因为我们忽略了上面的约束条件$M = \sum M_i$和$E_M = \sum M_i E_i$。有约束条件的极值问题一般用拉格朗日乘子法来解决。引入两个拉格朗日乘子$\alpha$和$\beta$。极值条件可以写成
-\begin{equation}
+$$
+
+然而，这个式子是错的，因为我们忽略了上面的约束条件 $M = \sum M_i$ 和 $E_M = \sum M_i E_i$ 。有约束条件的极值问题一般用拉格朗日乘子法来解决。引入两个拉格朗日乘子 $\alpha$ 和 $\beta$ 。极值条件可以写成
+
+$$
 \frac{\partial \ln \Omega}{\partial M_i}
 - \alpha \frac{\partial \sum_j M_j}{\partial M_i}
 - \beta \frac{\partial \sum_j M_j E_j}{\partial M_i}
 = 0.
-\end{equation}
+$$
 
 在 $M$ 趋近于无穷大时，所有的 $M_i$ 也趋近于无穷大。利用斯特林（Stirling）公式，有
-\begin{equation}
+
+$$
 \ln \Omega \approx M(\ln M - 1)- \sum_i \left[   M_i(\ln M_i - 1) \right].
-\end{equation}
+$$
 
 因为
-$\frac{\partial M}{\partial M_i} = 1$、
-$\frac{\partial E_M}{\partial M_i} = E_i$、
-$\frac{\partial \ln \Omega}{\partial M_i} = - \ln M_i$，于是我们可以将极值条件写成
-\begin{equation}
-\ln M_i = -\alpha - \beta E_i.
-\end{equation}
-对上式两边取指数，可得
-\begin{equation}
-M_i = \exp[-\alpha - \beta E_i].
-\end{equation}
 
-既然$M_i$是处于微观$i$的系统的个数，那么自然地，一个系统处于微观态$i$的概率为
-\begin{equation}
+$$\frac{\partial M}{\partial M_i} = 1$$
+
+$$\frac{\partial E_M}{\partial M_i} = E_i$$
+
+$$\frac{\partial \ln \Omega}{\partial M_i} = - \ln M_i$$
+
+于是我们可以将极值条件写成
+
+$$
+\ln M_i = -\alpha - \beta E_i.
+$$
+
+对上式两边取指数，可得
+
+$$
+M_i = \exp[-\alpha - \beta E_i].
+$$
+
+既然 $M_i$ 是处于微观 $i$ 的系统的个数，那么自然地，一个系统处于微观态 $i$ 的概率为
+
+$$
 w_i = \frac{M_i}{M} = \frac{\exp[- \beta E_i]}{\sum_i \exp[-\beta E_i]}.
-\end{equation}
-可见，常数$\alpha$没有什么物理意义，在求概率的时候就被消掉了。上式中的分母叫做正则配分函数，记为$Z$：
-\begin{equation}
+$$
+
+可见，常数 $\alpha$ 没有什么物理意义，在求概率的时候就被消掉了。上式中的分母叫做正则配分函数，记为
+
+$$
 \boxed{Z = \sum_i \exp[-\beta E_i]}.
-\end{equation}
+$$
+
 表面上看，配分函数只不过是一个归一化因子而已。然而实际上，配分函数包含了体系所有的热力学性质。后面马上会验证此论断。
 
-那么，常数$\beta$有什么物理意义呢？一方面，我们知道，正则系综中的温度是一个常数，所以可以猜测 $\beta$ 与温度有关。另一方面，从量纲的角度来看，可以进一步猜测：
-\begin{equation}
+那么，常数 $\beta$ 有什么物理意义呢？一方面，我们知道，正则系综中的温度是一个常数，所以可以猜测 $\beta$ 与温度有关。另一方面，从量纲的角度来看，可以进一步猜测：
+
+$$
 \boxed{\beta = \frac{1}{k_B T}}.
-\end{equation}
+$$
+
 于是，正则配分函数可以写成
-\begin{equation}
+
+$$
 \boxed{Z = \sum_i \exp \left[-\frac{ E_i } { k_B T} \right]}.
-\end{equation}
-怎么确定这里引入的$T$就是绝对温度呢？等到讲完后面的位力定理时我们就会明白。在那之前，先假设$T$就是绝对温度，并考察几个热力学量的计算。
+$$
+
+怎么确定这里引入的 $T$ 就是绝对温度呢？等到讲完后面的位力定理时我们就会明白。在那之前，先假设 $T$ 就是绝对温度，并考察几个热力学量的计算。
 
 可以证明，整个正则系综的熵可以化为如下形式：
-\begin{equation}
+
+$$
 S_M = -k_B M \sum_i w_i \ln w_i.
-\end{equation}
+$$ 
+
 于是，由熵的可加性得到单个系统的熵为
-\begin{equation}
+
+$$
 S = -k_B \sum_i w_i \ln w_i.
-\end{equation}
+$$
+
 这个公式叫做熵的吉布斯公式。
 
-将概率函数$w_i$的表达式代入熵的吉布斯公式可得
-\begin{equation}
+将概率函数 $w_i$ 的表达式代入熵的吉布斯公式可得
+
+$$
 S = k_B \ln Z + \frac{E}{T}.
-\end{equation}
+$$
+
 其中，
-\begin{equation}
+
+$$
 E = \sum_i w_i E_i
-\end{equation}
+$$
 是系统能量的平均值。于是，
-\begin{equation}
+
+$$
 E - TS = -k_B T\ln Z.
-\end{equation}
+$$
+
 上式右边就是亥姆霍兹自由能：
-\begin{equation}
+
+$$
 \boxed{F = -k_B T \ln Z}.
-\end{equation}
+$$
+
 这样就将正则配分函数与系统的亥姆霍兹自由能联系起来了。这个联系的意义是深远的，因为我们知道，在粒子数、体积、温度固定的系统中，亥姆霍兹自由能函数包含了系统所有的热力学性质。例如，正则系综中系统的能量和压强的平均值可以表示为
-\begin{equation}
+
+$$
 E = -\frac{\partial}{\partial \beta} \ln Z
-\end{equation}
-\begin{equation}
+$$
+
+$$
 p = \frac{1}{\beta} \frac{\partial}{\partial V} \ln Z
-\end{equation}
+$$
 
 当然，如果系统的粒子数不是无穷大的话，计算出的热力学量应该有涨落，即标准偏差不等于零。正则系综中能量平方的平均值
-\begin{equation}
+
+$$
 \langle E^2 \rangle = \sum_i w_i E_i^2
-\end{equation}
+$$
+
 可以写成
-\begin{equation}
+
+$$
 \langle E^2 \rangle = \langle E \rangle^2 - \frac{\partial \langle E \rangle }{\partial\beta}.
-\end{equation}
-其中，为了明确起见，我们把之前定义的平均能量 $E$写成了$\langle E\rangle$。进而可求出能量的方差
-\begin{equation}
+$$
+
+其中，为了明确起见，我们把之前定义的平均能量 $E$ 写成了 $\langle E\rangle$ 。进而可求出能量的方差
+
+$$
 (\Delta E)^2 = \langle E^2 \rangle - \langle E \rangle^2
 = - \frac{\partial \langle E \rangle }{\partial\beta}
 = \frac{1}{k_B \beta^2} \frac{ \partial \langle E \rangle}{\partial T}
 = k_B T^2 C_V.
-\end{equation}
-其中，$C_V$是系统的等容热容。这就证明了等容热容一定是非负的。因为能量和等容热容都是广延量，能量的相对偏差在热力学极限（保持粒子数密度不变时让粒子数趋近于无穷大）下趋近于零：
-\begin{equation}
+$$
+
+其中， $C_V$ 是系统的等容热容。这就证明了等容热容一定是非负的。因为能量和等容热容都是广延量，能量的相对偏差在热力学极限（保持粒子数密度不变时让粒子数趋近于无穷大）下趋近于零：
+
+$$
 \frac{\Delta E}{\langle E \rangle}
 = \frac{\sqrt{k_B T^2 C_V}}{\langle E \rangle}
 \rightarrow \frac{1}{\sqrt{N}}.
-\end{equation}
+$$
+
 这个结论的数学根源就是中心极限定理的结论：即不管每一个粒子的能量如何分布，在粒子数趋近于无穷大时，系统总能量的相对偏差一定趋近于零。
 
 
-在得到正则配分函数之后，让我们从离散能量的情形回到连续能量的情形。为此，只要将概率函数$w_i$换成概率密度函数 $\rho(H(q, p))$即可：
-\begin{equation}
-\rho(H(q, p)) = \frac{e^{-\beta H(q, p)}}{\int dq dp e^{-\beta H(q, p)}}.
-\end{equation}
-这个概率密度函数显然是归一化的。这里的分母
-\begin{equation}
-Z = \int dq dp e^{-\beta H(q, p)}
-\end{equation}
-就是连续情形中的配分函数。这个配分函数的定义不是最终的正确形式（一个明显的问题就是$Z$的量纲不为1），但在遇到问题之前，我们不知道该对它做怎样的修正。其实，在很多的问题中，我们用不到配分函数，不妨先简单地将它看做一个归一化常数。
+在得到正则配分函数之后，让我们从离散能量的情形回到连续能量的情形。为此，只要将概率函数 $w_i$ 换成概率密度函数 $\rho(H(q, p))$ 即可：
 
-对经典粒子系统，总能量$H(q,p)$是动能$K(p)$和势能$U(q)$的和：
-\begin{equation}
+$$
+\rho(H(q, p)) = \frac{e^{-\beta H(q, p)}}{\int dq dp e^{-\beta H(q, p)}}.
+$$
+
+这个概率密度函数显然是归一化的。这里的分母
+
+$$
+Z = \int dq dp e^{-\beta H(q, p)}
+$$
+
+就是连续情形中的配分函数。这个配分函数的定义不是最终的正确形式（一个明显的问题就是 $Z$ 的量纲不为 1），但在遇到问题之前，我们不知道该对它做怎样的修正。其实，在很多的问题中，我们用不到配分函数，不妨先简单地将它看做一个归一化常数。
+
+对经典粒子系统，总能量 $H(q,p)$ 是动能 $K(p)$ 和势能 $U(q)$ 的和：
+
+$$
 H(q,p) = K(p) + U(q).
-\end{equation}
-于是，系统处于$dpdq$的概$\rho(H(q,p))dpdq$可以分解动量部分$f_{p}(p)dp$和坐标部$f_{q}(q)dq$的乘积：
-\begin{equation}
+$$
+
+于是，系统处于 $dpdq$ 的概 $\rho(H(q,p))dpdq$ 可以分解动量部分 $f_{p}(p)dp$ 和坐标部 $f_{q}(q)dq$ 的乘积：
+
+$$
 \frac{e^{-\beta H(q, p)}}{Z}  dpdq
 =  \left[A e^{-\beta K(p)} dp \right] 
 \left[B e^{-\beta U(q)} dq \right]
 \equiv \left[f_{p}(p)dp\right]    
 \left[ f_{q}(q)dq\right].
-\end{equation}
-其中，常数$A$和$B$分别是动量和坐标部分的归一化因子，满足$AB=1/Z$。这就是说，我们可以将动量分布函数与坐标分布函数分开来研究。这其实就是关于独立随机变量的乘法原理的体现。
+$$
 
-对一般的系统，如果我们不知道体系的势能函数，是无法研究坐标分布函数的。然而，无论哪种系统（现在只讨论非相对论的经典系统；该论断在量子统计中不正确），其动量分布函数都是一样的。因为任何系统的动能都可以写成单个粒子的动能的和，所以我们可以进一步将整个系统的动量分布函数 $f_{p}(p)dp$（这里的 $p$指代所有$3N$个动量分量）分解为单个粒子的动量分布函数$f_{\vec{p}}(\vec{p})$（这里的$\vec{p}$指代某个原子的动量矢量）的乘积。其中，$f(\vec{p})$为
-\begin{equation}
+其中，常数 $A$ 和 $B$ 分别是动量和坐标部分的归一化因子，满足 $AB=1/Z$ 。这就是说，我们可以将动量分布函数与坐标分布函数分开来研究。这其实就是关于独立随机变量的乘法原理的体现。
+
+对一般的系统，如果我们不知道体系的势能函数，是无法研究坐标分布函数的。然而，无论哪种系统（现在只讨论非相对论的经典系统；该论断在量子统计中不正确），其动量分布函数都是一样的。因为任何系统的动能都可以写成单个粒子的动能的和，所以我们可以进一步将整个系统的动量分布函数 $f_{p}(p)dp$ （这里的 $p$ 指代所有 $3N$ 个动量分量）分解为单个粒子的动量分布函数 $f_{\vec{p}}(\vec{p})$ （这里的 $\vec{p}$ 指代某个原子的动量矢量）的乘积。其中， $f(\vec{p})$ 为
+
+$$
 f_{\vec{p}}(\vec{p}) dp_x dp_y dp_z
 = a e^{-\beta \frac{p_x^2+p_y^2+p_z^2}{2m}} dp_x dp_y dp_z
 = a e^{- \frac{p_x^2+p_y^2+p_z^2}{2mk_B T}} dp_x dp_y dp_z.
-\end{equation}
-注意，此处的归一化因子$a$与前面的归一化因$A$的关系为$A=a^N$。
+$$
+
+注意，此处的归一化因子 $a$ 与前面的归一化因 $A$ 的关系为 $A=a^N$ 。
 
 容易计算，上述单个粒子的动量分布函数的归一化因子为
-\begin{equation}
+
+$$
 a  = \frac{1}{(2\pi m k_B T)^{3/2}}.
-\end{equation}
+$$
+
 于是，我们可以将单粒子动量分布函数完整地写出来：
-\begin{equation}
+
+$$
 f_{\vec{p}}(\vec{p}) dp_x dp_y dp_z
 = \frac{1}{(2\pi m k_B T)^{3/2}} e^{- \frac{p_x^2+p_y^2+p_z^2}{2mk_B T}} dp_x dp_y dp_z.
-\end{equation}
-如果将随机变量从动量换成速度$\vec{v}$，我们可以立刻写出速度分布函数:
-\begin{equation}
+$$
+
+如果将随机变量从动量换成速度 $\vec{v}$， 我们可以立刻写出速度分布函数:
+
+$$
 f_{\vec{v}}(\vec{v}) dv_x dv_y dv_z
 = \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{m(v_x^2+v_y^2+v_z^2)}{2k_B T}} dv_x dv_y dv_z.
-\end{equation}
-这就是麦克斯韦于1860年通过分子运动论推导出的速度分布函数。
+$$ 
 
-我们可以继续将各个方向的速度分量的分布函数分离出来。例如，$x$方向的速度分布函数为
-\begin{equation}
+这就是麦克斯韦于 1860 年通过分子运动论推导出的速度分布函数。
+
+我们可以继续将各个方向的速度分量的分布函数分离出来。例如， $x$ 方向的速度分布函数为
+
+$$
 f_{v_x}(v_x) dv_x
 = \left( \frac{m}{2\pi k_B T} \right) ^{1/2}
 e^{- \frac{mv_x^2}{2k_B T}} dv_x.
-\end{equation}
-如果从速度的直角坐标换到速度的球坐标（$v$、$\theta$、$\phi$），则有
-\begin{equation}
+$$
+
+如果从速度的直角坐标换到速度的球坐标（ $v$、 $\theta$、 $\phi$ ），则有
+
+$$
 f_{\vec{v}}(\vec{v}) dv_x dv_y dv_z
 = \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{mv^2}{2k_B T}} v^2  dv \sin\theta d\theta d\phi.
-\end{equation}
-若定义$f_v(v)dv$为速率间隔$dv$内的概率，则有
-\begin{align}
+$$
+
+若定义 $f_v(v)dv$ 为速率间隔 $dv$ 内的概率，则有
+
+$$
 f_v(v)dv
 =& \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{mv^2}{2k_B T}} v^2  dv
 \int_0^{\pi} \sin\theta d\theta \int_0^{2\pi} d\phi \nonumber \\
 =& 4\pi \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{mv^2}{2k_B T}} v^2  dv .
-\end{align}
-利$f_{v_x}(v_x)$的表达式，可以证明：
-\begin{equation}
-\langle v_x^2 \rangle = \frac{k_B T}{m}
-\end{equation}
-利用$f_{v}(v)$的表达式，可以证明：
-\begin{equation}
-\langle v^2 \rangle = \frac{3k_B T}{m}
-\end{equation}
-\begin{equation}
-\langle v \rangle^2 = \frac{8k_B T}{\pi m}
-\end{equation}
-由上述结果可知，每一个平动自由度的平均能量为$k_BT/2$。下面我们马上会知道，这是能量均分定理的体现。
+$$
 
-考虑一个经典的多粒子系统，我们用$q$代表系统的$s$个广义坐标，用 $p$ 代表 $s$个广义动量，而$x_i$或者$x_j$代表任意一个广义坐标或者广义动量。我们现在利用上述概率密度函数来计算经典正则系综中的一个平均值
-\begin{equation}
+利 $f_{v_x}(v_x)$ 的表达式，可以证明：
+
+$$
+\langle v_x^2 \rangle = \frac{k_B T}{m}
+$$
+
+利用 $f_{v}(v)$ 的表达式，可以证明：
+
+$$
+\langle v^2 \rangle = \frac{3k_B T}{m}
+$$
+
+$$
+\langle v \rangle^2 = \frac{8k_B T}{\pi m}
+$$
+
+由上述结果可知，每一个平动自由度的平均能量为 $k_BT/2$ 。下面我们马上会知道，这是能量均分定理的体现。
+
+考虑一个经典的多粒子系统，我们用 $q$ 代表系统的 $s$ 个广义坐标，用 $p$ 代表 $s$ 个广义动量，而 $x_i$ 或者 $x_j$ 代表任意一个广义坐标或者广义动量。我们现在利用上述概率密度函数来计算经典正则系综中的一个平均值
+
+$$
 \left\langle x_i \frac{\partial H}{\partial x_j} \right\rangle =
 \frac{ \int dq dp e^{-\beta H(q, p)} x_i \frac{\partial H}{\partial x_j} }
 { \int dq dp e^{-\beta H(q, p)} }.
-\end{equation}
+$$
 
-为了计算这个平均值，让我们先关注分母。注意到分母中的乘积$e^{-\beta H(q, p)} \frac{\partial H}{\partial x_j}$可以写成 $-\frac{1}{\beta}\frac{\partial e^{-\beta H(q, p)}}{\partial x_j}$。于是，分母中的被积函数可以写成
-\begin{equation}
+为了计算这个平均值，让我们先关注分母。注意到分母中的乘积 $e^{-\beta H(q, p)} \frac{\partial H}{\partial x_j}$ 可以写成 $-\frac{1}{\beta}\frac{\partial e^{-\beta H(q, p)}}{\partial x_j}$ 。于是，分母中的被积函数可以写成
+
+$$
 -\frac{1}{\beta} x_i \frac{\partial e^{-\beta H(q, p)} }{\partial x_j}
 = -\frac{1}{\beta} \frac{\partial} {\partial x_j} (x_i e^{-\beta H(q, p)})
 +\frac{1}{\beta} \delta_{ij} e^{-\beta H(q, p)} .
-\end{equation}
+$$
+
 上式等号右边的第一项的积分等于
-\begin{equation}
+
+$$
 -\frac{1}{\beta} \int \frac{dq dp}{dx_j} \int dx_j
 \frac{\partial} {\partial x_j} \left(x_i e^{-\beta H(q, p)}\right)
 = -\frac{1}{\beta} \int \frac{dq dp}{dx_j}
 \left( x_i e^{-\beta H(q, p)} \right)_{x_j^{min}}^{x_j^{max}} = 0
-\end{equation}
-上式等于零的理由如下。当$x_j$等于某个广义坐标时，$x_j^{min}$和 $x_j^{max}$一定对应于系统的边界处（容器壁），那里的势能无穷大，使得因子 $x_i e^{-\beta H(q,p)}$等于零。当$x_j$等于某个广义动量时，$x_j^{min}$和 $x_j^{max}$就分别等$-\infty$和$+\infty$，使得系统的动能为无穷大，从而依然使得因子$x_i e^{-\beta H(q, p)}$等于零。于是，我们要求的平均值为
-\begin{equation}
+$$
+
+上式等于零的理由如下。当 $x_j$ 等于某个广义坐标时， $x_j^{min}$ 和 $x_j^{max}$ 一定对应于系统的边界处（容器壁），那里的势能无穷大，使得因子 $x_i e^{-\beta H(q,p)}$ 等于零。当 $x_j$ 等于某个广义动量时， $x_j^{min}$ 和 $x_j^{max}$ 就分别等于 $-\infty$ 和 $+\infty$ ，使得系统的动能为无穷大，从而依然使得因子 $x_i e^{-\beta H(q, p)}$ 等于零。于是，我们要求的平均值为
+
+$$
 \left\langle x_i \frac{\partial H}{\partial x_j} \right\rangle =
 \frac{  \int dq dp\frac{1}{\beta} \delta_{ij} e^{-\beta H(q, p)} }
 { \int dq dp e^{-\beta H(q, p)} } = \frac{1}{\beta} \delta_{ij}
 = k_B T \delta_{ij}.
-\end{equation}
+$4
 
-现在，假设系统的哈密顿量是某个广义坐标或者广义动量的二次函数，即假设由自由度$x_i$贡献的哈密顿量为
-\begin{equation}
+现在，假设系统的哈密顿量是某个广义坐标或者广义动量的二次函数，即假设由自由度 $x_i$ 贡献的哈密顿量为
+
+$$
 H_i(x_i) = a x_i^2.
-\end{equation}
-其中，$a$是常数系数。对于这样的哈密顿量，显然有
-\begin{equation}
+$$
+
+其中， $a$ 是常数系数。对于这样的哈密顿量，显然有
+
+$$
 H_i(x_i) = \frac{1}{2} x_i \frac{\partial H_i(x_i)}{\partial x_i}.
-\end{equation}
-于是，与自由度$x_i$相关的能量平均值为
-\begin{equation}
+$$
+
+于是，与自由度 $x_i$ 相关的能量平均值为
+
+$$
 \langle H_i(x_i) \rangle = \frac{1}{2} k_B T.
-\end{equation}
-这就是能量均分定理，即哈密顿量的每个具有平方形式的自由度对总能量的平均贡献都是$\frac{1}{2} k_B T$。
+$$
+
+这就是能量均分定理，即哈密顿量的每个具有平方形式的自由度对总能量的平均贡献都是 $\frac{1}{2} k_B T$ 。
 
 将能量均分定理应用与单原子理想气体，因为每个原子只有三个平动自由度，故可得内能
-\begin{equation}
-E = \frac{3}{2}Nk_BT.
-\end{equation}
-于是，单原子理想气体的等容热容为$C_V=\frac{3}{2}Nk_B$。该预言与实验结果是符合得很好的。再考虑双原子分子的理想气体。因为每个分子有三个平动动能项，两个转动动能项，一个振动动能项与一个振动势能项，故由能量均分定理，内能应该为
-\begin{equation}
-E = \frac{7}{2}Nk_BT.
-\end{equation}
-相应的等容热容为$C_V=\frac{7}{2}Nk_B$。然而，实验结果显示，室温下大部分的双原子气体的等容热容都接近于$C_V=\frac{5}{2}Nk_B$。这是经典统计力学遭遇的困难之一。经典统计力学在固体比热和黑体辐射的问题上也遭遇了巨大的困难，但这都需要由量子统计解决。
 
-很容易写出上面所定义的平均值的一个$x_i=x_j=q_{\alpha}$的特例：
-\begin{equation}
+$$
+E = \frac{3}{2}Nk_BT.
+$$
+
+于是，单原子理想气体的等容热容为 $C_V=\frac{3}{2}Nk_B$ 。该预言与实验结果是符合得很好的。再考虑双原子分子的理想气体。因为每个分子有三个平动动能项，两个转动动能项，一个振动动能项与一个振动势能项，故由能量均分定理，内能应该为
+
+$$
+E = \frac{7}{2}Nk_BT.
+$$
+
+相应的等容热容为 $C_V=\frac{7}{2}Nk_B$ 。然而，实验结果显示，室温下大部分的双原子气体的等容热容都接近于 $C_V=\frac{5}{2}Nk_B$ 。这是经典统计力学遭遇的困难之一。经典统计力学在固体比热和黑体辐射的问题上也遭遇了巨大的困难，但这都需要由量子统计解决。
+
+很容易写出上面所定义的平均值的一个 $x_i=x_j=q_{\alpha}$ 的特例：
+
+$$
 \left\langle q_{\alpha} \frac{\partial H}{\partial q_{\alpha}} \right\rangle
 = k_B T.
-\end{equation}
-考虑由$N$个粒子组成的经典系统，将上式对$\alpha$求和可得
-\begin{equation}
+$$
+
+考虑由 $N$ 个粒子组成的经典系统，将上式对 $\alpha$ 求和可得
+
+$$
 \sum_{\alpha=1}^{3N} \left\langle q_{\alpha} \frac{\partial H}{\partial q_{\alpha}} \right\rangle
 = 3N k_B T.
-\end{equation}
-因为$-\frac{\partial H}{\partial q_{\alpha}} = F_{\alpha}$ 是与坐标$q_{\alpha}$对应的力，故有
-\begin{equation}
+$$
+
+因为 $-\frac{\partial H}{\partial q_{\alpha}} = F_{\alpha}$ 是与坐标 $q_{\alpha}$ 对应的力，故有
+
+$$
 \sum_{\alpha=1}^{3N} \left\langle q_{\alpha} F_{\alpha} \right\rangle
 = -3N k_B T.
-\end{equation}
-克劳修斯于1870年为上式左边的量起了一个名字：Virial。常见的中文翻译有两个：一个是位力，一个是维里。我们将用第一个，因为这个量的物理意义就是位置乘以力的和的平均值，翻译成位力是非常棒的。我们将用符号 $W$表示这个量，即
-\begin{equation}
+$$
+
+克劳修斯于1870年为上式左边的量起了一个名字：Virial。常见的中文翻译有两个：一个是位力，一个是维里。我们将用第一个，因为这个量的物理意义就是位置乘以力的和的平均值，翻译成位力是非常棒的。我们将用符号 $W$ 表示这个量，即
+
+$$
 W = \sum_{\alpha=1}^{3N} \left\langle q_{\alpha} F_{\alpha} \right\rangle
 = -3N k_B T.
-\end{equation}
+$$
+
 这个公式叫做位力定理。
 
-现在将位力定理应用于经典理想气体，即无相互作用的经典多粒子系统。因为粒子之间没有相互作用，故所有的力来自于粒子与容器的碰撞。取一个坐标系，记容器壁$S$上的任意一点的坐标为$\vec{x}$。假设系统的压强为 $p$，则容器壁上位于$\vec{x}$处的面积元 $d\vec{a}$（朝外的方向为正方向）施加给系统的力为$d\vec{F} = -p d\vec{a}$。于是，系统的位力可表示为
-\begin{equation}
+现在将位力定理应用于经典理想气体，即无相互作用的经典多粒子系统。因为粒子之间没有相互作用，故所有的力来自于粒子与容器的碰撞。取一个坐标系，记容器壁 $S$ 上的任意一点的坐标为 $\vec{x}$ 。假设系统的压强为 $p$ ，则容器壁上位于 $\vec{x}$ 处的面积元 $d\vec{a}$ （朝外的方向为正方向）施加给系统的力为 $d\vec{F} = -p d\vec{a}$ 。于是，系统的位力可表示为
+
+$$
 W = \oint_S \vec{x} \cdot d\vec{F} =
 \oint_S \vec{x} \cdot (-p d\vec{a}) =
 -p \oint_S \vec{x} \cdot d\vec{a}.
-\end{equation}
-记容器所在区域为$\Omega$，包围的体积为$V$，并应用高斯定理，可得
-\begin{equation}
-W = -p \int_{\Omega} (\nabla \cdot \vec{x}) dv = -3p V.
-\end{equation}
-将上式与位力定理对比可知：
-\begin{equation}
-p V = N k_B T.
-\end{equation}
-这就是理想气体的状态方程。这就证明了之前利用$\beta=\frac{1}{k_B T}$所定义的$T$就是绝对温度。以后我们就可以放心地将$\beta=\frac{1}{k_B T}$中的$T$当做绝对温度了。
+$$
 
-虽然之前用位力定理推导了理想气体状态方程，但我们并没有系统计算单原子分子理想气体的各个热力学量。现在是时候考虑这些问题了。首先，我们明显地写出$N$个无相互作用的原子组成的理想气体系统的能量函数：
-\begin{equation}
+记容器所在区域为 $\Omega$ ，包围的体积为 $V$ ，并应用高斯定理，可得
+
+$$
+W = -p \int_{\Omega} (\nabla \cdot \vec{x}) dv = -3p V.
+$$
+
+将上式与位力定理对比可知：
+
+$$
+p V = N k_B T.
+$$
+
+这就是理想气体的状态方程。这就证明了之前利用 $\beta=\frac{1}{k_B T}$ 所定义的 $T$ 就是绝对温度。以后我们就可以放心地将 $\beta=\frac{1}{k_B T}$ 中的 $T$ 当做绝对温度了。
+
+虽然之前用位力定理推导了理想气体状态方程，但我们并没有系统计算单原子分子理想气体的各个热力学量。现在是时候考虑这些问题了。首先，我们明显地写出 $N$ 个无相互作用的原子组成的理想气体系统的能量函数：
+
+$$
 H(q,p) = \sum_{i=1}^{N}\frac{\vec{p}_i^2}{2m}
-\end{equation}
+$$
+
 对这样的系统，其配分函数是
-\begin{equation}
+
+$$
 Z = \int \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right]
 \prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
-\end{equation}
+$$
 
-然而，正如之前就指出过的，这个配分函数的量纲都不对。要使配分函数的量纲等于 1，我们必须将上式除以一个量纲为([长度]$\times$[动量])$^{3N}$的量。这样做其实就是定义一个量纲为[长度]$\times$[动量]的“最小”的相空间体积$\omega_0$，使得
-\begin{equation}
+然而，正如之前就指出过的，这个配分函数的量纲都不对。要使配分函数的量纲等于 1，我们必须将上式除以一个量纲为([长度] $\times$ [动量]) $^{3N}$ 的量。这样做其实就是定义一个量纲为[长度] $\times$ [动量]的“最小”的相空间体积 $\omega_0$ ，使得
+
+$$
 \int \frac{\prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i}{\omega_0^{3N}}
-\end{equation}
-等于系统中总的“相点个数”。我们期望这个最小相空间体积$\omega_0$应该是一个小量。
+$$
 
-普朗克曾引入一个常数$h$，它的量纲与$\omega_0$的量纲相同。所以，$\omega_0$一定正比于$h$。那这个比例常数是多少呢？在将由此导出的结果与其它理论结果或者实验结果对比之前，我们是无法知道答案的。暂且就假设 $\omega_0=h$吧。于是，配分函数变为
-\begin{equation}
+等于系统中总的“相点个数”。我们期望这个最小相空间体积 $\omega_0$ 应该是一个小量。
+
+普朗克曾引入一个常数 $h$ ，它的量纲与 $\omega_0$ 的量纲相同。所以， $\omega_0$ 一定正比于 $h$ 。那这个比例常数是多少呢？在将由此导出的结果与其它理论结果或者实验结果对比之前，我们是无法知道答案的。暂且就假设 $\omega_0=h$ 吧。于是，配分函数变为
+
+$$
 Z = \frac{1}{h^{3N}} \int  \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right]
 \prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
-\end{equation}
+$$
+
 容易证明，上述配分函数可以写成
-\begin{equation}
+
+$$
 Z = Z_1^N.
-\end{equation}
-\begin{equation}
+$$
+
+$$
 Z_1 = \frac{V}{\lambda^3}.
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \lambda =\frac{h}{\sqrt{2\pi mk_BT}}.
-\end{equation}
+$$
+
 于是，体系的自由能为
-\begin{equation}
+
+$$
 F = -k_BT\ln Z =  -Nk_BT \ln \left( \frac{V}{\lambda^3}\right).
-\end{equation}
+$$
+
 通过上述自由能，可以计算体系的压强，从而导出理想气体状态方程：
-\begin{equation}
+
+$$
 pV = N k_BT.
-\end{equation}
+$$
+
 正如所期望的，我们推导出了理想气体应该满足的状态方程。
 
 下面再计算熵。体系的熵为：
-\begin{equation}
-S = N k_B \ln \left( \frac{V}{\lambda^3} \right) + \frac{3}{2}Nk_B
-\end{equation}
-虽然上述熵和自由能以及内能满足关系$F=E-TS$，但值的注意的是熵和自由能都不是广延量。这是不可接受的。这说明我们的理论还是有不完美的地方。这个问题能由所谓的吉布斯佯谬更生动地展现出来。
 
-考虑由两个两个温度和数密度都相同的理想气体系统构成的孤立系统，粒子数分别为$N_1$和$N_2$。可以证明，两个系统混合后与混合前总熵的差为
-\begin{equation}
+$$
+S = N k_B \ln \left( \frac{V}{\lambda^3} \right) + \frac{3}{2}Nk_B
+$$
+
+虽然上述熵和自由能以及内能满足关系 $F=E-TS$ ，但值的注意的是熵和自由能都不是广延量。这是不可接受的。这说明我们的理论还是有不完美的地方。这个问题能由所谓的吉布斯佯谬更生动地展现出来。
+
+考虑由两个两个温度和数密度都相同的理想气体系统构成的孤立系统，粒子数分别为 $N_1$ 和 $N_2$ 。可以证明，两个系统混合后与混合前总熵的差为
+
+$$
 \Delta S =  k_B (N\ln N - N_1\ln N_1 -N_2\ln N_2 )
 \approx k_B (\ln N! - \ln N_1! -\ln N_2! ).
-\end{equation}
-如果两个子系统中的气体是相同种类的气体，这个结果是很荒谬的。这就是吉布斯佯谬。同时，上述结果暗示我们，如果重新定义配分函数，使得熵的值为原来的值减去$k_B \ln N!$，也许就能消除这个佯谬。根据熵与配分函数的关系可以猜测，应该重新定义如下的配分函数
-\begin{equation}
+$$
+
+如果两个子系统中的气体是相同种类的气体，这个结果是很荒谬的。这就是吉布斯佯谬。同时，上述结果暗示我们，如果重新定义配分函数，使得熵的值为原来的值减去 $k_B \ln N!$ ，也许就能消除这个佯谬。根据熵与配分函数的关系可以猜测，应该重新定义如下的配分函数
+
+$$
 Z = \frac{1}{h^{3N}N!} \int  \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right]
 \prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
-\end{equation}
-这样定义的结果就是将系统中总的相点（状态数）个数减小$N!$倍。重复之前的推导可得
-\begin{equation}
-Z = \frac{Z_1^N}{N!}.
-\end{equation}
-从这个新的配分函数出发，可以证明理想气体的自由能和熵的正确表达式应该是
-\begin{equation}
-F = -k_BT\ln Z =  -Nk_BT \left[ \ln \left( \frac{v}{\lambda^3} \right) + 1 \right].
-\end{equation}
-\begin{equation}
-S = N k_B \ln \left( \frac{v}{\lambda^3} \right) + \frac{5}{2}Nk_B
-\end{equation}
-其中，
-\begin{equation}
-v = V/N.
-\end{equation}
-上述熵的公式叫做 Sackur-Tetrode 公式。正是 Sackur 在 1911 年首次假设$\omega_0=h$，并由 Tetrode 于 1912 年最终通过将理论与实验比较确定该表达式的。
+$$
 
-在对配分函数作出修正之后，上面计算出的自由能和熵都是广延量了。而且可以验证，吉布斯佯谬不复存在。这说明这个修正是合理的。那么，这个修正究竟代表什么意思呢？答案是：它反映了全同粒子的不可分辨性。这是量子力学中的一个结果。由于全同粒子之间不可分辨，对体系的所有粒子做一个重排并不改变系统的微观状态，故需要将体系的微观状态数在原来（没有考虑粒子的不可分辨性时）的基础上除以所有可能的重排数目，即$N!$。
+这样定义的结果就是将系统中总的相点（状态数）个数减小 $N!$ 倍。重复之前的推导可得
+
+$$
+Z = \frac{Z_1^N}{N!}.
+$$
+
+从这个新的配分函数出发，可以证明理想气体的自由能和熵的正确表达式应该是
+
+$$
+F = -k_BT\ln Z =  -Nk_BT \left[ \ln \left( \frac{v}{\lambda^3} \right) + 1 \right].
+$$
+
+$$
+S = N k_B \ln \left( \frac{v}{\lambda^3} \right) + \frac{5}{2}Nk_B
+$$
+
+其中，
+
+$$
+v = V/N.
+$$
+
+上述熵的公式叫做 Sackur-Tetrode 公式。正是 Sackur 在 1911 年首次假设 $\omega_0=h$ ，并由 Tetrode 于 1912 年最终通过将理论与实验比较确定该表达式的。
+
+在对配分函数作出修正之后，上面计算出的自由能和熵都是广延量了。而且可以验证，吉布斯佯谬不复存在。这说明这个修正是合理的。那么，这个修正究竟代表什么意思呢？答案是：它反映了全同粒子的不可分辨性。这是量子力学中的一个结果。由于全同粒子之间不可分辨，对体系的所有粒子做一个重排并不改变系统的微观状态，故需要将体系的微观状态数在原来（没有考虑粒子的不可分辨性时）的基础上除以所有可能的重排数目，即 $N!$ 。
 
 最后，容易计算，理想气体的化学势为
-\begin{equation}
+
+$$
 \mu = -k_BT \ln \left( \frac{v}{\lambda^3}\right).
-\end{equation}
+$$
+
 可见它是负的，与我们在热力学中得到结果一致。
 
 ### 巨正则系综理论
