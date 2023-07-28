@@ -427,11 +427,7 @@ $$
 d L(q, \dot{q}) = \frac{\partial L}{\partial q _{\alpha} } d q _{\alpha}  + \frac{\partial L}{\partial \dot{q} _{\alpha} } d \dot{q} _{\alpha} = \dot{p} _{\alpha} d q _{\alpha} + p _{\alpha} d \dot{q} _{\alpha}.
 $$
 
-勒让德变换能将独立变量从广义速度变成广义动量。勒让德变换是指将函数减去它的某个独立变量与对它对改独立变量偏导数的乘积。选取广义速度为该独立变量，并将变换的函数取一个相反数，则有如下勒让德变换
-
-$$
-L \rightarrow \dot{q}_{\alpha} \frac{\partial L}{\partial \dot{q}_{\alpha}}} - L = p_{\alpha} \dot{q}_{\alpha} - L.
-$$
+勒让德变换能将独立变量从广义速度变成广义动量。勒让德变换是指将函数减去它的某个独立变量与它对该独立变量的偏导数的乘积。选取广义速度为该独立变量，并将变换后的函数取一个相反数，则有如下勒让德变换
 
 $$
 L \rightarrow p_{\alpha} \dot{q}_{\alpha} - L.
@@ -440,7 +436,7 @@ $$
 变换后的函数
 
 $$
-H= p_{\alpha} \dot{q}_{\alpha} - L.
+H = p_{\alpha} \dot{q}_{\alpha} - L.
 $$
 
 称为哈密顿量，它的全微分为：
@@ -469,7 +465,23 @@ $$
 
 这 $2s$ 个一阶微分方程组称为哈密顿正则方程。这里的“正则”意为“简单且对称”。
 
-例子：简谐振子的哈密顿量。
+例子：简谐振子的哈密顿量为
+
+$$
+H = \frac{p^2}{2m} + \frac{1}{2} k x^2.
+$$
+
+由此可得运动方程为：
+
+$$
+\dot{q} = \frac{p}{m}
+$$
+
+$$
+\dot{p} = - k x.
+$$
+
+这都和牛顿力学的结果是一致的。
 
 ### 相空间
 
