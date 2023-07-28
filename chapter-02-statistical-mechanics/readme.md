@@ -1123,122 +1123,158 @@ $$
 
 ### 巨正则系综理论
 
-巨正则系综考虑的是$M$个相同的具有一定化学势、体积和温度的热力学系统。可以想象$M$个相同的系统排成一排，相邻的系统之间有微弱的相互作用，使得所有的系统最终能处于同一温度。相邻的系统之间还可以交换粒子，从而每个系统的粒子数是不固定的，但根据热力学理论我们知道平衡时每个系统的化学势会相等。我们的目的是发展一套能够描述这个系综中的某一个系统的热力学性质的统计理论。大家会看到，本讲的内容与《正则系综》那一讲的内容是类似的。
+巨正则系综考虑的是 $M$ 个相同的具有一定化学势、体积和温度的热力学系统。可以想象 $M$ 个相同的系统排成一排，相邻的系统之间有微弱的相互作用，使得所有的系统最终能处于同一温度。相邻的系统之间还可以交换粒子，从而每个系统的粒子数是不固定的，但根据热力学理论我们知道平衡时每个系统的化学势会相等。我们的目的是发展一套能够描述这个系综中的某一个系统的热力学性质的统计理论。大家会看到，本讲的内容与《正则系综》那一讲的内容是类似的。
 
-用$M_{Ni}$表示粒子数$N$且状态为$i$的系统数目，而用$E_{Ni}$表示对应的能量，则整个系综的总系统数、总粒子数和总能量为
-\begin{equation}
+用 $M_{Ni}$ 表示粒子数 $N$ 且状态为 $i$ 的系统数目，而用 $E_{Ni}$ 表示对应的能量，则整个系综的总系统数、总粒子数和总能量为
+
+$$
 M = \sum_N \sum_{i(N)} M_{Ni}.
-\end{equation}
-\begin{equation}
+$$
+
+$$
 N_M = \sum_N \sum_{i(N)} M_{Ni} N.
-\end{equation}
-\begin{equation}
+$$
+
+$$
 E_M = \sum_N \sum_{i(N)} M_{Ni} E_{Ni}.
-\end{equation}
+$$
 
-对于一个给定的分布$\{M_{Ni}\}$，系综的微观状态数为
-\begin{equation}
+对于一个给定的分布 $\{M_{Ni}\}$ ，系综的微观状态数为
+
+$$
 \Omega = \frac{M!}{\prod_N \prod_{i(N)} M_{Ni}!}.
-\end{equation}
-从而，这个系综（作为一个很大的孤立系统）的熵为
-\begin{equation}
-S_M = k_B \ln \Omega = k_B \ln \left(\frac{M!}{\prod_N \prod_{i(N)} M_{Ni}!}\right).
-\end{equation}
+$$
 
-下面我们要问：哪个分布$\{M_{Ni}\}$的概率最大？那个具有最大概率的分布就对应于平衡态。根据等概率原理，肯定是微观状态数最大的分布概率最大。类比正则系综的讨论，我们知道，我们需要求$\ln \Omega$的最大值。方法是引入三个拉格朗日乘子$\alpha$、$\beta$和 $\gamma$，并将极值条件写成
-\begin{equation}
+从而，这个系综（作为一个很大的孤立系统）的熵为
+
+$$
+S_M = k_B \ln \Omega = k_B \ln \left(\frac{M!}{\prod_N \prod_{i(N)} M_{Ni}!}\right).
+$$
+
+下面我们要问：哪个分布 $\{M_{Ni}\}$ 的概率最大？那个具有最大概率的分布就对应于平衡态。根据等概率原理，肯定是微观状态数最大的分布概率最大。类比正则系综的讨论，我们知道，我们需要求 $\ln \Omega$ 的最大值。方法是引入三个拉格朗日乘子 $\alpha$ 、 $\beta$ 和 $\gamma$ ，并将极值条件写成
+
+$$
 \frac{\partial \ln \Omega}{\partial M_{Ni}}
 - \alpha \frac{\partial \sum_N \sum_{j(N)} M_{Nj}}{\partial M_{Ni}}
 - \beta \frac{\partial\sum_N \sum_{j(N)} M_{Nj} E_{Nj}}{\partial M_{Ni}}
 - \gamma \frac{\partial \sum_N \sum_{j(N)} M_{Nj} N}{\partial M_{Ni}}
 = 0.
-\end{equation}
+$$
 
-在$M$趋近于无穷大时，所有的$M_{Ni}$也趋近于无穷大。利用斯特林公式，可将极值条件化为
-\begin{equation}
+在 $M$ 趋近于无穷大时，所有的 $M_{Ni}$ 也趋近于无穷大。利用斯特林公式，可将极值条件化为
+
+$$
 \ln M_{Ni} = -\alpha - \beta E_{Ni} - \gamma N.
-\end{equation}
+$$
 
-对上式两边取指数，可得
-\begin{equation}
+
+$$
 M_{Ni} = \exp[-\alpha - \beta E_{Ni} - \gamma N].
-\end{equation}
-既然$M_{Ni}$是处于态$Ni$的系统的个数，那么自然地，一个系统处于态$Ni$的概率为
-\begin{equation}
+$$
+
+既然 $M_{Ni}$ 是处于态 $Ni$ 的系统的个数，那么自然地，一个系统处于态 $Ni$ 的概率为
+
+$$
 w_{Ni} = \frac{M_{Ni}}{M} =
 \frac{\exp[- \beta E_{Ni} - \gamma N]}
 {\sum_N \sum_{i(N)} \exp[- \beta E_{Ni} - \gamma N]}.
-\end{equation}
+$$
 
-可见，常数$\alpha$没有什么物理意义，在求概率的时候就被消掉了。上式中的分母叫做巨正则配分函数，记为$\Xi$：
-\begin{equation}
+可见，常数 $\alpha$ 没有什么物理意义，在求概率的时候就被消掉了。上式中的分母叫做巨正则配分函数，记为
+
+$$
 \boxed{\Xi = \sum_N \sum_{i(N)} \exp[- \beta E_{Ni} - \gamma N]}.
-\end{equation}
+$$
+
 巨配分函数包含了体系所有的热力学性质。
 
 根据我们对正则系综的讨论，我们可以继续认为
-\begin{equation}
+
+$$
 \boxed{\beta = \frac{1}{k_B T}}.
-\end{equation}
-下面的问题是确定系数$\gamma$的物理意义。突破口还是熵和其它热力学函数。将概率函数的表达式代入熵的吉布斯公式可得
-\begin{equation}
+$$
+
+下面的问题是确定系数 $\gamma$ 的物理意义。突破口还是熵和其它热力学函数。将概率函数的表达式代入熵的吉布斯公式可得
+
+$$
 S = k_B \ln \Xi + \frac{E}{T} + k_B \gamma N.
-\end{equation}
+$$
+
 其中，
-\begin{equation}
+
+$$
 E = \sum_{N}\sum_{i(N)} w_{Ni} E_{Ni}
-\end{equation}
+$$
+
 是系统能量的平均值，
-\begin{equation}
+
+$$
 N = \sum_{N}\sum_{i(N)} w_{Ni} N
-\end{equation}
+$$
+
 是系统粒子数的平均值。于是，
-\begin{equation}
+
+$$
 E - TS + k_B T \gamma N = -k_B T\ln \Xi.
-\end{equation}
+$$
+
 上式右边等同于巨热力学势
-\begin{equation}
+
+$$
 \boxed{\Phi = -k_B T \ln \Xi},
-\end{equation}
-所以，$\gamma$与化学式有如下联系：
-\begin{equation}
+$$
+
+所以， $\gamma$ 与化学式有如下联系：
+
+$$
 \boxed{\gamma = -\frac{\mu}{k_B T} = -\beta \mu}.
-\end{equation}
+$$
+
 于是，巨正则配分函数可以写成
-\begin{equation}
+
+$$
 \boxed{\Xi = \sum_N \sum_{i(N)}
 \exp \left[- \frac{E_{Ni}}{k_BT} + \frac{\mu N}{k_BT} \right]}.
-\end{equation}
+$$
 
 容易证明，巨正则系综中系统的粒子数、能量和压强的平均值可以表示为
-\begin{equation}
+
+$$
 \langle N \rangle = -\frac{\partial}{\partial \gamma} \ln \Xi
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \langle E \rangle = -\frac{\partial}{\partial \beta} \ln \Xi
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \langle p \rangle = \frac{1}{\beta} \frac{\partial}{\partial V} \ln \Xi
-\end{equation}
+$$
 
 如果系统的粒子数不是无穷大的话，计算出的热力学量应该有涨落，即标准偏差不等于零。可以证明：巨正则系综中能量的方差为
-\begin{equation}
+
+$$
 (\Delta E)^2 = \langle E^2 \rangle - \langle E \rangle^2
 = - \frac{\partial \langle E \rangle }{\beta},
-\end{equation}
+$$
+
 粒子数的方差为
-\begin{equation}
+
+$$
 (\Delta N)^2 = \langle N^2 \rangle - \langle N \rangle^2
 = - \frac{\partial \langle N \rangle }{\gamma}.
-\end{equation}
+$$
+
 于是，可以判断，在热力学极限下（即保持粒子数密度不变的条件下将粒子数增加到无穷大），能量和粒子数的相对偏差都趋近于零：
-\begin{equation}
+
+$$
 \frac{\Delta E}{\langle E \rangle}
 \rightarrow \frac{1}{\sqrt{\langle N \rangle}}.
-\end{equation}
-\begin{equation}
+$$
+
+$$
 \frac{\Delta N}{\langle N \rangle}
 \rightarrow \frac{1}{\sqrt{\langle N \rangle}},
-\end{equation}
+$$
 
 
