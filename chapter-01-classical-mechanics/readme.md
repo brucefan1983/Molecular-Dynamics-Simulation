@@ -403,7 +403,7 @@ m \ddot{x} + k x = 0.
 $$
 
 
-### 哈密顿 (Hamilton) 方程
+### 哈密顿方程
 
 由于拉格朗日量具有能量的量纲，故当广义坐标具有长度的量纲时，偏导数 $\frac{\partial L}{\partial \dot{q}_{\alpha}}$ 具有动量的量纲。我们称这个偏导数为广义动量，记为
 
@@ -427,19 +427,23 @@ $$
 d L(q, \dot{q}) = \frac{\partial L}{\partial q _{\alpha} } d q _{\alpha}  + \frac{\partial L}{\partial \dot{q} _{\alpha} } d \dot{q} _{\alpha} = \dot{p} _{\alpha} d q _{\alpha} + p _{\alpha} d \dot{q} _{\alpha}.
 $$
 
-下面的勒让德变换能将独立变量从广义速度变成广义动量：
+勒让德变换能将独立变量从广义速度变成广义动量。勒让德变换是指将函数减去它的某个独立变量与对它对改独立变量偏导数的乘积。选取广义速度为该独立变量，并将变换的函数取一个相反数，则有如下勒让德变换
+
+$$
+L \rightarrow \dot{q}_{\alpha} \frac{\partial L}{\partial \dot{q}_{\alpha}}} - L = p_{\alpha} \dot{q}_{\alpha} - L.
+$$
 
 $$
 L \rightarrow p_{\alpha} \dot{q}_{\alpha} - L.
 $$
 
-该式箭头右边的表达式是一个很重要的量，记为
+变换后的函数
 
 $$
 H= p_{\alpha} \dot{q}_{\alpha} - L.
 $$
 
-该量称为哈密顿量。我们来看看它是不是真的是广义动量的函数了。为此，我们计算它的全微分：
+称为哈密顿量，它的全微分为：
 
 $$
 d H = p _{\alpha} d\dot{q} _{\alpha} + \dot{q} _{\alpha} d p _{\alpha} - (\dot{p} _{\alpha} d q _{\alpha} + p _{\alpha} d \dot{q} _{\alpha}) =\dot{q} _{\alpha} d p _{\alpha} - \dot{p} _{\alpha} d q _{\alpha}.
