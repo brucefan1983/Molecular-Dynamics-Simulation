@@ -1154,11 +1154,7 @@ $$
 下面我们要问：哪个分布 $\{M_{Ni}\}$ 的概率最大？那个具有最大概率的分布就对应于平衡态。根据等概率原理，肯定是微观状态数最大的分布概率最大。类比正则系综的讨论，我们知道，我们需要求 $\ln \Omega$ 的最大值。方法是引入三个拉格朗日乘子 $\alpha$ 、 $\beta$ 和 $\gamma$ ，并将极值条件写成
 
 $$
-\frac{\partial \ln \Omega}{\partial M_{Ni}}
-- \alpha \frac{\partial \sum_N \sum_{j(N)} M_{Nj}}{\partial M_{Ni}}
-- \beta \frac{\partial\sum_N \sum_{j(N)} M_{Nj} E_{Nj}}{\partial M_{Ni}}
-- \gamma \frac{\partial \sum_N \sum_{j(N)} M_{Nj} N}{\partial M_{Ni}}
-= 0.
+\frac{\partial \ln \Omega}{\partial M_{Ni}} - \alpha \frac{\partial \sum_N \sum_{j(N)} M_{Nj}}{\partial M_{Ni}} - \beta \frac{\partial\sum_N \sum_{j(N)} M_{Nj} E_{Nj}}{\partial M_{Ni}} - \gamma \frac{\partial \sum_N \sum_{j(N)} M_{Nj} N}{\partial M_{Ni}} = 0.
 $$
 
 在 $M$ 趋近于无穷大时，所有的 $M_{Ni}$ 也趋近于无穷大。利用斯特林公式，可将极值条件化为
