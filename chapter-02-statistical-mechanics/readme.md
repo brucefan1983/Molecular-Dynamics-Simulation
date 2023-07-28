@@ -864,10 +864,10 @@ $$
 
 $$
 f_v(v)dv
-=& \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
+= \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{mv^2}{2k_B T}} v^2  dv
 \int_0^{\pi} \sin\theta d\theta \int_0^{2\pi} d\phi
-=& 4\pi \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
+= 4\pi \left( \frac{m}{2\pi k_B T} \right) ^{3/2}
 e^{- \frac{mv^2}{2k_B T}} v^2  dv .
 $$
 
