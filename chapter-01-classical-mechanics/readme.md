@@ -7,15 +7,11 @@
  	- [质点力学](#质点力学)
  	- [粒子系力学](#粒子系力学)
  	- [运动方程的数值积分](#粒子系力学)
- 	  - [Verlet积分算法](#Verlet积分算法)
- 	  - [速度Verlet积分算法](#速度Verlet积分算法)
  	- [简谐振子运动的数值求解](#简谐振子运动的数值求解)
 - [分析力学](#分析力学)
   - [拉格朗日方程](#拉格朗日方程)
   - [哈密顿方程](#哈密顿方程)
   - [相空间](#相空间)
-  - [泊松括号和刘维尔算符](#泊松括号和刘维尔算符)
-  - [经典的时间演化算符](#经典的时间演化算符)
 
 ## 牛顿力学
 
@@ -262,8 +258,6 @@ $$
 
 给定一个多粒子体系的初始状态（坐标和速度），根据各个粒子之间的相互作用力就可以预测该体系的运动状态，即任意时刻各个粒子的坐标和速度。该预测过程本质上就是对运动方程的数值积分。
 
-#### Verlet积分算法
-
 我们对粒子 $i$ 在 $t+\Delta t$ 时刻的坐标做泰勒级数展开：
 
 $$
@@ -287,8 +281,6 @@ $$
 $$
 \vec{v}_i(t) \approx \frac{ \vec{r}_i(t+\Delta t) - \vec{r}_i(t-\Delta t) }{2\Delta t}.
 $$
-
-#### 速度Verlet积分算法
 
 Verlet积分算法中的速度计算涉及到时间上相差 $2\Delta t$ 的坐标，不是很方便。为了得到更加方便的速度计算方式，我们考虑如下两个展开：
 
@@ -497,8 +489,6 @@ $$
 
 ![phase_space](src/phase_space.png)
 
-### 泊松括号和刘维尔算符
-
 一个一般的物理量可以表达为相空间坐标的函数
 
 $$
@@ -508,26 +498,26 @@ $$
 我们求它的时间导数
 
 $$
-\frac{dA}{dt}=\frac{\partial A}{\partial q _{\alpha} } \dot{q} _{\alpha} 
-+\frac{\partial A}{\partial p _{\alpha} } \dot{p} _{\alpha}
+\frac{dA}{dt}= \sum_{\alpha} \left( \frac{\partial A}{\partial q _{\alpha} } \dot{q} _{\alpha} 
++\frac{\partial A}{\partial p _{\alpha} } \dot{p} _{\alpha} \right)
 $$
 
 利用哈密顿正则方程，可得
 
 $$
-\frac{dA}{dt}=\frac{\partial A}{\partial q _{\alpha} } 
+\frac{dA}{dt}= \sum_{\alpha} \left( \frac{\partial A}{\partial q _{\alpha} } 
 \frac{\partial H}{\partial p _{\alpha} }
 -\frac{\partial A}{\partial p _{\alpha} } 
-\frac{\partial H}{\partial q _{\alpha} }
+\frac{\partial H}{\partial q _{\alpha} } \right)
 $$
 
 定义任意两个物理量之间的泊松括号
 
 $$
-\lbrace A,B \rbrace =\frac{\partial A}{\partial q _{\alpha} } 
+\lbrace A,B \rbrace = \sum_{\alpha} \left( \frac{\partial A}{\partial q _{\alpha} } 
 \frac{\partial B}{\partial p _{\alpha} }
 -\frac{\partial A}{\partial p _{\alpha} } 
-\frac{\partial B}{\partial q _{\alpha} }
+\frac{\partial B}{\partial q _{\alpha} } \right)
 $$
 
 我们有
@@ -535,6 +525,14 @@ $$
 $$
 \frac{dA}{dt}= \lbrace A,H \rbrace.
 $$
+
+如果将物理量 $A$ 取为哈密顿量本身，则有
+
+$$
+\frac{dH}{dt} = \lbrace H,H \rbrace = 0.
+$$
+
+由此可见，由哈密顿描述的力学体系的能量是守恒的。
 
 一个物理量 $A$ 和哈密顿量之间的泊松括号运算也常用刘维尔算符表示
 
@@ -550,7 +548,34 @@ $$
 
 可以证明，刘维尔算符是厄米算符，故上述指数算符是幺正算符。我们以后会大量使用刘维尔算符进行推导。
 
-### 刘维尔定理
+对于哈密顿体系，我们还可以证明，哈密顿体系的相空间是不可压缩的。为此，我们先将广义坐标和动量简写为如下的 $2s$ 分量的矢量：
+
+$$
+x \equiv (q_1, q_2, \cdots, q_s, p_1, p_2, \cdots, p_s).
+$$
+
+这个矢量就代表一个相空间点，它代表相空间的“坐标”。 根据哈密顿正则方程，该相空间“坐标”的速度为
+
+$$
+\dot{x} = \left(\frac{\partial H}{\partial p_1}, \frac{\partial H}{\partial p_2}, \cdots, 
+\frac{\partial H}{\partial p_s}, -\frac{\partial H}{\partial q_1}, -\frac{\partial H}{\partial q_2}, \cdots, -\frac{\partial H}{\partial q_s}\right).
+$$
+
+在流体力学中，流体的不可压缩性指的是其中的流速场的散度为零（即没有源和汇）。将相空间类比为流体，那么相空间的不可压缩性指的是：
+
+$$
+\nabla_{x} \cdot \dot{x} = 0.
+$$
+
+这是很显然的：
+
+$$
+\nabla_{x} \cdot \dot{x} =
+\sum_{\alpha} \frac{\partial^2 H}{\partial p_{\alpha} \partial q_{\alpha}} -
+\frac{\partial^2 H}{\partial q_{\alpha} \partial p_{\alpha}} = 0.
+$$
+
+所以，哈密顿体系的相空间是不可压缩的。
 
 就像可以定义质量密度和电荷密度一样，也可以定义相空间的相点密度。首先定义相空间的体积元
 
