@@ -693,7 +693,7 @@ iL_1 = \sum_{\alpha}
 $$
 
 $$
-iL = \sum_{\alpha} 
+iL_2 = \sum_{\alpha} 
 \left( 
 -\frac{\partial }{\partial p _{\alpha} } 
 \frac{\partial H}{\partial q _{\alpha} } 
@@ -720,157 +720,152 @@ $$
 e^{A + B} = \lim_{P \to \infty} \left[ e^{B/2P} e^{A/P} e^{B/2P} \right]^P
 $$
 
+利用该定理，我们有
 
-未完待续。
+$$
+e^{iLt} = \lim_{P \to \infty} \left[ e^{iL_2t/2P} e^{iL_1t/P} e^{iL_2t/2P} \right]^P
+$$
 
+根据该式，我们定义一个时间步长  
 
-The above velocity-Verlet integrator can be derived by finite-difference method (Taylor series expansion), but a more general method, which can be generalized to more sophisticated situations, is the classical time-evolution operator approach, or the Liouville operator approach \cite{tuckerman2010}. In this approach, the time-evolution of a classical system by one step can be formally expressed as
-\begin{equation}
+$$
+\Delta t = t / P
+$$
+
+于是，经典演化算符可以近似地表达为
+
+$$
+e^{iLt} \approx \left[ e^{iL_2 \Delta t/2} e^{iL_1 \Delta t} e^{iL_2 \Delta t/2} \right]^P + \mathcal{O}(P\Delta t^3)
+$$
+
+上式的最后一项说明该近似的（整体）误差正比于 $P\Delta t^3$ ，也就是 $\Delta t^2$ 。
+
+如果只看一个时间步的话
+
+$$
+e^{iL \Delta t} \approx e^{iL_2 \Delta t/2} e^{iL_1 \Delta t} e^{iL_2 \Delta t/2}  + \mathcal{O}(\Delta t^3)
+$$
+
+上式的最后一项说明该近似在一个步长内的（局部）误差正比于 $\Delta t^3$ 。
+
+下面考虑 $N$ 个质点的体系。该体系的相空间坐标从时刻 $t$ 到时刻 $t+\Delta$ 的演化可以表达为
+
+$$
 \left(
 \begin{array}{c}
-\vect{r}_i(t+\Delta t) \\
-\vect{p}_i(t+\Delta t)
+\vec{r}_i(t+\Delta t) \\
+\vec{p}_i(t+\Delta t)
 \end{array}
 \right) =
 e^{iL\Delta t}
 \left(
 \begin{array}{c}
-\vect{r}_i(t) \\
-\vect{p}_i(t)
+\vec{r}_i(t) \\
+\vec{p}_i(t)
 \end{array}
 \right),
-\end{equation}
-where $\vect{p}_i$ is the momentum of particle $i$ and
-$e^{iL\Delta t}$ is called the classical evolution operator, which is the classical counterpart of the quantum evolution operator. The operator $iL$ in the exponent of the evolution operator is called the Liouville operator and is defined by
-\begin{equation}
-iL (\text{anything}) = \{\text{anything}, H\} \equiv
-\sum_{i=1}^N
-\left(
-\frac{\partial H}{\partial \vect{p}_i} \cdot
-\frac{\partial  }{\partial \vect{r}_i}  -
-\frac{\partial H}{\partial \vect{r}_i} \cdot
-\frac{\partial  }{\partial \vect{p}_i}
-\right) (\text{anything}).
-\end{equation}
-Here, $H$ is the Hamiltonian of the system. Because
-\begin{equation}
-\frac{\partial H}{\partial \vect{p}_i} =
-\frac{\vect{p}_i}{m_i} ~ \text{and} ~
--\frac{\partial H}{\partial \vect{r}_i} =
-\vect{F}_i,
-\end{equation}
-we have
-\begin{equation}
-iL = iL_1 + iL_2,
-\end{equation}
-\begin{equation}
-iL_1 = \sum_{i=1}^N
-\frac{\vect{p}_i}{m_i} \cdot
-\frac{\partial }{\partial \vect{r}_i},
-\end{equation}
-\begin{equation}
-iL_2 = \sum_{i=1}^N
-\vect{F}_i \cdot
-\frac{\partial }{\partial \vect{p}_i}.
-\end{equation}
-Here, we have divided the Liouville operator into two parts. In general, $iL_1$ and $iL_2$ do not commute, and therefore
-$e^{iL \Delta t} \neq e^{iL_1 \Delta t}e^{iL_2 \Delta t}$. However, there is an important theorem called the Trotter theorem, which can be used to derive the following approximation:
-\begin{equation}
-e^{iL \Delta t} \approx
-e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}e^{iL_2 \Delta t/2}.
-\end{equation}
-Now, we can express the one-step integration as
-\begin{equation}
+$$
+
+利用 Trotter 定理可得
+
+$$
 \left(
 \begin{array}{c}
-\vect{r}_i(t+\Delta t) \\
-\vect{p}_i(t+\Delta t)
+\vec{r}_i(t+\Delta t) \\
+\vec{p}_i(t+\Delta t)
 \end{array}
 \right) \approx
 e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}e^{iL_2 \Delta t/2}
 \left(
 \begin{array}{c}
-\vect{r}_i(t) \\
-\vect{p}_i(t)
+\vec{r}_i(t) \\
+\vec{p}_i(t)
 \end{array}
 \right).
-\end{equation}
-To make further derivations, we note that for an arbitrary constant $c$, we have
-\begin{equation}
+$$
+
+因为
+
+$$
+\frac{\partial H}{\partial \vec{p}_i} =
+\frac{\vec{p}_i}{m_i} ~ \text{and} ~
+-\frac{\partial H}{\partial \vec{r}_i} =
+\vec{F}_i,
+$$
+
+故上述时间演化中两部分的刘维尔算符分别为：
+
+$$
+iL_1 = \sum_{i=1}^N
+\frac{\vec{p}_i}{m_i} \cdot
+\frac{\partial }{\partial \vec{r}_i},
+$$
+
+$$
+iL_2 = \sum_{i=1}^N
+\vec{F}_i \cdot
+\frac{\partial }{\partial \vec{p}_i}.
+$$
+
+为了进一步推导，我们注意到，对于任意的常数 $c$ ， 我们有
+
+$$
 e^{c \frac{\partial}{\partial x}} x = x+c.
-\end{equation}
-Applying this identity to the right most operator in the above equation, we have
-\begin{equation}
+$$
+
+将该式应用到最右边的演化算符 $e^{iL_2 \Delta t/2}$ 可得
+
+$$
 \left(
 \begin{array}{c}
-\vect{r}_i(t+\Delta t) \\
-\vect{p}_i(t+\Delta t)
+\vec{r}_i(t+\Delta t) \\
+\vec{p}_i(t+\Delta t)
 \end{array}
 \right) \approx
 e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}
 \left(
 \begin{array}{c}
-\vect{r}_i(t) \\
-\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)
+\vec{r}_i(t) \\
+\vec{p}_i(t) + \frac{\Delta t}{2} \vec{F}_i(t)
 \end{array}
 \right).
-\end{equation}
-Then, applying the operator $e^{iL_1 \Delta t}$, we have
-\begin{equation}
+$$
+
+再考虑算符 $e^{iL_1 \Delta t}$ ，可得
+
+$$
 \left(
 \begin{array}{c}
-\vect{r}_i(t+\Delta t) \\
-\vect{p}_i(t+\Delta t)
+\vec{r}_i(t+\Delta t) \\
+\vec{p}_i(t+\Delta t)
 \end{array}
 \right) \approx
 e^{iL_2 \Delta t/2}
 \left(
 \begin{array}{c}
-\vect{r}_i(t) + \Delta t \frac{\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)}{m_i} \\
-\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)
+\vec{r}_i(t) + \Delta t \frac{\vec{p}_i(t) + \frac{\Delta t}{2} \vec{F}_i(t)}{m_i} \\
+\vec{p}_i(t) + \frac{\Delta t}{2} \vec{F}_i(t)
 \end{array}
 \right).
-\end{equation}
-Last, applying the remaining operator $e^{iL_2 \Delta t/2}$, we have
-\begin{equation}
+$$
+
+再考虑算符 $e^{iL_2 \Delta t/2}$ ，可得
+
+$$
 \left(
 \begin{array}{c}
-\vect{r}_i(t+\Delta t) \\
-\vect{p}_i(t+\Delta t)
+\vec{r}_i(t+\Delta t) \\
+\vec{p}_i(t+\Delta t)
 \end{array}
 \right) \approx
 \left(
 \begin{array}{c}
-\vect{r}_i(t) + \Delta t \frac{\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)}{m_i} \\
-\vect{p}_i(t) +
-\frac{\Delta t}{2} \vect{F}_i(t) +
-\frac{\Delta t}{2} \vect{F}_i(t+\Delta t)
+\vec{r}_i(t) + \Delta t \frac{\vec{p}_i(t) + \frac{\Delta t}{2} \vec{F}_i(t)}{m_i} \\
+\vec{p}_i(t) +
+\frac{\Delta t}{2} \vec{F}_i(t) +
+\frac{\Delta t}{2} \vec{F}_i(t+\Delta t)
 \end{array}
 \right).
-\end{equation}
-It is clear that this equation is equivalent to Eqs. (\ref{equation:velocity-Verlet-velocity}) and (\ref{equation:velocity-Verlet-position}).
+$$
 
-\begin{algorithm}[htb]
-\caption{The whole time-stepping in the $NVE$ ensemble. }
-\label{algorithm:integration_NVE}
-\begin{algorithmic}[1]
-\State update the velocities partially
-\begin{equation}
-\vect{v}_i \leftarrow \vect{v}_i + \frac{1}{2} \frac{\vect{F}_i}{m_i} \Delta t
-\end{equation}
-\State update the positions completely
-\begin{equation}
-\vect{r}_i \leftarrow \vect{r}_i + \vect{v}_i \Delta t
-\end{equation}
-\State update the forces
-\begin{equation}
-\vect{F}_i \leftarrow \vect{F}_i(\{\vect{r}_i\})
-\end{equation}
-\State complete updating the velocities
-\begin{equation}
-\vect{v}_i \leftarrow \vect{v}_i + \frac{1}{2} \frac{\vect{F}_i}{m_i} \Delta t
-\end{equation}
- \end{algorithmic}
-\end{algorithm}
 
-We can see that in the velocity-Verlet integrator, the position updating can be done in one step, but the velocity updating can only be done by two steps, one before force updating and the other after it. Algorithm \ref{algorithm:integration_NVE} gives the pseudo code for the complete time-stepping in the $NVE$ ensemble, including force updating.
