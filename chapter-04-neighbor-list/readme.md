@@ -13,6 +13,7 @@
   - [构建近邻列表的平方标度算法](#构建近邻列表的平方标度算法)
   - [构建近邻列表的线性标度算法](#构建近邻列表的线性标度算法)
   - [程序速度测试](#程序速度测试)
+- [GPUMD程序简介](GPUMD程序简介)
 - [习题](#习题)
 
 ## 三斜盒子
@@ -577,6 +578,14 @@ void findNeighborON1(Atom& atom)
 - 使用 $\mathcal{O}(N^2)$ 计算复杂度的近邻列表构建方法时，程序的计算量在小体系的极限下正比于原子数，但在大体系的极限下正比于原子数平方。
 - 使用 $\mathcal{O}(N)$ 计算复杂度的近邻列表构建方法时，程序的计算量始终正比于原子数，具有 $\mathcal{O}(N)$ 复杂度。
 所以，在研究较大体系时，一定要采用 $\mathcal{O}(N)$ 计算复杂度的近邻列表构建方法。
+
+## GPUMD程序简介
+
+本章介绍的近邻列表技术只是提高 MD 程序效率的一个方面。在实际的 MD 程序中，往往还需要使用并行编程的技术进一步提高效率。并行编程是和计算机硬件紧密相关的。对于 CPU 计算来说，MPI (message passing interface) 是最常用的选择，它可以在一个节点内并行，也可以在不同的节点之间并行。另外一个并行技术，OpenMP，就只能在节点内并行。当前，图形处理器（GPU) 相对于 CPU 有很大的性能优势。Nvidia 的GPU可使用 CUDA (Compute Unified Device Architecture) 进行编程，而 AMD 的GPU可使用HIP (Heterogeneous Interface for Portability) 进行编程。
+
+当前学术界使用最为广泛的两个 MD 程序是 LAMMPS （https://www.lammps.org/） 和 Gromacs （https://www.gromacs.org/），它们都广泛使用了 MPI、OpenMD 和 CUDA 等并行技术加速。笔者主导开发了一个名为GPUMD的 MD程序，大量使用了 CUDA 编程，获得了很高的计算性能。本书除了使用自编 C++ 程序之外，还会适当使用 GPUMD。所以，本节简要介绍 GPUMD。
+
+未完待续
 
 ## 习题
 
