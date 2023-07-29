@@ -181,6 +181,7 @@ $$
 $$
 
 克劳修斯证明了该式不光对卡诺循环成立，而且对任何可逆循环过程都成立。如果该式不成立，对应的循环就是不可逆的。对不可逆循环，克劳修斯证明了下述不等式：
+
 $$
 \oint \frac{~d Q}{T} < 0.
 $$
@@ -640,9 +641,7 @@ $$
 然而，这个式子是错的，因为我们忽略了上面的约束条件 $M = \sum M_i$ 和 $E_M = \sum M_i E_i$ 。有约束条件的极值问题一般用拉格朗日乘子法来解决。引入两个拉格朗日乘子 $\alpha$ 和 $\beta$ 。极值条件可以写成
 
 $$
-\frac{\partial \ln \Omega}{\partial M_i}
-- \alpha \frac{\partial \sum_j M_j}{\partial M_i}
-- \beta \frac{\partial \sum_j M_j E_j}{\partial M_i}
+\frac{\partial \ln \Omega}{\partial M_i} - \alpha \frac{\partial \sum_j M_j}{\partial M_i} - \beta \frac{\partial \sum_j M_j E_j}{\partial M_i}
 = 0.
 $$
 
@@ -725,6 +724,7 @@ $$
 $$
 E = \sum_i w_i E_i
 $$
+
 是系统能量的平均值。于是，
 
 $$
@@ -921,7 +921,7 @@ $$
 \frac{  \int dq dp\frac{1}{\beta} \delta_{ij} e^{-\beta H(q, p)} }
 { \int dq dp e^{-\beta H(q, p)} } = \frac{1}{\beta} \delta_{ij}
 = k_B T \delta_{ij}.
-$4
+$
 
 现在，假设系统的哈密顿量是某个广义坐标或者广义动量的二次函数，即假设由自由度 $x_i$ 贡献的哈密顿量为
 
@@ -1019,7 +1019,7 @@ $$
 
 $$
 Z = \int \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right]
-\prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
+d\vec{x}_1 d\vec{p}_1 d\vec{x}_2 d\vec{p}_2 \cdots d\vec{x}_N d\vec{p}_N
 $$
 
 然而，正如之前就指出过的，这个配分函数的量纲都不对。要使配分函数的量纲等于 1，我们必须将上式除以一个量纲为([长度] $\times$ [动量]) $^{3N}$ 的量。这样做其实就是定义一个量纲为[长度] $\times$ [动量]的“最小”的相空间体积 $\omega_0$ ，使得
@@ -1034,7 +1034,7 @@ $$
 
 $$
 Z = \frac{1}{h^{3N}} \int  \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right]
-\prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
+d\vec{x}_1 d\vec{p}_1 d\vec{x}_2 d\vec{p}_2 \cdots d\vec{x}_N d\vec{p}_N
 $$
 
 容易证明，上述配分函数可以写成
@@ -1083,7 +1083,8 @@ $$
 如果两个子系统中的气体是相同种类的气体，这个结果是很荒谬的。这就是吉布斯佯谬。同时，上述结果暗示我们，如果重新定义配分函数，使得熵的值为原来的值减去 $k_B \ln N!$ ，也许就能消除这个佯谬。根据熵与配分函数的关系可以猜测，应该重新定义如下的配分函数
 
 $$
-Z = \frac{1}{h^{3N}N!} \int  \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right] \prod_{i=1}^{N} d\vec{x}_i d\vec{p}_i
+Z = \frac{1}{h^{3N}N!} \int  \exp\left[-\sum_{i=1}^{N}\frac{\vec{p}_i^2}{2mk_BT} \right] 
+d\vec{x}_1 d\vec{p}_1 d\vec{x}_2 d\vec{p}_2 \cdots d\vec{x}_N d\vec{p}_N
 $$
 
 这样定义的结果就是将系统中总的相点（状态数）个数减小 $N!$ 倍。重复之前的推导可得
