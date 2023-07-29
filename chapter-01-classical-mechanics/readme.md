@@ -6,12 +6,13 @@
 - [牛顿力学](#牛顿力学)
  	- [质点力学](#质点力学)
  	- [粒子系力学](#粒子系力学)
- 	- [运动方程的数值积分](#粒子系力学)
+ 	- [牛顿运动方程的数值积分](#牛顿运动方程的数值积分)
  	- [简谐振子运动的数值求解](#简谐振子运动的数值求解)
 - [分析力学](#分析力学)
   - [拉格朗日方程](#拉格朗日方程)
   - [哈密顿方程](#哈密顿方程)
   - [相空间](#相空间)
+  - [哈密顿体系运动方程的数值积分](#哈密顿体系运动方程的数值积分)
 
 ## 牛顿力学
 
@@ -254,7 +255,7 @@ $$
 其中， $U_i$ 是第 $i$ 个粒子在外力场中的势能， $U_i{}_j$ 是系统中由 $i$ 与 $j$ 的相互作用导致的势能。
 
 
-### 运动方程的数值积分
+### 牛顿运动方程的数值积分
 
 给定一个多粒子体系的初始状态（坐标和速度），根据各个粒子之间的相互作用力就可以预测该体系的运动状态，即任意时刻各个粒子的坐标和速度。该预测过程本质上就是对运动方程的数值积分。
 
@@ -497,6 +498,109 @@ $$
 
 ![phase_space](src/phase_space.png)
 
+对于哈密顿体系，我们还可以证明，相空间是不可压缩的。为此，我们先将广义坐标和动量简写为如下的 $2s$ 分量的矢量：
+
+$$
+x \equiv (q_1, q_2, \cdots, q_s, p_1, p_2, \cdots, p_s).
+$$
+
+这个矢量就代表一个相空间点，它代表相空间的“坐标”。 根据哈密顿正则方程，该相空间“坐标”的速度为
+
+$$
+\dot{x} = \left(\frac{\partial H}{\partial p_1}, \frac{\partial H}{\partial p_2}, \cdots, 
+\frac{\partial H}{\partial p_s}, -\frac{\partial H}{\partial q_1}, -\frac{\partial H}{\partial q_2}, \cdots, -\frac{\partial H}{\partial q_s}\right).
+$$
+
+在流体力学中，流体的不可压缩性指的是其中的流速场的散度为零（即没有源和汇）。将相空间类比为流体，那么相空间的不可压缩性指的是：
+
+$$
+\nabla_{x} \cdot \dot{x} = 0.
+$$
+
+这是很显然的：
+
+$$
+\nabla_{x} \cdot \dot{x} =
+\sum_{\alpha} \frac{\partial^2 H}{\partial p_{\alpha} \partial q_{\alpha}} -
+\frac{\partial^2 H}{\partial q_{\alpha} \partial p_{\alpha}} = 0.
+$$
+
+所以，哈密顿体系的相空间是不可压缩的。
+
+
+哈密顿体系相空间的不可压缩性也意味着刘伟尔定理。首先定义相空间的体积元：
+
+$$
+d x = dx_1  dx_2 \cdots dx_{2s}
+$$
+
+记某个初始时刻 $t=0$ 的相空间点为 $x_0$，时刻 $t$ 的相空间点为 $x_t$， 刘伟尔定理是说
+
+$$
+d x_t = dx_0
+$$
+
+即相空间的体积元的体积是守恒的。 
+
+为了证明该等式，我们首先注意到，两个体积元可由一个雅可比行列式联系：
+
+$$
+d x_t = \det(J) dx_0
+$$
+
+为了确定雅可比行列式，我们先计算它的时间导数：
+
+$$
+\frac{d }{dt} \det(J) = \frac{d}{dt} e^{\mathrm{Tr}[\ln (J)]}
+ = \det(J)  \mathrm{Tr}[ \frac{dJ}{dt} J^{-1}]
+$$
+
+上面利用了等式
+
+$$
+\det(J) = e^{\mathrm{Tr}[\ln (J)]}
+$$
+
+将求迹展开得
+
+$$
+\frac{d \det(J)}{dt} 
+= \det(J)  \sum_{k,l} \frac{\partial \dot{x}_t^k}{\partial x_0^l} \frac{\partial x_0^l}{\partial x_t^k}
+$$
+
+利用求导的链式法则得
+
+$$
+\frac{d \det(J)}{dt} 
+= \det(J)  \sum_{k} \frac{\partial \dot{x}_t^k}{\partial x_t^k} 
+$$
+
+根据相空间体积的不可压缩性
+
+$$
+\sum_{k} \frac{\partial \dot{x}_t^k}{\partial x_t^k} = 0 
+$$ 
+
+可知
+
+$$
+\frac{d \det(J)}{dt} = 0.
+$$
+
+也就是说，雅可比行列式不随时间变化。将时刻 $t$ 取 0 可知它是个常数：
+
+$$
+\det(J) = 1
+$$
+
+于是，我们就证明了刘伟尔定理：
+
+$$
+d x_t = dx_0
+$$
+
+### 哈密顿体系运动方程的数值积分
+
 一个一般的物理量可以表达为相空间坐标的函数
 
 $$
@@ -554,89 +658,4 @@ $$
 A(t)=e^{iL}A(t=0)
 $$
 
-可以证明，刘维尔算符是厄米算符，故上述指数算符是幺正算符。我们以后会大量使用刘维尔算符进行推导。
-
-对于哈密顿体系，我们还可以证明，哈密顿体系的相空间是不可压缩的。为此，我们先将广义坐标和动量简写为如下的 $2s$ 分量的矢量：
-
-$$
-x \equiv (q_1, q_2, \cdots, q_s, p_1, p_2, \cdots, p_s).
-$$
-
-这个矢量就代表一个相空间点，它代表相空间的“坐标”。 根据哈密顿正则方程，该相空间“坐标”的速度为
-
-$$
-\dot{x} = \left(\frac{\partial H}{\partial p_1}, \frac{\partial H}{\partial p_2}, \cdots, 
-\frac{\partial H}{\partial p_s}, -\frac{\partial H}{\partial q_1}, -\frac{\partial H}{\partial q_2}, \cdots, -\frac{\partial H}{\partial q_s}\right).
-$$
-
-在流体力学中，流体的不可压缩性指的是其中的流速场的散度为零（即没有源和汇）。将相空间类比为流体，那么相空间的不可压缩性指的是：
-
-$$
-\nabla_{x} \cdot \dot{x} = 0.
-$$
-
-这是很显然的：
-
-$$
-\nabla_{x} \cdot \dot{x} =
-\sum_{\alpha} \frac{\partial^2 H}{\partial p_{\alpha} \partial q_{\alpha}} -
-\frac{\partial^2 H}{\partial q_{\alpha} \partial p_{\alpha}} = 0.
-$$
-
-所以，哈密顿体系的相空间是不可压缩的。
-
-就像可以定义质量密度和电荷密度一样，也可以定义相空间的相点密度。首先定义相空间的体积元
-
-$$
-d \Gamma = dq_1  dq_2 \cdots dq_s dp_1  dp_2 \cdots dp_s = dq dp
-$$
-
-体积元并不是数学上严格的微分，其大小的选取满足“宏观小”和“微观大”的要求。上式中第二个等号右边是常用的简写形式。如果在该体积元中相点的个数为 $dN$ ，那么就可以定义该体积元所在之处的相点密度：
-
-$$
-\rho(q, p) = \frac{dN}{d \Gamma}
-$$
-
-上式中的相点 $(q, p)$ 可以是体积元 $d\Gamma$ 中的任意一点。如果将相空间类比于普通三维空间，将相点类比为三维空间中流体的质点，那么相点密度就对应于流体的质量密度。这个类比对下面的讨论是非常有用的。
-
-下面我们来证明在统计物理中非常重要刘维尔定理：
-
-$$
-\frac{d \rho}{dt} = 0.
-$$
-
-这个定理是说：相点密度不随时间的变化而变化。首先，我们要清楚的是，虽然我们上面将相点密度写成了广义坐标和广义动量的函数，并不能说相点密度对时间的导数显然是零，因为广义坐标和广义动量可以是时间的函数。确切地讲，刘维尔定理说的是对任意的相轨迹， 相点密度是一个常量。
-
-正如上面提到的，我们将相空间和其中的相点比作流体。对于这样的“流体”，我们有如下守恒定律：
-
-$$
-\frac{\partial \rho}{\partial t} + \frac{\partial}{\partial q _{\alpha}} (\rho \dot{q} _{\alpha}) + \frac{\partial}{\partial p _{\alpha}} (\rho \dot{p} _{\alpha}) = 0.
-$$
-
-类似的公式在电磁学中叫做电荷守恒定律。因为相点是不会凭空产生和消失的，那么这个“流体”还不是一般的流体，而是不可压缩流体。对于不可压缩流体，上式中的“散度”处处为零：
-
-$$
-\frac{\partial}{\partial q _{\alpha}} (\rho \dot{q} _{\alpha}) + \frac{\partial}{\partial p _{\alpha}} (\rho \dot{p} _{\alpha}) = 0.
-$$
-
-于是，我们有
-
-$$
-\frac{\partial \rho}{\partial t} = 0.
-$$
-
-这就是说，相点密度不显含时间。这也是我们将相点密度写成 $\rho(q, p)$ ，而不是 $\rho(q, p, t)$ 的原因。
-
-要证明刘维尔定理，就是要证明下式：
-
-$$
-\frac{d \rho}{dt} = \frac{\partial \rho}{\partial q _{\alpha}} \dot{q} _{\alpha} + \frac{\partial \rho}{\partial p _{\alpha}} \dot{p} _{\alpha} = 0.
-$$
-
-将此式与上面“散度”为零的式子比较可知，只要能证明下式就大功告成了：
-
-$$
-\frac{\partial \dot{q} _{\alpha} }{\partial q _{\alpha}} + \frac{\partial \dot{p} _{\alpha} }{\partial p _{\alpha}} = 0.
-$$
-
-根据哈密顿正则方程，该式显然是恒成立的。刘维尔定理证毕。
+可以证明，刘维尔算符是厄米算符，故上述指数算符是幺正算符。
