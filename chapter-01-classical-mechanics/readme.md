@@ -868,4 +868,16 @@ $$
 \right).
 $$
 
+上式可由坐标和速度表达为：
+
+$$
+\vec{r}_i(t+\Delta t) \approx \vec{r}_i(t) + \vec{v}_i(t) \Delta t + \frac{1}{2} \frac{\vec{F}_i(t)}{m_i} \Delta t^2.
+$$
+
+$$
+\vec{v}_i(t+\Delta t) \approx \vec{v}_i(t) + \Delta t \frac{ \vec{F}_i(t) + \vec{F}_i(t+\Delta t) }{2m_i}.
+$$
+
+这就是速度-Verlet 积分公式。所以，我们从经典演化算符和 Trotter 定理推导出了速度-Verlet 积分公式。
+
 
