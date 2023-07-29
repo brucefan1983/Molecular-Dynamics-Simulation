@@ -658,4 +658,219 @@ $$
 A(t)=e^{iL}A(t=0)
 $$
 
-可以证明，刘维尔算符是厄米算符，故上述指数算符是幺正算符。
+可以证明，刘维尔算符是厄米算符，故上述指数算符是幺正算符，称为经典演化算符（学过量子力学的读者会发现该指数算符和量子演化算符类似）。
+
+将物理量 $A$ 取为相空间坐标，则有
+
+$$
+x_t = e^{iL} x_0
+$$
+
+该式只是形式解；我们通常是无法解析求解经典演化算符的。这也就是要研究近似的数值计算方法的根本原因所在。
+
+为了推导近似的计算方法，我们首先主要到，可将刘维尔算符写成：
+
+
+$$
+iL = \sum_{\alpha} \left( \frac{\partial }{\partial q _{\alpha} } 
+\frac{\partial H}{\partial p _{\alpha} }
+-\frac{\partial }{\partial p _{\alpha} } 
+\frac{\partial H}{\partial q _{\alpha} } \right)
+$$
+
+我们先将其写成两部分的和：
+
+$$
+iL = iL_1 + iL_2
+$$
+
+$$
+iL_1 = \sum_{\alpha} 
+\left( 
+\frac{\partial }{\partial q _{\alpha} } 
+\frac{\partial H}{\partial p _{\alpha} } 
+\right)
+$$
+
+$$
+iL = \sum_{\alpha} 
+\left( 
+-\frac{\partial }{\partial p _{\alpha} } 
+\frac{\partial H}{\partial q _{\alpha} } 
+\right)
+$$
+
+以上两个刘维尔算符是非对易的，即
+
+$$
+iL_1 iL_2 - iL_2 iL_1 \equiv [iL_1, iL_2] \neq 0
+$$
+
+这可由一维简谐振子很容易地验证。
+
+因为以上两个刘维尔算符不对易，我们就不能将经典演化算符分开，即：
+
+$$
+e^{iL_1 + iL_2} \neq e^{iL_1} e^{iL_2}
+$$
+
+实际上，两个部分的时间演化算符 $e^{iL_1}$ 和 $e^{iL_2}$ 都是可精确求解的。那么我就希望找到一种方法，使得可以用 $e^{iL_1}$ 和 $e^{iL_2}$ 近似地表达 $e^{iL_1 + iL_2}$ 。对称 Trotter 定理提供了一种近似方法：
+
+$$
+e^{A + B} = \lim_{P \to \infty} \left[ e^{B/2P} e^{A/P} e^{B/2P} \right]^P
+$$
+
+
+未完待续。
+
+
+The above velocity-Verlet integrator can be derived by finite-difference method (Taylor series expansion), but a more general method, which can be generalized to more sophisticated situations, is the classical time-evolution operator approach, or the Liouville operator approach \cite{tuckerman2010}. In this approach, the time-evolution of a classical system by one step can be formally expressed as
+\begin{equation}
+\left(
+\begin{array}{c}
+\vect{r}_i(t+\Delta t) \\
+\vect{p}_i(t+\Delta t)
+\end{array}
+\right) =
+e^{iL\Delta t}
+\left(
+\begin{array}{c}
+\vect{r}_i(t) \\
+\vect{p}_i(t)
+\end{array}
+\right),
+\end{equation}
+where $\vect{p}_i$ is the momentum of particle $i$ and
+$e^{iL\Delta t}$ is called the classical evolution operator, which is the classical counterpart of the quantum evolution operator. The operator $iL$ in the exponent of the evolution operator is called the Liouville operator and is defined by
+\begin{equation}
+iL (\text{anything}) = \{\text{anything}, H\} \equiv
+\sum_{i=1}^N
+\left(
+\frac{\partial H}{\partial \vect{p}_i} \cdot
+\frac{\partial  }{\partial \vect{r}_i}  -
+\frac{\partial H}{\partial \vect{r}_i} \cdot
+\frac{\partial  }{\partial \vect{p}_i}
+\right) (\text{anything}).
+\end{equation}
+Here, $H$ is the Hamiltonian of the system. Because
+\begin{equation}
+\frac{\partial H}{\partial \vect{p}_i} =
+\frac{\vect{p}_i}{m_i} ~ \text{and} ~
+-\frac{\partial H}{\partial \vect{r}_i} =
+\vect{F}_i,
+\end{equation}
+we have
+\begin{equation}
+iL = iL_1 + iL_2,
+\end{equation}
+\begin{equation}
+iL_1 = \sum_{i=1}^N
+\frac{\vect{p}_i}{m_i} \cdot
+\frac{\partial }{\partial \vect{r}_i},
+\end{equation}
+\begin{equation}
+iL_2 = \sum_{i=1}^N
+\vect{F}_i \cdot
+\frac{\partial }{\partial \vect{p}_i}.
+\end{equation}
+Here, we have divided the Liouville operator into two parts. In general, $iL_1$ and $iL_2$ do not commute, and therefore
+$e^{iL \Delta t} \neq e^{iL_1 \Delta t}e^{iL_2 \Delta t}$. However, there is an important theorem called the Trotter theorem, which can be used to derive the following approximation:
+\begin{equation}
+e^{iL \Delta t} \approx
+e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}e^{iL_2 \Delta t/2}.
+\end{equation}
+Now, we can express the one-step integration as
+\begin{equation}
+\left(
+\begin{array}{c}
+\vect{r}_i(t+\Delta t) \\
+\vect{p}_i(t+\Delta t)
+\end{array}
+\right) \approx
+e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}e^{iL_2 \Delta t/2}
+\left(
+\begin{array}{c}
+\vect{r}_i(t) \\
+\vect{p}_i(t)
+\end{array}
+\right).
+\end{equation}
+To make further derivations, we note that for an arbitrary constant $c$, we have
+\begin{equation}
+e^{c \frac{\partial}{\partial x}} x = x+c.
+\end{equation}
+Applying this identity to the right most operator in the above equation, we have
+\begin{equation}
+\left(
+\begin{array}{c}
+\vect{r}_i(t+\Delta t) \\
+\vect{p}_i(t+\Delta t)
+\end{array}
+\right) \approx
+e^{iL_2 \Delta t/2} e^{iL_1 \Delta t}
+\left(
+\begin{array}{c}
+\vect{r}_i(t) \\
+\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)
+\end{array}
+\right).
+\end{equation}
+Then, applying the operator $e^{iL_1 \Delta t}$, we have
+\begin{equation}
+\left(
+\begin{array}{c}
+\vect{r}_i(t+\Delta t) \\
+\vect{p}_i(t+\Delta t)
+\end{array}
+\right) \approx
+e^{iL_2 \Delta t/2}
+\left(
+\begin{array}{c}
+\vect{r}_i(t) + \Delta t \frac{\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)}{m_i} \\
+\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)
+\end{array}
+\right).
+\end{equation}
+Last, applying the remaining operator $e^{iL_2 \Delta t/2}$, we have
+\begin{equation}
+\left(
+\begin{array}{c}
+\vect{r}_i(t+\Delta t) \\
+\vect{p}_i(t+\Delta t)
+\end{array}
+\right) \approx
+\left(
+\begin{array}{c}
+\vect{r}_i(t) + \Delta t \frac{\vect{p}_i(t) + \frac{\Delta t}{2} \vect{F}_i(t)}{m_i} \\
+\vect{p}_i(t) +
+\frac{\Delta t}{2} \vect{F}_i(t) +
+\frac{\Delta t}{2} \vect{F}_i(t+\Delta t)
+\end{array}
+\right).
+\end{equation}
+It is clear that this equation is equivalent to Eqs. (\ref{equation:velocity-Verlet-velocity}) and (\ref{equation:velocity-Verlet-position}).
+
+\begin{algorithm}[htb]
+\caption{The whole time-stepping in the $NVE$ ensemble. }
+\label{algorithm:integration_NVE}
+\begin{algorithmic}[1]
+\State update the velocities partially
+\begin{equation}
+\vect{v}_i \leftarrow \vect{v}_i + \frac{1}{2} \frac{\vect{F}_i}{m_i} \Delta t
+\end{equation}
+\State update the positions completely
+\begin{equation}
+\vect{r}_i \leftarrow \vect{r}_i + \vect{v}_i \Delta t
+\end{equation}
+\State update the forces
+\begin{equation}
+\vect{F}_i \leftarrow \vect{F}_i(\{\vect{r}_i\})
+\end{equation}
+\State complete updating the velocities
+\begin{equation}
+\vect{v}_i \leftarrow \vect{v}_i + \frac{1}{2} \frac{\vect{F}_i}{m_i} \Delta t
+\end{equation}
+ \end{algorithmic}
+\end{algorithm}
+
+We can see that in the velocity-Verlet integrator, the position updating can be done in one step, but the velocity updating can only be done by two steps, one before force updating and the other after it. Algorithm \ref{algorithm:integration_NVE} gives the pseudo code for the complete time-stepping in the $NVE$ ensemble, including force updating.
