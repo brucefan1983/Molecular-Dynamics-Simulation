@@ -921,7 +921,7 @@ $$
 \frac{  \int dq dp\frac{1}{\beta} \delta_{ij} e^{-\beta H(q, p)} }
 { \int dq dp e^{-\beta H(q, p)} } = \frac{1}{\beta} \delta_{ij}
 = k_B T \delta_{ij}.
-$
+$$
 
 现在，假设系统的哈密顿量是某个广义坐标或者广义动量的二次函数，即假设由自由度 $x_i$ 贡献的哈密顿量为
 
