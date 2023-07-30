@@ -187,7 +187,9 @@ $$
 \mathbf{W} = \sum _i \vec{r}_i \otimes \vec{F}_i.
 $$
 
-将力的表达是代入上式，得
+该定义看起来很简单，但是它并不适合编程实现，因为它依赖于原子的绝对坐标。我们需要由此出发推导一个仅依赖于原子相对坐标的表达式。
+
+将力的表达式代入上式，得
 
 $$
 \mathbf{W} = \sum _i  \sum _{j \neq i} \vec{r}_i \otimes \vec{F} _{ij}.
@@ -202,7 +204,7 @@ $$
 将以上两式相加再除以二可得
 
 $$
-\mathbf{W} = -\frac{1}{2} \sum _i  \sum _{j \neq i} \vec{r}_{ij} \otimes \vec{F} _{ij}.
+\mathbf{W} = -\frac{1}{2} \sum _i  \sum _{j \neq i} \vec{r} _{ij} \otimes \vec{F} _{ij}.
 $$
 
 该式已经可以很方便地编程实现了。但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
