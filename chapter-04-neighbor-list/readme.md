@@ -581,21 +581,13 @@ void findNeighborON1(Atom& atom)
 
 ## GPUMD程序简介
 
-本章介绍的近邻列表技术只是提高 MD 程序效率的一个方面。在实际的 MD 程序中，往往还需要使用并行编程的技术进一步提高效率。并行编程是和计算机硬件紧密相关的。对于 CPU 计算来说，MPI (message passing interface) 是最常用的选择，它可以在一个节点内并行，也可以在不同的节点之间并行。另外一个并行技术，OpenMP，就只能在节点内并行。当前，图形处理器（GPU) 相对于 CPU 有很大的性能优势。Nvidia 的GPU可使用 CUDA (Compute Unified Device Architecture) 进行编程，而 AMD 的GPU可使用HIP (Heterogeneous Interface for Portability) 进行编程。
+本章介绍的近邻列表技术只是提高 MD 程序效率的一个方面。在实际的 MD 程序中，往往还需要使用并行编程的技术进一步提高效率。并行编程是和计算机硬件紧密相关的。对于 CPU 计算来说，MPI (message passing interface) 是最常用的选择，它可以在一个节点内并行，也可以在不同的节点之间并行。另一个并行技术，OpenMP，就只能在节点内并行。当前，图形处理器（GPU) 相对于 CPU 有很大的性能优势。Nvidia 的GPU可使用 CUDA (Compute Unified Device Architecture) 进行编程，而 AMD 的GPU可使用HIP (Heterogeneous Interface for Portability) 进行编程。
 
 当前学术界使用最为广泛的两个 MD 程序是 [LAMMPS](https://www.lammps.org) 和 [Gromacs](https://www.gromacs.org)，它们都广泛使用了 MPI、OpenMP 和 CUDA 等并行技术加速。笔者主导开发了另一个 MD 程序 [GPUMD](https://www.gpumd.org)，大量使用了 CUDA 编程，获得了很高的计算性能。本书除了使用自编 C++ 程序之外，还会适当使用 GPUMD。所以，本节简要介绍 GPUMD。
 
-
-
-### GPUMD的下载与安装
-
 GPUMD 是开源程序，在Github托管，地址为：[https://www.gpumd.org](https://github.com/brucefan1983/GPUMD)
 
-程序的使用手册地址为： [https://www.gpumd.org](https://gpumd.org/)
-
-从 Github 下载程序包之后，解压缩，从终端进入 `src` 文件夹，敲 `make` 即可完成程序的编译。这要求读者的计算机有 CUDA 编程环境。关于 CUDA 编程的基础知识，请参考笔者的另一本书 《CUDA编程：基础与实践》。编译好之后，会在 `src` 文件夹内产生 `gpumd` 和 `nep` 两个可执行文件（也叫做可执行程序）。
-
-未完待续
+从 Github 下载程序包之后，解压缩，从终端进入 `src` 文件夹，敲 `make` 即可完成程序的编译。这要求读者的计算机有 CUDA 编程环境和 Nvidia 的 GPU。关于 CUDA 编程的基础知识，请参考笔者的另一本书 《CUDA编程：基础与实践》。编译好之后，会在 `src` 文件夹内产生 `gpumd` 和 `nep` 两个可执行文件。其中，`gpumd` 可执行文件就类似于我们目前使用过的自编 MD 程序，需要`model.xyz`和`run.in`两个输入文件，而`nep`可执行文件是用来训练机器学习势函数的（将在下一章介绍）。我们将在后面的章节通过具体的例子逐步介绍 GPUMD 程序的使用。感兴趣的读者可以浏览该程序的使用手册：[https://www.gpumd.org](https://gpumd.org/)
 
 ## 习题
 
