@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++14 -O3 
+CFLAGS = -std=c++14 -O3 -DDEBUG
 INC = -I./
 
 SOURCES = $(wildcard *.cpp)

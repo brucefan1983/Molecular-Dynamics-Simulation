@@ -1,4 +1,4 @@
-clear; close all
+clear; %close all
 load thermo.out;
 timeStep = 5/1000; % ps
 sampleInterval = 100;
@@ -38,8 +38,10 @@ ylabel('Relative Energy', 'fontsize', 15);
 title('(d)', 'fontsize', 15);
 set(gca, 'fontsize', 15);
 
+load thermo_ref.out;
 figure;
 plot(time, thermo(:,1), '-', 'linewidth', 2);hold on;
+plot(time, thermo_ref(:,1), '--', 'linewidth', 2);hold on;
 xlabel('Time (ps)', 'fontsize', 15);
 ylabel('Temperature (K)', 'fontsize', 15);
 set(gca, 'fontsize', 15);
