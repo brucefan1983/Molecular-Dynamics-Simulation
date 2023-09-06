@@ -1,14 +1,19 @@
-/*----------------------------------------------------------------------------80
-    Copyright 2022 Zheyong Fan
-Compile:
-    g++ md1.cpp -O3 -o md1
-Run:
-    path/to/md1.out # Linux
-    path\to\md1.exe # Windows
-Inputs:
-    xyz.in and run.in
-------------------------------------------------------------------------------*/
+/*
+    Copyright 2017 Zheyong Fan
+    This file is part of XiaoMD.
+    XiaoMD is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    XiaoMD is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with XiaoMD.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
+#include "xiaomd.h"
 #include <cmath>    // sqrt() function
 #include <ctime>    // for timing
 #include <fstream>  // file
@@ -299,7 +304,7 @@ void readXyz(Atom& atom)
   input.close();
 }
 
-int main(int argc, char** argv)
+void runXiaoMD()
 {
   int numSteps;
   double temperature;
@@ -312,7 +317,6 @@ int main(int argc, char** argv)
   readXyz(atom);
   initializeVelocity(temperature, atom);
 
-  const clock_t tStart = clock();
   std::ofstream ofile("thermo.out");
   ofile << std::fixed << std::setprecision(16);
 
@@ -327,9 +331,6 @@ int main(int argc, char** argv)
     }
   }
   ofile.close();
-  const clock_t tStop = clock();
-  const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
-  std::cout << "Time used = " << tElapsed << " s" << std::endl;
-
-  return 0;
 }
+
+XiaoMD::XiaoMD() { runXiaoMD(); }
