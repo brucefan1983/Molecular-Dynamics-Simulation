@@ -166,7 +166,7 @@ $$
 $$
 
 $$
-\mathbf{W} _{i} = \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}} .
+\mathbf{W} _{i} = \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}} .
 $$
 
 我们还可以推导出如下和相互作用有关的热流的表达式：
@@ -207,16 +207,30 @@ $$
 \mathbf{W} = -\frac{1}{2} \sum _i  \sum _{j \neq i} \vec{r} _{ij} \otimes \vec{F} _{ij}.
 $$
 
-该式已经可以很方便地编程实现了。但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
+该式已经可以很方便地编程实现了。但是，为了方便地从位力计算热流，我们后面还需要推导出另一个等价的位力表达式。我们从如下定义出发推导热流的表达式：
 
 $$
-\mathbf{W} = \sum _i \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\vec{J} = \frac{d}{dt} \sum _i \vec{r} _{i} E _{i}.
+$$
+
+其中, $E _{i}$ 是粒子 $i$ 的总能量（动能与势能之和）。 上述求和所代表的物理量可称为能量矩 （energy moment)，而热流就是能量矩的时间变化率。将上式的求导展开得
+
+$$
+\vec{J} = \vec{v} _{i} E _{i \frac{d}{dt} + \sum _i \vec{r} _{i} \frac{d}{dt} E _{i}.
+$$
+
+
+
+但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
+
+$$
+\mathbf{W} = \sum _i \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 若定义如下单粒子的位力
 
 $$
-\mathbf{W}_i = \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\mathbf{W}_i = \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 则有
@@ -225,7 +239,7 @@ $$
 \mathbf{W} = \sum _i \mathbf{W} _{i}.
 $$
 
-至此，我们完成了位力公式的推导。接下来，我们从如下公式出发推导热流的表达式：
+
 
 
 
