@@ -216,7 +216,7 @@ $$
 其中, $E _{i}$ 是粒子 $i$ 的总能量（动能与势能之和）。 上述求和所代表的物理量可称为能量矩 （energy moment)，而热流就是能量矩的时间变化率。将上式的求导展开得
 
 $$
-\vec{J} = \vec{v} _{i} E _{i \frac{d}{dt} + \sum _i \vec{r} _{i} \frac{d}{dt} E _{i}.
+\vec{J} = \vec{v} _{i} E _{i} + \sum _i \vec{r} _{i} \frac{d}{dt} E _{i}.
 $$
 
 
