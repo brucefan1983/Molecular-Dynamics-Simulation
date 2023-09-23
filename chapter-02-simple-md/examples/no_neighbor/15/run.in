@@ -1,0 +1,4 @@
+velocity 60     # temperature in units of K
+time_step 5     # time step in units of fs
+neighbor_flag 0 # O(N) neighbor list
+run 100

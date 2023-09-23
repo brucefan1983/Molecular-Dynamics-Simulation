@@ -1,0 +1,54 @@
+# 用速度重标法计算固态氩热导率的LAMMPS脚本
+
+# 采用metal单位系统（记住：能量eV；长度：A；时间：ps）
+units       metal
+
+# 定义几个参数 
+variable    T     equal 60   # 温度为 60 K
+variable    A     equal 5.4  # 晶格常数大概为 5.4 A
+variable    DT    equal 0.01 # 积分步长为 10 fs
+variable    POWER equal 0.05 # 与热流对应的功率 0.05 eV/ps 
+
+# 初始化坐标、势函数、速度等数据
+lattice      fcc ${A}               # 固态氩具有面心立方结构 
+region       BOX block 0 20 0 4 0 4 # 一共有 20*4*4*4=1280 原子 
+create_box   1 BOX                  # 先造一个盒子 
+create_atoms 1 box                  # 再填满原子 
+mass         1 40                   # 质量就是原子量
+pair_style   lj/cut 10.0            # LJ 势的截断半径取10 A
+pair_coeff   * * 1.032e-2 3.405     # epsilon 和 sigma
+velocity     all create ${T} 12345  # 根据温度初始化速度
+
+# 在NVT系综下平衡体系
+fix          NVT all nvt temp ${T} ${T} 1 # Nose-Hoover 热浴
+timestep     ${DT}                        # 设置积分步长
+thermo_style custom step temp press       # 观察温度和压强的变化 
+thermo       1000                         # 1000 步输出一次
+
+# 根据以上设置跑若干步，目的是使系统达到热力学平衡态 
+run          20000                        # 跑 20000 步
+
+# 定义热源（heat source）和热汇（heat sink）
+region          SOURCE block  0   1 INF INF INF INF #  第 1个block是热源 
+region          SINK   block  10 11 INF INF INF INF #  第11个block是热汇 
+
+# 在热源注入热量，在热汇导出热量，使系统达到非平衡稳态   
+unfix          NVT            # 撤掉之前的 NVT 系综
+fix            NVE all nve    # 换上 NVE 系综
+fix            HEAT_IN   all ehex 1  ${POWER} region  SOURCE # 注入热量 
+fix            HEAT_OUT  all ehex 1 -${POWER} region  SINK   # 导出热量 
+# 可将ehex换成heat。使用前者能量守恒满足得更好。
+
+# 计算单原子“温度 ” 
+compute	   KE all ke/atom           # 单原子动能 
+variable   KB equal 8.625e-5        # 玻尔兹曼常数，eV/K
+variable   TEMP atom c_KE/1.5/${KB} # 单原子温度 
+
+# 下面两个命令是联合起来计算块温度（block temperatures）的。 
+# 首先定义一个计算，将体系在x方向平均分为1/0.05=20块， 
+# 然后计算每个块的温度的时间平均，将结果记录到文件。 
+compute BLOCKS all chunk/atom bin/1d x lower 0.05 units reduced
+fix     T_PROFILE all ave/chunk 10 1000 10000 BLOCKS v_TEMP file temp.txt
+
+# 在施加热流的情况下跑若干步 
+run 100000
