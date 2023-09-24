@@ -216,9 +216,26 @@ $$
 其中, $E _{i}$ 是粒子 $i$ 的总能量（动能与势能之和）。 上述求和所代表的物理量可称为能量矩 （energy moment)，而热流就是能量矩的时间变化率。将上式的求导展开得
 
 $$
-\vec{J} = \vec{v} _{i} E _{i} + \sum _i \vec{r} _{i} \frac{d}{dt} E _{i}.
+\vec{J} = \sum _i \vec{v} _{i} E _{i} + \sum _i \vec{r} _{i} \frac{d}{dt} E _{i}.
 $$
 
+上式右边第一项叫做对流项，而第二项叫做势能项。我们可以记为
+
+$$
+\vec{J} = \vec{J}^{\rm conv} + \vec{J}^{\rm pot}
+$$
+
+对流项无需进一步推导，而利用动能定理
+
+$$
+\frac{d}{dt} K _{i} = \vec{F} _i \cdot \vec{v} _i
+$$
+
+可将势能项的热流写为：
+
+$$
+\vec{J}^{\rm pot} = \sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i + \vec{r} _{i} \frac{d}{dt} U _{i} .
+$$
 
 
 但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
