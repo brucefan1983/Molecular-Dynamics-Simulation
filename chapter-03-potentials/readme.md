@@ -10,20 +10,12 @@
   - [多体势中位力和热流的表达式](#多体势中位力和热流的表达式)
 - [两个典型的经验多体势](#两个典型的经验多体势)
   - [EAM势](#EAM势)
-    - [EAM势的通用表达式](#EAM势的通用表达式)
-    - [一个解析EAM势的编程实现](#一个解析EAM势的编程实现)
   - [Tesoff势](#Tersoff势)
-    - [势函数形式](#势函数形式)
-    - [编程实现](#编程实现)
 - [NEP机器学习势](#NEP机器学习势)
   - [NEP机器学习势的人工神经网络模型](#NEP机器学习势的人工神经网络模型)
   - [NEP机器学习势的描述符](#NEP机器学习势的描述符)
   - [NEP机器学习势的训练](#NEP机器学习势的训练)
-    - [损失函数](#损失函数)
-    - [自然演化策略](#自然演化策略)
   - [NEP机器学习势的编程实现](#NEP机器学习势的编程实现)
-    - [GPU实现](#GPU实现)
-    - [CPU实现](#CPU实现)
 - [习题](#习题)
 
 
@@ -237,27 +229,63 @@ $$
 \vec{J}^{\rm pot} = \sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i + \vec{r} _{i} \frac{d}{dt} U _{i} .
 $$
 
-
-但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
+根据力的表达式，我们有
 
 $$
-\mathbf{W} = \sum _i \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i = \sum _i \sum _{j \neq i} \vec{r} _{i} \vec{F} _{ij} \cdot \vec{v} _i  
+= \sum _i \sum _{j \neq i} \vec{r} _{i} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} - \frac{\partial U _{j}}{\partial \vec{r} _{ji}}\right) \cdot \vec{v} _i .
+$$
+
+根据势能 $U _{i}$ 的表达式，我们还有
+
+$$
+\sum _i \vec{r} _{i} \frac{d}{dt} U _{i} = \sum _i \sum _{j \neq i} \vec{r} _{i} \frac{\partial U _{i} }{\partial \vec{r} _{ij}} \cdot ( \vec{v} _{j} - \vec{v} _{i}).
+$$
+
+将以上两式相加，得到如下势能项的热流：
+
+
+$$
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{i} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} \cdot \vec{v} _j - \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+类似于位力的推导，我们可以将上式用相对坐标表达：
+
+$$
+\vec{J}^{\rm pot} = -\frac{1}{2} \sum _i \sum _{j \neq i} \vec{r} _{ij} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} \cdot \vec{v} _j - \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+该表达式涉及到一个粒子及其邻居的速度，不利于编程实现。可以通过交换哑指标的方式将上式改写为如下等价的形式：
+
+$$
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \left(\frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+注意到上式等价于
+
+$$
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \left( \vec{r} _{ij} \otimes \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \right) \cdot \vec{v} _i 
+$$
+
+还注意到位力可以写为如下等价的形式：
+
+$$
+\mathbf{W} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 若定义如下单粒子的位力
 
 $$
-\mathbf{W}_i = \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\mathbf{W}_i = \sum _{j \neq i} \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 则有
 
 $$
-\mathbf{W} = \sum _i \mathbf{W} _{i}.
+\vec{J}^{\rm pot} = \sum _i \mathbf{W}_i \cdot \vec{v} _i 
 $$
 
-
-
+也就是说，势能项的热流是与单粒子位力紧密相关的。但是，要注意的是，上述表达式中的单粒子位力必须是我们定义的形式。实际上，文献中有不少使用错误的热流公式的例子，都是因为没有仔细推导，或者盲目地信任已有的编程实现。到目前为止，流行的 LAMMPS 程序中的热流计算对大部分的多体势函数来说都是错误的。相比之下，GPUMD 程序中的热流计算都使用了上述正确的公式。
 
 
 ## 两个典型的经验多体势
@@ -265,8 +293,6 @@ $$
 迄今已有众多的经验多体势，其中在材料模拟领域最为广泛使用的当属 EAM 势和 Tersoff 势。
 
 ### EAM势
-
-#### EAM势的通用表达式
 
 EAM 势由若干人同时提出，包括 [Daw & Baskes](https://doi.org/10.1103/PhysRevLett.50.1285) 以及 [Finnis & Sinclair](https://doi.org/10.1080/01418618408244210)。
 
@@ -282,7 +308,7 @@ $$
 \rho _i = \sum _{j\neq i} f(r _{ij}).
 $$
 
-所以，对单元素体系来说，一个EAM势完全由如下三个函数确定： $\phi(r _{ij})$, $F(\rho _i)$ 和 $f(r _{ij})$。他们都是一元函数，可以用解析表达式确定，但为了提高计算速度和通用性，目前最为广泛使用的方式是用样条插值表示他们。
+所以，对单元素体系来说，一个EAM势完全由如下三个函数确定： $\phi(r _{ij})$, $F(\rho _i)$ 和 $f(r _{ij})$。他们都是一元函数，可以用解析表达式确定，但为了提高计算速度和通用性，常用样条插值表示他们。GPUMD 程序中实现了 [Xiaowang Zhou 等人的解析版本](https://doi.org/10.1103/PhysRevB.69.144113)。
 
 可以推导如下表达式：
 
@@ -292,11 +318,9 @@ $$
 F'(\rho _i)  f'(r _{ij}) \frac{\partial r _{ij}} {\partial \vec{r} _{ij}}.
 $$
 
-#### 一个解析EAM势的编程实现
+有了上述表达式，EAM 势的编程实现就很直接了。
 
 ### Tersoff势
-
-#### 势函数形式
 
 Tersoff 势有几个稍有不同的变体。我这里介绍 [Tersoff 在 1989 年发表的一篇文章中使用的形式](https://doi.org/10.1103/PhysRevB.39.5566)。为简单起见，我们考虑单种元素的势函数。本书不会涉及多元素体系的 Tersoff 势。
 
@@ -311,18 +335,18 @@ $$
 $$
 f _{C}(r _{ij}) = \frac{1}{2}
 \left[
-1 + \cos \left( \pi \frac{r _{ij} - R _{ij}}{S _{ij} - R _{ij}} \right)
+1 + \cos \left( \pi \frac{r _{ij} - R}{S - R} \right)
 \right].
 $$
 
 排斥函数 $f _{R}$ 和吸引函数 $f _{A}$ 为
 
 $$
-f _{R}(r) = A e ^{-\lambda r _{ij}};
+f _{R}(r _{ij}) = A e ^{-\lambda r _{ij}};
 $$
 
 $$
-f _{A}(r) = B e ^{-\mu r _{ij}}.
+f _{A}(r _{ij}) = B e ^{-\mu r _{ij}}.
 $$
 
 键序为
@@ -343,9 +367,13 @@ $$
 
 在以上表达式中，有如下参数： $A$, $B$, $\lambda$, $\mu$, $\beta$, $n$, $c$, $d$, $h$, $R$, $S$。
 
-#### 编程实现
+在 Tersoff 势的表达式中，有一个角 $\theta _{ijk}$ ，它指的是键 $ij$ 和 $ik$ 的夹角。显然有
 
-给出一个 C++ 程序。
+$$
+\cos\theta _{ijk} = \frac{\vec{r} _{ij} \cdot \vec{r} _ {ik}}{r _{ij}  r _ {ik} }.
+$$
+
+根据我们对多体势的推导，在编程实现时需要使用 $\frac{\partial U _i}{\partial \vec{r} _{ij}}$ 的表达式，它可以在[作者一篇文章的附录](https://doi.org/10.1103/PhysRevB.92.094301)找到。
 
 ## NEP机器学习势
 
@@ -504,30 +532,27 @@ $$
 L _2(\boldsymbol{z}) = \lambda _2 \left(\frac{1}{N _\mathrm{par}} \sum _{n=1} ^{N _\mathrm{par}} z _n^2\right) ^{1/2}.
 $$
 
-在公式中有如下符号（在写。。。）：
+在公式中有如下符号：
+- $\boldsymbol{z}$ 是所有被优化参数组成的抽象矢量。
 - $N _\mathrm{str}$ 是训练集中结构的数目。
-- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W _{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ are the per-atom energy and virial tensor predicted by the $\boldsymbol{z}$ for the $n$ structure, and 
-- $\boldsymbol{F} _i^\mathrm{NEP}(\boldsymbol{z})$ is the predicted force for the $i^\mathrm{th}$.
-- $U^\mathrm{tar}(n)$, $W _{\mu\nu}^\mathrm{tar}(n)$, and $\boldsymbol{F} _i^\mathrm{tar}$.
-- $\mathcal{L} _1$ $\mathcal{L} _2$ 正则化
+- $N$ 是训练集中原子的数目。
+- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W _{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ 是通过 NEP 计算出的结构 $n$ 的能量和位力， $U^\mathrm{tar}(n)$ 和 $W _{\mu\nu}^\mathrm{tar}(n)$ 是对应的参考值。
+- $\boldsymbol{F} _i^\mathrm{NEP}(\boldsymbol{z})$ 是通过 NEP 计算出的原子 $i$ 的力矢量， $\boldsymbol{F} _i^\mathrm{tar}$ 是对应的参考值。
+- $L _1(\boldsymbol{z})$ 和 $L _1(\boldsymbol{z})$ 代表 $\mathcal{L} _1$ 和 $\mathcal{L} _2$ 正则化。
 
-#### 自然演化策略
+待写：可分离的自然演化策略
 
 ### NEP机器学习势的编程实现
 
-#### GPU实现
-NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。本章暂不讨论 GPUMD 程序包的使用。
+NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。
 
-#### CPU实现
-NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP _CPU 程序包](https://github.com/brucefan1983/NEP _CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。我们下面的测试将使用该 C++ 实现。
+NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP_CPU 程序包](https://github.com/brucefan1983/NEP_CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。
 
 ## 习题
 
-1. 将本章的 tersoff _md.cpp 从单元素体系推广到多元素体系，使其能模拟比如 SiC 和 SiGe。
+1. 推导 Tersoff 势 和 NEP 势的表达势  $\partial U_i / \partial \vec{r} _{ij}$ 。结果可分别参考 [2015年](https://doi.org/10.1103/PhysRevB.92.094301) 和 [2021年](https://doi.org/10.1103/PhysRevB.104.104309) 的文章。
 
-2. 将本章的 eam _md.cpp 从单元素体系推广到多元素体系，使其能模拟高熵合金。
-
-3. 利用球谐函数的加法定理，将三体角度描述符
+2. 利用球谐函数的加法定理，将三体角度描述符
 
 $$
    q^i _{nl} = \sum _{j \neq i} \sum _{k \neq i} g _n(r _{ij}) g _n(r _{ij}) P _l(\theta _{ijk}),
