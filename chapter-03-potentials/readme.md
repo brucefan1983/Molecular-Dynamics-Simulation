@@ -272,7 +272,7 @@ $$
 注意到上式等价于
 
 $$
-\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \otimes \left(\frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \left( \vec{r} _{ij} \otimes \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \right) \cdot \vec{v} _i 
 $$
 
 还注意到位力可以写为如下等价的形式：
