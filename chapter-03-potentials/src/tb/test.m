@@ -21,4 +21,5 @@ plot(bond_diamond,energy_diamond/N_diamond,'s-','linewidth',2);hold on;
 plot(bond_graphene,energy_graphene/N_graphene,'o-','linewidth',2);
 xlabel('bond length (A)');
 ylabel('energy (eV/atom)');
+legend('diamond','graphene');
 set(gca,'fontsize',20);
