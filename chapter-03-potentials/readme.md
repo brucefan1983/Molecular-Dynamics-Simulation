@@ -240,7 +240,8 @@ $$
 根据力的表达式，我们有
 
 $$
-\sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i = \sum _i \sum _{j \neq i} \vec{r} _{i} \vec{F} _{ij} \cdot \vec{v} _i  .
+\sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i = \sum _i \sum _{j \neq i} \vec{r} _{i} \vec{F} _{ij} \cdot \vec{v} _i  
+= \sum _i \sum _{j \neq i} \vec{r} _{i} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} - \frac{\partial U _{j}}{\partial \vec{r} _{ji}}\right) \cdot \vec{v} _i .
 $$
 
 根据势能 $U _{i}$ 的表达式，我们还有
@@ -249,26 +250,50 @@ $$
 \sum _i \vec{r} _{i} \frac{d}{dt} U _{i} = \sum _i \sum _{j \neq i} \vec{r} _{i} \frac{\partial U _{i} }{\partial \vec{r} _{ij}} \cdot ( \vec{v} _{j} - \vec{v} _{i}).
 $$
 
-但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
+将以上两式相加，得到如下势能项的热流：
+
 
 $$
-\mathbf{W} = \sum _i \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{i} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} \cdot \vec{v} _j - \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+类似于位力的推导，我们可以将上式用相对坐标表达：
+
+$$
+\vec{J}^{\rm pot} = -\frac{1}{2} \sum _i \sum _{j \neq i} \vec{r} _{ij} \left(\frac{\partial U _{i}}{\partial \vec{r} _{ij}} \cdot \vec{v} _j - \frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+该表达式涉及到一个粒子及其邻居的速度，不利于编程实现。可以通过交换哑指标的方式将上式改写为如下等价的形式：
+
+$$
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \left(\frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+注意到上式等价于
+
+$$
+\vec{J}^{\rm pot} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \otimes \left(\frac{\partial U _{j}}{\partial \vec{r} _{ji}} \cdot \vec{v} _i \right)
+$$
+
+还注意到位力可以写为如下等价的形式：
+
+$$
+\mathbf{W} = \sum _i \sum _{j \neq i} \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 若定义如下单粒子的位力
 
 $$
-\mathbf{W}_i = \sum _j \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
+\mathbf{W}_i = \sum _{j \neq i} \vec{r} _{ij} \otimes \frac{\partial U _j}{\partial \vec{r} _{ji}}.
 $$
 
 则有
 
 $$
-\mathbf{W} = \sum _i \mathbf{W} _{i}.
+\vec{J}^{\rm pot} = \sum _i \mathbf{W}_i \cdot \vec{v} _i \right)
 $$
 
-
-
+也就是说，势能项的热流是与单粒子位力紧密相关的。但是，要注意的是，上述表达式中的单粒子位力必须是我们定义的形式。实际上，文献中有不少使用错误的热流公式的例子，都是因为没有仔细推导，或者盲目地信任已有的编程实现。到目前为止，流行的 LAMMPS 程序中的热流计算对大部分的多体势函数来说都是错误的。
 
 
 ## 两个典型的经验多体势
