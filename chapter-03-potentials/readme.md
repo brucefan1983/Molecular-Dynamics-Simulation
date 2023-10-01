@@ -536,30 +536,27 @@ $$
 L _2(\boldsymbol{z}) = \lambda _2 \left(\frac{1}{N _\mathrm{par}} \sum _{n=1} ^{N _\mathrm{par}} z _n^2\right) ^{1/2}.
 $$
 
-在公式中有如下符号（在写。。。）：
+在公式中有如下符号：
+- $\boldsymbol{z}$ 是所有被优化参数组成的抽象矢量。
 - $N _\mathrm{str}$ 是训练集中结构的数目。
-- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W _{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ are the per-atom energy and virial tensor predicted by the $\boldsymbol{z}$ for the $n$ structure, and 
-- $\boldsymbol{F} _i^\mathrm{NEP}(\boldsymbol{z})$ is the predicted force for the $i^\mathrm{th}$.
-- $U^\mathrm{tar}(n)$, $W _{\mu\nu}^\mathrm{tar}(n)$, and $\boldsymbol{F} _i^\mathrm{tar}$.
-- $\mathcal{L} _1$ $\mathcal{L} _2$ 正则化
+- $N$ 是训练集中原子的数目。
+- $U^\mathrm{NEP}(n,\boldsymbol{z})$ 和 $W _{\mu\nu}^\mathrm{NEP}(n,\boldsymbol{z})$ 是通过 NEP 计算出的结构 $n$ 的能量和位力， $U^\mathrm{tar}(n)$ 和 $W _{\mu\nu}^\mathrm{tar}(n)$ 是对应的参考值。
+- $\boldsymbol{F} _i^\mathrm{NEP}(\boldsymbol{z})$ 是通过 NEP 计算出的原子 $i$ 的力矢量， $\boldsymbol{F} _i^\mathrm{tar}$ 是对应的参考值。
+- $L _1(\boldsymbol{z})$ 和 $L _1(\boldsymbol{z})$ 代表 $\mathcal{L} _1$ 和 $\mathcal{L} _2$ 正则化。
 
-#### 自然演化策略
+待写：可分离的自然演化策略
 
 ### NEP机器学习势的编程实现
 
-#### GPU实现
-NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。本章暂不讨论 GPUMD 程序包的使用。
+NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。
 
-#### CPU实现
-NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP _CPU 程序包](https://github.com/brucefan1983/NEP _CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。我们下面的测试将使用该 C++ 实现。
+NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP _CPU 程序包](https://github.com/brucefan1983/NEP _CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。
 
 ## 习题
 
-1. 将本章的 tersoff _md.cpp 从单元素体系推广到多元素体系，使其能模拟比如 SiC 和 SiGe。
+1. 推导 Tersoff 势 和 NEP 势的表达势  $\partial U_i / \partial \vec{r} _{ij}$ 。结果可分别参考 [2015年](https://doi.org/10.1103/PhysRevB.92.094301) 和 [2021年](https://doi.org/10.1103/PhysRevB.104.104309) 的文章。
 
-2. 将本章的 eam _md.cpp 从单元素体系推广到多元素体系，使其能模拟高熵合金。
-
-3. 利用球谐函数的加法定理，将三体角度描述符
+2. 利用球谐函数的加法定理，将三体角度描述符
 
 $$
    q^i _{nl} = \sum _{j \neq i} \sum _{k \neq i} g _n(r _{ij}) g _n(r _{ij}) P _l(\theta _{ijk}),
