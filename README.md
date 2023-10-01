@@ -5,7 +5,7 @@
 - [第2章：一个简单的分子动力学模拟程序（已经完成）](chapter-02-simple-md/readme.md)。
 - [第3章：势函数（包括经验势和机器学习势）（在写）](chapter-03-potentials/readme.md)。
 - [第4章：控温控压算法 (在写)](chapter-04-ensembles/readme.md)。
-- [第5章：输运性质的分子动力学模拟（在写）](chapter-05-transport/readme.md)。
+- [第5章：输运性质的分子动力学模拟（在写）](chapter-05-transport/README.md)。
 - [第6章：高级课题 (在写)](chapter-06-advanced/readme.md)。
 
 ## 讨论群
