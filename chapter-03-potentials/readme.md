@@ -546,7 +546,7 @@ $$
 
 NEP 机器学习势已经在 [GPUMD 程序包](https://github.com/brucefan1983/GPUMD) 中实现，可用该程序包的 `nep` 可执行文件训练，并由该程序包的 `gpumd` 可执行文件进行分子动力学模拟。
 
-NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP _CPU 程序包](https://github.com/brucefan1983/NEP _CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。
+NEP 机器学习势目前也有一个独立的 C++ 编程实现，见 [NEP_CPU 程序包](https://github.com/brucefan1983/NEP_CPU)。该程序包给出了一个名为`NEP3` 的 C++ 类，见程序包中 `src` 文件夹内的 `nep.cpp` 和`nep.h`。
 
 ## 习题
 
