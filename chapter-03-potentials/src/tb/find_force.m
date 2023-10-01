@@ -46,10 +46,10 @@ function [energy, force] = find_force(N, D, neighbor_number, neighbor_list, L, p
             H12(2, 4) = H12(4, 2);
             H0(n1*4-3 : n1*4, n2*4-3 : n2*4) = H12;
             H(n1*4-3 : n1*4, n2*4-3 : n2*4) = s(d12) * H12;
+            temp = phi_d(d12)*(f_d(sum_of_phi(n1))+f_d(sum_of_phi(n2)))/d12;
+            force(n1, :) = force(n1, :) + r12 * temp;
         end
         energy = energy + f(sum_of_phi(n1));
-        temp = phi_d(d12)*(f_d(sum_of_phi(n1))+f_d(sum_of_phi(n2)))/d12;
-        force(n1, :) = force(n1, :) + r12 * temp;
     end
     [C, E] = eig(H);
     E_diag=diag(E);
@@ -85,9 +85,9 @@ function [energy, force] = find_force(N, D, neighbor_number, neighbor_list, L, p
             for d = 1 : D
                 K1(:, :, d) = H0(4*(n1-1)+1:4*n1, 4*(n2-1)+1:4*n2);
                 K1(:, :, d) = K1(:, :, d) * (s_d(d12) * r12(d) / d12);
-                K(2, 2, d) = 2*s(d12)/d12*(v_pps - v_ppp)*cos_x*e_xx(d);
-                K(3, 3, d) = 2*s(d12)/d12*(v_pps - v_ppp)*cos_y*e_yy(d);
-                K(4, 4, d) = 2*s(d12)/d12*(v_pps - v_ppp)*cos_z*e_zz(d);
+                K(2, 2, d) = s(d12)/d12*(v_pps - v_ppp)*e_xx(d);
+                K(3, 3, d) = s(d12)/d12*(v_pps - v_ppp)*e_yy(d);
+                K(4, 4, d) = s(d12)/d12*(v_pps - v_ppp)*e_zz(d);
                 K(1, 2, d) = s(d12)/d12 * v_sps * e_sx(d);
                 K(1, 3, d) = s(d12)/d12 * v_sps * e_sy(d);
                 K(1, 4, d) = s(d12)/d12 * v_sps * e_sz(d);
