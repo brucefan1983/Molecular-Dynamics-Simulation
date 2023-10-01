@@ -237,6 +237,17 @@ $$
 \vec{J}^{\rm pot} = \sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i + \vec{r} _{i} \frac{d}{dt} U _{i} .
 $$
 
+根据力的表达式，我们有
+
+$$
+\sum _i \vec{r} _{i} \vec{F} _i \cdot \vec{v} _i = \sum _i \sum _{j \neq i} \vec{r} _{i} \vec{F} _{ij} \cdot \vec{v} _i  .
+$$
+
+根据势能 $U _{i}$ 的表达式，我们还有
+
+$$
+\sum _i \vec{r} _{i} \frac{d}{dt} U _{i} = \sum _i \sum _{j \neq i} \vec{r} _{i} \frac{\partial U _{i} }{\partial \vec{r} _{ij}} \cdot ( \vec{v} _{j} - \vec{v} _{i}).
+$$
 
 但是，为了方便地从位力计算热流，我们注意到，该式还可以写成如下等价的形式：
 
