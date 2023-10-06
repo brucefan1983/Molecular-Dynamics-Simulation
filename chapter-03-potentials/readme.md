@@ -544,7 +544,7 @@ $$
 
 NEP 机器学习势得名于将演化算法用于训练神经网络势函数。我们所用的演化算法称为可分离的自然演化策略 (separable natural evolution strategy, 简称为 SNES)，由 Tom Schaul 等人在文章 [High dimensions and heavy tails for natural evolution strategies](https://doi.org/10.1145/2001576.2001692) 中提出。这是一种不需要使用任何解析梯度的优化算法，编程实现非常简单。在 GPUMD 中实现的 NEP 势函数没有使用任何第三方机器学习程序包，就是得益于该演化算法的简单性。下面列出使用 SNES 训练 NEP 势函数的算法流程：
 
-- 初始化。
+- 初始化。初始化一套平均值和方差
 
 - 对演化代数进行迭代，直到完成特定代数 $N_{\rm gen}$
   - 产生一个种群
