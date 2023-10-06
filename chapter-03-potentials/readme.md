@@ -540,7 +540,11 @@ $$
 - $\boldsymbol{F} _i^\mathrm{NEP}(\boldsymbol{z})$ 是通过 NEP 计算出的原子 $i$ 的力矢量， $\boldsymbol{F} _i^\mathrm{tar}$ 是对应的参考值。
 - $L _1(\boldsymbol{z})$ 和 $L _1(\boldsymbol{z})$ 代表 $\mathcal{L} _1$ 和 $\mathcal{L} _2$ 正则化。
 
-待写：可分离的自然演化策略
+#### 可分离的自然演化策略
+
+NEP 机器学习势得名于将演化算法用于训练神经网络势函数。我们所用的演化算法称为可分离的自然演化策略，由 Tom Schaul 等人在文章 [High dimensions and heavy
+tails for natural evolution strategies](https://doi.org/10.1145/2001576.2001692) 中提出。
+
 
 ### NEP机器学习势的编程实现
 
