@@ -120,6 +120,35 @@ TRPMD: [How to remove the spurious resonances from ring polymer molecular dynami
 
 ### 紧束缚分子动力学
 
+要让一个紧束缚模型用于分子动力学模拟，必须再在band能量的基础上加入一个所谓的排斥势：
+
+
+$$
+U_{\rm tot} = U_{\rm bs} + U_{\rm rep}
+$$
+
+我们这里只考虑一个具体的碳材料的紧束缚模型 (C H Xu, C Z Wang, C T Chan and K M Ho, A transferable tight-binding potential for carbon, https://iopscience.iop.org/article/10.1088/0953-8984/4/28/006)
+
+在这个模型中，排斥势被定义为类似于 EAM 势的多体势的形式：
+
+$$
+U_{\rm rep} = \sum_i f \left(  \sum_j \phi(r_{ij}) \right)
+$$
+
+函数 $\phi$ 的形式为：
+
+$$
+\phi(r) = \phi_0 (d_0/r)^m e^{ m [ -(r/d_c)^{m_c} + (d_0/d_c)^{m_c}]}
+$$
+
+函数 $s$ 的形式为：
+
+$$
+s(r) = (d_0/r)^n e^{ n [ -(r/r_c)^{n_c} + (r_0/r_c)^{n_c}]}
+$$
+
+
+
 ### 基于紧束缚模型的电子输运性质
 
 
