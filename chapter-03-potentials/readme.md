@@ -8,9 +8,10 @@
   - [两体势与多体势的定义](#两体势与多体势的定义)
   - [多体势中力的表达式](#多体势中力的表达式)
   - [多体势中位力和热流的表达式](#多体势中位力和热流的表达式)
-- [两个典型的经验多体势](#两个典型的经验多体势)
+- [几个典型的经验多体势](#几个典型的经验多体势)
   - [EAM势](#EAM势)
   - [Tesoff势](#Tersoff势)
+  - [D3 色散修正](#D3 色散修正)
 - [NEP机器学习势](#NEP机器学习势)
   - [NEP机器学习势的人工神经网络模型](#NEP机器学习势的人工神经网络模型)
   - [NEP机器学习势的描述符](#NEP机器学习势的描述符)
@@ -374,6 +375,43 @@ $$
 $$
 
 根据我们对多体势的推导，在编程实现时需要使用 $\frac{\partial U _i}{\partial \vec{r} _{ij}}$ 的表达式，它可以在[作者一篇文章的附录](https://doi.org/10.1103/PhysRevB.92.094301)找到。
+
+### D3 色散修正
+
+[DFT-D3 色散修正](https://doi.org/10.1063/1.3382344) 是一个简单但被广泛使用的色散修正势函数。我们这里介绍 [Becke-Johnson damping 形式的D3修正](https://doi.org/10.1002/jcc.21759)。 该势函数的总能量可以写为如下形式:
+
+$$
+U^{\rm D3} =\sum_{i} U_i^{\rm D3};
+$$
+
+$$
+U_i^{\rm D3} 
+= -\frac{1}{2}\sum_{j\neq i} \frac{s_6 C_{6ij}}{r^6_{ij} + (a_1R_0+a_2)^6} 
+-\frac{1}{2} \sum_{j\neq i} \frac{s_8 C_{8ij}}{r^8_{ij} + (a_1R_0+a_2)^8}, 
+$$
+
+其中， $s_6$, $s_8$, $a_1$, 和 $a_2$ 是依赖于DFT中交换关联泛函的参数。 $C_{6ij}$ 和 $C_{8ij}$ 是 $ij$ 原子对之间的色散系数, $R_0$ 代表某种平均的原子半径。上述求和针对  $i$ 原子的所有截断半径 $R_{\rm pot}$ 以内的邻居。上述两个色散系数之间由下式相联系：
+
+$$C_{8ij} = C_{6ij} R_0^2$$
+
+那么，我们只要专注 $C_{6ij}$ 的表达式。在 D3 中， $C_{6ij}$  是两个原子的配位数（coordination numbers） $n_i$ and $n_j$ 的函数：
+
+$$
+C_{6ij}(n_i, n_j) = \frac{\sum_a\sum_b C_{6ijab}^{\rm ref} e^{-4[(n_{i}-n_{ia}^{\rm ref})^2 + (n_{j}-n_{jb}^{\rm ref})^2]}} {\sum_a\sum_b e^{-4[(n_{i}-n_{ia}^{\rm ref})^2 + (n_{j}-n_{jb}^{\rm ref})^2]}},
+$$
+
+这里， $n_{ia}^{\rm ref}$ 是原子 $i$ 的第 $a$ 个 参考的配位数，  $n_{jb}^{\rm ref}$ 是原子 $j$ 的第 $b$ 个 参考的配位数。
+$C_{6ijab}^{\rm ref}$ 是原子对 $(i,j)$ 的一个参考配位数。
+
+原子 $i$ 的配位数定义为：
+
+$$
+n_i = \sum_{j\neq i} \frac{1}{1 + e^{-16 ( (R_{i}^{\rm cov} + R_{j}^{\rm cov}) /r_{ij} - 1 )}},
+$$
+
+$R_{i}^{\rm cov}$ 是原子 $i$ 的有效半径。上述求和中， $j$ 原子是 $i$ 原子的截断半径 $R_{\rm cn}$ 内的邻居。 一般来说， $R_{\rm cn}$ 和 $R_{\rm pot}$ 可以不同。
+
+正因为 $i$ 原子的配位数依赖于它的邻居，我们看到 D3 色散修正势并不是简单的两体势，而是一个多体势。而且，它的高效编程并不简单。该势函数的高效 GPU 编程最近才在 GPUMD 程序中实现，详见 [Penghua Ying and Zheyong Fan, Combining the D3 dispersion correction with the neuroevolution machine-learned potential](https://arxiv.org/abs/2310.05279)。
 
 ## NEP机器学习势
 
