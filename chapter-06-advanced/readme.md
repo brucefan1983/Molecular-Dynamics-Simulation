@@ -19,6 +19,7 @@
   - [热力学积分方法](#热力学积分方法)
   - [基于非平衡模拟的热力学积分方法](#基于非平衡模拟的热力学积分方法)
 - [紧束缚分子动力学](#紧束缚分子动力学)
+  - [紧束缚模型](#紧束缚模型)
   - [基于紧束缚模型的电子输运性质](#基于紧束缚模型的电子输运性质)
 
 ## 蒙特卡洛与分子动力学混合模拟
@@ -116,31 +117,22 @@ TRPMD: [How to remove the spurious resonances from ring polymer molecular dynami
 
 ## 紧束缚分子动力学
 
-### 半经验的紧束缚模型
+### 紧束缚模型
 
+我们以sp3轨道为例介绍紧束缚哈密顿量的构造。
 
+每个原子有四个轨道
 
-%-----------------------------------------------------------------------------80
-\section{How to construct the Hamiltonian}
-%-----------------------------------------------------------------------------80
-
-For the purpose of the calculation of the energy band, the TB Hamiltonian $H$
-is complex and Hermitian; in the formalism of TBMD, $H$ is real and symmetric;
-The basis of the sp$^3$ orbits is chosen to be
-\begin{equation}
+$$
     \{ |s\rangle, |p_x\rangle, |p_y\rangle, |p_z\rangle \}.
-\end{equation}
-For a system with $N_{atom}$ atoms, the order of the Hamiltonian matrix is
-$N_{level} = 4 N_{atom}$.
+$$
 
-%-----------------------------------------------------------------------------80
-\subsection{on-site elements}
-%-----------------------------------------------------------------------------80
-
+如果有 $N$ 个原子，那么哈密顿矩阵的维度为  $M = 4 N$ 。
 
 
 For each atom $i$, we have a diagonal matrix $H_{i}$,
-\begin{equation}
+
+$$
     H^{ii} =
     \left(
         \begin{array}{cccc}
@@ -150,16 +142,13 @@ For each atom $i$, we have a diagonal matrix $H_{i}$,
             0   & 0   & 0   & E_p \\
         \end{array}
     \right).
-\end{equation}
-
-%-----------------------------------------------------------------------------80
-\subsection{hopping elements}
-%-----------------------------------------------------------------------------80
+$$
 
 For each neighbor pair of atoms $i$ and $j$, there are two hopping matrix
 $H_{ij}$ and $H_{ji}$ which are transpose of each other. The matrix $H_{ij}$
 can be written as
-\begin{equation}
+
+$$
     H^{ij} =
     \left(
         \begin{array}{cccc}
@@ -169,18 +158,20 @@ can be written as
             H^{ij}_{zs} & H^{ij}_{zx} & H^{ij}_{zy} & H^{ij}_{zz} \\
         \end{array}
     \right).
-\end{equation}
+$$
 
 To calculate the matrix elements of $H_{ij}$, we need first define some angle
 variables (not to be treated as usual triangular functions),
-\begin{eqnarray}
+
+$$
     \cos(x) &=& x_{ij} / r_{ij},                          \\
     \cos(y) &=& y_{ij} / r_{ij},                          \\
     \cos(z) &=& z_{ij} / r_{ij},                          \\
     \sin^2(x) &=& 1 - \cos^2(x) = \cos^2(y) + \cos^2(z),  \\
     \sin^2(y) &=& 1 - \cos^2(y) = \cos^2(z) + \cos^2(x),  \\
     \sin^2(z) &=& 1 - \cos^2(z) = \cos^2(x) + \cos^2(y),
-\end{eqnarray}
+$$
+
 where $r_{ij}$ is the distance of the two atoms, $x_{ij}$, $y_{ij}$, and
 $z_{ij}$ are components of the position difference
 $\textbf{r}_{ij} = \textbf{r}_{j} - \textbf{r}_{i}$ of the two atoms.
@@ -188,7 +179,9 @@ $\textbf{r}_{ij} = \textbf{r}_{j} - \textbf{r}_{i}$ of the two atoms.
 Using these angle variables and the hopping parameters $V_{ss\sigma}$,
 $V_{sp\sigma}$, $V_{pp\sigma}$, and $V_{pp\pi}$, the matrix elements of
 $H_{ij}$ can be written as
-\begin{eqnarray}
+
+
+$$
     H^{ij}_{ss} &=& V_{ss\sigma},                                  \\
     H^{ij}_{xx} &=& V_{pp\sigma} \cos^2(x) + V_{pp\pi} \sin^2(x),  \\
     H^{ij}_{yy} &=& V_{pp\sigma} \cos^2(y) + V_{pp\pi} \sin^2(y),  \\
@@ -205,15 +198,13 @@ $H_{ij}$ can be written as
     H^{ij}_{yx} &=& H^{ij}_{xy},                                   \\
     H^{ij}_{zy} &=& H^{ij}_{yz},                                   \\
     H^{ij}_{xz} &=& H^{ij}_{zx}.
-\end{eqnarray}
+$$
 
 
 
 
-%-----------------------------------------------------------------------------80
-\section{Band energy and the Feynman-Hellmann force using the direct
-         Diagonalization method}
-%-----------------------------------------------------------------------------80
+Band energy and the Feynman-Hellmann force using the direct
+         Diagonalization method
 
 
 Direct diagonalization can be easily performed by using linear algebra packages
@@ -223,15 +214,19 @@ MD step for a system of 1000 atoms.
 
 
 The band energy $E_b$ of the system in a state can be written as
-\begin{eqnarray}
+
+$$
     E_b &=& 2 \sum_{n = 1}^{N_{level}} f_n \langle n|H|n \rangle \\ \nonumber
         &=& 2 \sum_{n = 1}^{N_{level}} f_n \epsilon_n,
-\end{eqnarray}
+$$
+
 where
-\begin{equation}
+
+$$
     f_n
     = \frac{1}{\exp\left(\frac{\epsilon_n - \mu}{k_B T}\right) + 1}
-\end{equation}
+$$
+
 is the Fermi-Dirac distribution function. $T$ is temperature and $k_B$ is
 the Boltzmann's constant. The factor of 2 in the above equation accounts
 for spin degeneracy.
@@ -239,22 +234,21 @@ for spin degeneracy.
 To determine the Fermi-Dirac function, we should calculate the chemical
 potential $\mu$, which is related to the number of valence electrons
 $N_{electron}$ (which is $4 N_{atom}$ for Carbon) as follows,
-\begin{equation}
+
+$$
     N_{electron} = 2 \sum_{n = 1}^{N_{level}} f_n
-\end{equation}
+$$
 
 
 The Feynman-Hellmann force is the negative of the gradient of the band energy.
 For atom $i$, we have,
-\begin{eqnarray}
-    \textbf{f}_i
-    &=& - \frac{\partial}{\partial \textbf{r}_i} E_b
-        = - 2 \frac{\partial}{\partial \textbf{r}_i}
-        \sum_n f_n \langle n|H|n \rangle             \\ \nonumber
-    &=& - 2 \sum_{j \alpha} \sum_{k \beta}
-        \sum_n f_n C^n_{j \alpha} C^n_{k \beta}
-        \frac{\partial}{\partial \textbf{r}_i} H^{jk}_{\alpha \beta}
-\end{eqnarray}
+
+$$
+\textbf{f}_i = - \frac{\partial}{\partial \textbf{r}_i} E_b = - 2 \frac{\partial}{\partial \textbf{r}_i} \sum_n f_n \langle n|H|n \rangle            
+= - 2 \sum_{j \alpha} \sum_{k \beta} \sum_n f_n C^n_{j \alpha} C^n_{k \beta} \frac{\partial}{\partial \textbf{r}_i} H^{jk}_{\alpha \beta}
+$$
+
+
 By defining the density matrix
 \begin{equation}
     \rho^{jk}_{\alpha \beta} = \sum_n f_n C^n_{j \alpha} C^n_{k \beta},
