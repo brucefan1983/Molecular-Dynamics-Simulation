@@ -399,4 +399,25 @@ $$
 
 ### 基于紧束缚模型的电子输运性质
 
+这部分介绍最近在GPUMD实现的LSQT方法，详见 [Z Fan, Y Xiao, Y Wang, P Ying, S Chen, H Dong, Combining linear-scaling quantum transport and machine-learning molecular dynamics to study thermal and electronic transports in complex materials](https://arxiv.org/abs/2310.15314)。
 
+类似于热导率的格林-久保公式，电导率可以表达为电流自关联的积分。因为电流密度等于电子电量乘以速度，所以我们也可以用速度自关联进行讨论。下面是用速度自关联表达的电导率公式：
+
+$$
+    \Sigma(E,t)=\frac{2e^2}{\Omega} \int_0^{t} \mathrm{Tr} \left[\delta (E-\hat{H}) \mathrm{Re} (\hat{V}\hat{V}(\tau)) \right] d\tau,
+$$
+
+该式表明，电导率是积分上限 $t$ 和能量 $E$ 的函数。这里 $e$ 就是基本电荷（即一个电子的电荷），  $\Omega$ 是体系的体积， $\hat{H}$ 是电子的紧束缚哈密顿量算符， $\hat{V}$ 是电子的速度算符，  $\delta(E-\hat{H})$  是能量分辨算符。
+
+$$\hat{V}(\tau)=e^{i\hat{H}\tau} \hat{V} e^{-i\hat{H}\tau}$$
+
+是时间演化后的速度算符。将原子体系的时间演化和电子体系的时间演化耦合起来，就能有效地描述电声耦合。
+
+需要进一步讨论 LSQT 的算法才能讲清楚。
+
+
+电子态密度的计算是类似的，所以我们先来讨论它的计算
+
+$$
+    \rho(E)=\frac{2}{\Omega}  \mathrm{Tr} \left[\delta (E-\hat{H})  \right].
+$$
