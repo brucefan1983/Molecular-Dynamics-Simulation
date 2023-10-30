@@ -130,7 +130,7 @@ $$
 如果有 $N$ 个原子，那么哈密顿矩阵的维度为  $M = 4 N$ 。
 
 
-For each atom $i$, we have a diagonal matrix $H_{i}$,
+对每一个原子 $i$ , 我们有个对角子矩阵
 
 $$
     H^{ii} =
@@ -144,226 +144,233 @@ $$
     \right).
 $$
 
-For each neighbor pair of atoms $i$ and $j$, there are two hopping matrix
-$H_{ij}$ and $H_{ji}$ which are transpose of each other. The matrix $H_{ij}$
-can be written as
+对每一对原子 $i$ 和 $j$ ， 我们有另个互为共轭的非对角子矩阵 $H_{ij}$ 和 $H_{ji}$ ， 其中 $H_{ij}$ 可以写为
 
 $$
     H^{ij} =
     \left(
         \begin{array}{cccc}
-            H^{ij}_{ss} & H^{ij}_{sx} & H^{ij}_{sy} & H^{ij}_{sz} \\
-            H^{ij}_{xs} & H^{ij}_{xx} & H^{ij}_{xy} & H^{ij}_{xz} \\
-            H^{ij}_{ys} & H^{ij}_{yx} & H^{ij}_{yy} & H^{ij}_{yz} \\
-            H^{ij}_{zs} & H^{ij}_{zx} & H^{ij}_{zy} & H^{ij}_{zz} \\
+            H^{ij} _{ss} & H^{ij} _{sx} & H^{ij} _{sy} & H^{ij} _{sz} \\
+            H^{ij} _{xs} & H^{ij} _{xx} & H^{ij} _{xy} & H^{ij} _{xz} \\
+            H^{ij} _{ys} & H^{ij} _{yx} & H^{ij} _{yy} & H^{ij} _{yz} \\
+            H^{ij} _{zs} & H^{ij} _{zx} & H^{ij} _{zy} & H^{ij} _{zz} \\
         \end{array}
     \right).
 $$
 
-To calculate the matrix elements of $H_{ij}$, we need first define some angle
-variables (not to be treated as usual triangular functions),
+为了计算矩阵元 $H_{ij}$ , 我们定义如下变量
 
 $$
-    \cos(x) &=& x_{ij} / r_{ij},                          \\
-    \cos(y) &=& y_{ij} / r_{ij},                          \\
-    \cos(z) &=& z_{ij} / r_{ij},                          \\
-    \sin^2(x) &=& 1 - \cos^2(x) = \cos^2(y) + \cos^2(z),  \\
-    \sin^2(y) &=& 1 - \cos^2(y) = \cos^2(z) + \cos^2(x),  \\
-    \sin^2(z) &=& 1 - \cos^2(z) = \cos^2(x) + \cos^2(y),
+    \cos(x) = x_{ij} / r_{ij},                          \\
 $$
 
-where $r_{ij}$ is the distance of the two atoms, $x_{ij}$, $y_{ij}$, and
-$z_{ij}$ are components of the position difference
-$\textbf{r}_{ij} = \textbf{r}_{j} - \textbf{r}_{i}$ of the two atoms.
-
-Using these angle variables and the hopping parameters $V_{ss\sigma}$,
-$V_{sp\sigma}$, $V_{pp\sigma}$, and $V_{pp\pi}$, the matrix elements of
-$H_{ij}$ can be written as
-
+$$
+    \cos(y) = y_{ij} / r_{ij},                          \\
+$$
 
 $$
-    H^{ij}_{ss} &=& V_{ss\sigma},                                  \\
-    H^{ij}_{xx} &=& V_{pp\sigma} \cos^2(x) + V_{pp\pi} \sin^2(x),  \\
-    H^{ij}_{yy} &=& V_{pp\sigma} \cos^2(y) + V_{pp\pi} \sin^2(y),  \\
-    H^{ij}_{zz} &=& V_{pp\sigma} \cos^2(z) + V_{pp\pi} \sin^2(z),  \\
-    H^{ij}_{sx} &=& V_{sp\sigma} \cos(x),                          \\
-    H^{ij}_{sy} &=& V_{sp\sigma} \cos(y),                          \\
-    H^{ij}_{sz} &=& V_{sp\sigma} \cos(z),                          \\
-    H^{ij}_{xy} &=& (V_{pp\sigma} - V_{pp\pi}) \cos(x) \cos(y),    \\
-    H^{ij}_{yz} &=& (V_{pp\sigma} - V_{pp\pi}) \cos(y) \cos(z),    \\
-    H^{ij}_{zx} &=& (V_{pp\sigma} - V_{pp\pi}) \cos(z) \cos(x),    \\
-    H^{ij}_{xs} &=& - H^{ij}_{sx},                                 \\
-    H^{ij}_{ys} &=& - H^{ij}_{sy},                                 \\
-    H^{ij}_{zs} &=& - H^{ij}_{sz},                                 \\
-    H^{ij}_{yx} &=& H^{ij}_{xy},                                   \\
-    H^{ij}_{zy} &=& H^{ij}_{yz},                                   \\
-    H^{ij}_{xz} &=& H^{ij}_{zx}.
+    \cos(z) = z_{ij} / r_{ij},                          \\
+$$
+
+$$
+    \sin^2(x) = 1 - \cos^2(x) = \cos^2(y) + \cos^2(z),  \\
+$$
+
+$$
+    \sin^2(y) = 1 - \cos^2(y) = \cos^2(z) + \cos^2(x),  \\
+$$
+
+$$
+    \sin^2(z) = 1 - \cos^2(z) = \cos^2(x) + \cos^2(y),
 $$
 
 
+利用上述角度变量以及跳跃参数  $V_{ss\sigma}$,
+$V_{sp\sigma}$, $V_{pp\sigma}$, 和 $V_{pp\pi}$, 矩阵
+$H_{ij}$ 的元素可表达如下
 
-
-Band energy and the Feynman-Hellmann force using the direct
-         Diagonalization method
-
-
-Direct diagonalization can be easily performed by using linear algebra packages
-such as Lapack. However, the complexity of the method is $O(N_{atom}^3)$, which
-is very costly for large systems. It will takes several minutes for a single
-MD step for a system of 1000 atoms.
-
-
-The band energy $E_b$ of the system in a state can be written as
 
 $$
-    E_b &=& 2 \sum_{n = 1}^{N_{level}} f_n \langle n|H|n \rangle \\ \nonumber
-        &=& 2 \sum_{n = 1}^{N_{level}} f_n \epsilon_n,
+H_{ss}^{ij} = V_{ss\sigma},                                  \\
 $$
 
-where
-
 $$
-    f_n
-    = \frac{1}{\exp\left(\frac{\epsilon_n - \mu}{k_B T}\right) + 1}
+H_{xx}^{ij} = V_{pp\sigma} \cos^2(x) + V_{pp\pi} \sin^2(x),  \\
 $$
 
-is the Fermi-Dirac distribution function. $T$ is temperature and $k_B$ is
-the Boltzmann's constant. The factor of 2 in the above equation accounts
-for spin degeneracy.
-
-To determine the Fermi-Dirac function, we should calculate the chemical
-potential $\mu$, which is related to the number of valence electrons
-$N_{electron}$ (which is $4 N_{atom}$ for Carbon) as follows,
-
 $$
-    N_{electron} = 2 \sum_{n = 1}^{N_{level}} f_n
+H_{yy}^{ij} = V_{pp\sigma} \cos^2(y) + V_{pp\pi} \sin^2(y),  \\
 $$
 
-
-The Feynman-Hellmann force is the negative of the gradient of the band energy.
-For atom $i$, we have,
-
 $$
-\textbf{f}_i = - \frac{\partial}{\partial \textbf{r}_i} E_b = - 2 \frac{\partial}{\partial \textbf{r}_i} \sum_n f_n \langle n|H|n \rangle            
-= - 2 \sum_{j \alpha} \sum_{k \beta} \sum_n f_n C^n_{j \alpha} C^n_{k \beta} \frac{\partial}{\partial \textbf{r}_i} H^{jk}_{\alpha \beta}
+H_{zz}^{ij} = V_{pp\sigma} \cos^2(z) + V_{pp\pi} \sin^2(z),  \\
 $$
 
+$$
+H_{sx}^{ij} = V_{sp\sigma} \cos(x),                          \\
+$$
 
-By defining the density matrix
-\begin{equation}
-    \rho^{jk}_{\alpha \beta} = \sum_n f_n C^n_{j \alpha} C^n_{k \beta},
-\end{equation}
-we can express the force on atom $i$ as
-\begin{equation}
-    \textbf{f}_i
-    = - 2 \sum_{j \alpha} \sum_{k \beta} \rho^{jk}_{\alpha \beta}
-    \frac{\partial}{\partial \textbf{r}_i} H^{jk}_{\alpha \beta}
-    = -2 \textbf{Tr}(\rho \frac{\partial}{\partial \textbf{r}_i} H).
-\end{equation}
-Since $\frac{\partial}{\partial \textbf{r}_i} H^{jk}_{\alpha \beta} \neq 0$
-only when $i = j$ or $i = k$, the above equation can be simplified to be
-\begin{equation}
-    \textbf{f}_i=
-    - 2 \sum_k \sum_{\alpha \beta} \rho^{ik}_{\alpha \beta}
-    \frac{\partial}{\partial \textbf{r}_i} H^{ik}_{\alpha \beta}
-    - 2 \sum_j \sum_{\alpha \beta} \rho^{ji}_{\alpha \beta}
-    \frac{\partial}{\partial \textbf{r}_i} H^{ji}_{\alpha \beta}
-    = - 4 \sum_j \sum_{\alpha \beta} \rho^{ij}_{\alpha \beta}
-    \frac{\partial}{\partial \textbf{r}_i} H^{ij}_{\alpha \beta}.
-\end{equation}
+$$
+H_{sy}^{ij} = V_{sp\sigma} \cos(y),                          \\
+$$
 
-The calculation of the Feynman-Hellmann matrix
-\begin{equation}
-    \textbf{K}^{ij}_{\alpha \beta} \equiv
-    \frac{\partial}{\partial \textbf{r}_i} H^{ij}_{\alpha \beta}
-\end{equation}
-is straightforward. Since
-\begin{equation}
-    H^{ij}_{\alpha \beta} = H^{ij}_{\alpha \beta}(r_{ij} = r_0) s(r_{ij}),
-\end{equation}
-we have
-\begin{equation}
-    \textbf{K}^{ij}_{\alpha \beta} =  s(r_{ij})
-    \frac{\partial}{\partial \textbf{r}_i} H^{ij}_{\alpha \beta}(r_{ij} = r_0)
-    + H^{ij}_{\alpha \beta}(r_{ij} = r_0)
-    \frac{\partial}{\partial \textbf{r}_i} s(r_{ij}).
-\end{equation}
-The remaining task is to calculate the matrix
-\begin{equation}
-    \textbf{G}^{ij}_{\alpha \beta} =
-    \frac{\partial}{\partial \textbf{r}_i} H^{ij}_{\alpha \beta}(r_{ij} = r_0).
-\end{equation}
-By introducing some vectors
-\begin{equation}
+$$
+H_{sz}^{ij} = V_{sp\sigma} \cos(z),                          \\
+$$
+
+$$
+H_{xy}^{ij} = (V_{pp\sigma} - V_{pp\pi}) \cos(x) \cos(y),    \\
+$$
+
+$$
+H_{yz}^{ij} = (V_{pp\sigma} - V_{pp\pi}) \cos(y) \cos(z),    \\
+$$
+
+$$
+H_{zx}^{ij} = (V_{pp\sigma} - V_{pp\pi}) \cos(z) \cos(x),    \\
+$$
+
+$$
+H_{xs}^{ij} = - H_{sx}^{ij},                                 \\
+$$
+
+$$
+H_{ys}^{ij} = - H_{sy}^{ij},                                 \\
+$$
+
+$$
+H_{zs}^{ij} = - H_{sz}^{ij},                                 \\
+$$
+
+$$
+H_{yx}^{ij} = H_{xy}^{ij},                                   \\
+$$
+
+$$
+H_{zy}^{ij} = H_{yz}^{ij},                                   \\
+$$
+
+$$
+H_{xz}^{ij} = H_{zx}^{ij}.
+$$
+
+
+体系的总能量可以写为
+
+$$
+U_{\rm bs}  = 2 \sum_{n = 1}^{M/2}  \langle n|H|n \rangle = 2 \sum_{n = 1}^{M/2}  \epsilon_n,
+$$
+
+其中的因子2代表自旋简并。
+
+
+费曼-海尔曼力由能量的负梯度给出
+
+$$
+\vec{F}_i = - \frac{\partial}{\partial \vec{r}_i} U _{\rm bs} 
+$$
+
+$$
+\vec{F} _i = - 2 \sum _{j \alpha} \sum _{k \beta} \sum _n  C _{j \alpha}^n C _{k \beta}^n \frac{\partial}{\partial \vec{r} _i} H _{\alpha \beta}^{jk}
+$$
+
+
+定义矩阵
+
+$$
+\vec{K}^{ij} _{\alpha \beta} \equiv \frac{\partial}{\partial \vec{r} _i} H^{ij} _{\alpha \beta}
+$$
+
+假设矩阵元仅依赖于键长：
+
+$$
+    H^{ij} _{\alpha \beta} = H^{ij} _{\alpha \beta}(r _{ij} = r_0) s(r _{ij}),
+$$
+
+我们有
+
+$$
+\vec{K}^{ij} _{\alpha \beta} =  s(r _{ij}) \frac{\partial}{\partial \vec{r} _i} H^{ij} _{\alpha \beta}(r _{ij} = r _0) + H^{ij} _{\alpha \beta}(r _{ij} = r _0) \frac{\partial}{\partial \vec{r} _i} s(r _{ij}).
+$$
+
+那么任务归结于计算矩阵
+
+$$
+\textbf{G}^{ij} _{\alpha \beta} = \frac{\partial}{\partial \textbf{r} _i} H^{ij} _{\alpha \beta}(r _{ij} = r _0).
+$$
+
+定义一些矢量
+
+$$
     \textbf{e}_{sx} = \left(\sin^2(x), -\cos(x)\cos(y), -\cos(x)\cos(z)\right),
-\end{equation}
-\begin{equation}
+$$
+
+$$
     \textbf{e}_{sy} = \left(-\cos(y)\cos(x), \sin^2(y), -\cos(y)\cos(z)\right),
-\end{equation}
-\begin{equation}
+$$
+
+$$
     \textbf{e}_{sz} = \left(-\cos(z)\cos(x), -\cos(z)\cos(y), \sin^2(z)\right),
-\end{equation}
-\begin{equation}
-    \textbf{e}_{xx} = 2 \cos(x) \textbf{e}_{sx}
-\end{equation}
-\begin{equation}
-    \textbf{e}_{yy} = 2 \cos(y) \textbf{e}_{sy}
-\end{equation}
-\begin{equation}
-    \textbf{e}_{zz} = 2 \cos(z) \textbf{e}_{sz}
-\end{equation}
-\begin{equation}
-    \textbf{e}_{xy} =
-    \left(
-        (\sin^2(x)-\cos^2(x)) \cos(y),
-        (\sin^2(y)-\cos^2(y)) \cos(x),
-        - 2 \cos(x) \cos(y) \cos(z)
-    \right),
-\end{equation}
-\begin{equation}
-    \textbf{e}_{yz} =
-    \left(
-        - 2 \cos(x) \cos(y) \cos(z),
-        (\sin^2(y)-\cos^2(y)) \cos(z),
-        (\sin^2(z)-\cos^2(z)) \cos(y)
-    \right),
-\end{equation}
-\begin{equation}
-    \textbf{e}_{zx} =
-    \left(
-        (\sin^2(x)-\cos^2(x)) \cos(z),
-        - 2 \cos(x) \cos(y) \cos(z),
-        (\sin^2(z)-\cos^2(z)) \cos(x)
-    \right),
-\end{equation}
-we can write the matrix elements of this matrix to be
-\begin{eqnarray}
-    \textbf{G}^{ij}_{ss} &=& 0,                                           \\
-    \textbf{G}^{ij}_{xx} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi})\textbf{e}_{xx},   \\
-    \textbf{G}^{ij}_{yy} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi})\textbf{e}_{yy},   \\
-    \textbf{G}^{ij}_{zz} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi})\textbf{e}_{zz},   \\
-    \textbf{G}^{ij}_{sx} &=& \frac{1}{r_{ij}}
-                             V_{sp\sigma} \textbf{e}_{sx},                \\
-    \textbf{G}^{ij}_{sy} &=& \frac{1}{r_{ij}}
-                             V_{sp\sigma} \textbf{e}_{sy},                \\
-    \textbf{G}^{ij}_{sz} &=& \frac{1}{r_{ij}}
-                             V_{sp\sigma} \textbf{e}_{sz},                \\
-    \textbf{G}^{ij}_{xy} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi}) \textbf{e}_{xy},  \\
-    \textbf{G}^{ij}_{yz} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi}) \textbf{e}_{yz},  \\
-    \textbf{G}^{ij}_{zx} &=& \frac{1}{r_{ij}}
-                             (V_{pp\sigma} - V_{pp\pi}) \textbf{e}_{zx},  \\
-    \textbf{G}^{ij}_{xs} &=& - \textbf{F}^{ij}_{sx},                      \\
-    \textbf{G}^{ij}_{ys} &=& - \textbf{F}^{ij}_{sy},                      \\
-    \textbf{G}^{ij}_{zs} &=& - \textbf{F}^{ij}_{sz},                      \\
-    \textbf{G}^{ij}_{yx} &=& \textbf{F}^{ij}_{xy},                        \\
-    \textbf{G}^{ij}_{zy} &=& \textbf{F}^{ij}_{yz},                        \\
-    \textbf{G}^{ij}_{xz} &=& \textbf{F}^{ij}_{zx}.
-\end{eqnarray}
+$$
+
+$$
+    \textbf{e} _{xx} = 2 \cos(x) \textbf{e} _{sx}
+$$
+
+$$
+    \textbf{e} _{yy} = 2 \cos(y) \textbf{e} _{sy}
+$$
+
+$$
+    \textbf{e} _{zz} = 2 \cos(z) \textbf{e} _{sz}
+$$
+
+$$
+\textbf{e}_{xy} = \left( (\sin^2(x)-\cos^2(x)) \cos(y), (\sin^2(y)-\cos^2(y)) \cos(x), - 2 \cos(x) \cos(y) \cos(z) \right),
+$$
+
+$$\textbf{e}_{yz} =\left( - 2 \cos(x) \cos(y) \cos(z), (\sin^2(y)-\cos^2(y)) \cos(z),(\sin^2(z)-\cos^2(z)) \cos(y) \right)$$
+
+$$
+\textbf{e}_{zx} = \left( (\sin^2(x)-\cos^2(x)) \cos(z), - 2 \cos(x) \cos(y) \cos(z), (\sin^2(z)-\cos^2(z)) \cos(x) \right)
+$$
+
+我们可以推导如下表达式
+
+$$
+\textbf{G}^{ij} _{ss} = 0,                                          
+$$
+    
+$$\textbf{G}^{ij} _{xx} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi})\textbf{e} _{xx}$$
+    
+$$\textbf{G}^{ij} _{yy} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi})\textbf{e} _{yy}$$
+
+$$\textbf{G}^{ij} _{zz} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi})\textbf{e} _{zz}$$
+
+$$\textbf{G}^{ij} _{sx} = \frac{1}{r _{ij}} V _{sp\sigma} \textbf{e} _{sx}$$
+
+$$\textbf{G}^{ij} _{sy} = \frac{1}{r _{ij}} V _{sp\sigma} \textbf{e} _{sy}$$
+
+$$\textbf{G}^{ij} _{sz} = \frac{1}{r _{ij}} V _{sp\sigma} \textbf{e} _{sz}$$
+
+$$\textbf{G}^{ij} _{xy} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi}) \textbf{e} _{xy}$$
+
+$$\textbf{G}^{ij} _{yz} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi}) \textbf{e} _{yz}$$
+
+$$\textbf{G}^{ij} _{zx} = \frac{1}{r _{ij}} (V _{pp\sigma} - V _{pp\pi}) \textbf{e} _{zx}$$
+
+$$\textbf{G}^{ij} _{xs} = - \textbf{F}^{ij} _{sx}$$
+
+$$\textbf{G}^{ij} _{ys} = - \textbf{F}^{ij} _{sy}$$
+
+$$\textbf{G}^{ij} _{zs} = - \textbf{F}^{ij} _{sz}$$
+
+$$\textbf{G}^{ij} _{yx} = \textbf{F}^{ij} _{xy}$$
+
+$$\textbf{G}^{ij} _{zy} = \textbf{F}^{ij} _{yz}$$
+
+$$\textbf{G}^{ij} _{xz} = \textbf{F}^{ij} _{zx}$$
+
 
 
 ### 紧束缚分子动力学
