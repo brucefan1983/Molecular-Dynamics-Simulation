@@ -72,119 +72,44 @@ $$
 \langle v_{xi}(0) v_{xi}(t) \rangle.
 $$
 
-Then, one can define the mean VAC for any number of particles. VAC in the whole simulated system:
+可以定义整体体系的 VAC 的平均值：
+
 
 $$
-\text{VAC}_{xx}(t) = \frac{1}{N} \sum_{i=1}^{N} \langle v_{xi}(0) v_{xi}(t) \rangle.
+\text{VAC} _{xx}(t) = \frac{1}{N} \sum _{i=1}^{N} \langle v _{xi}(0) v _{xi}(t) \rangle.
 $$
 
-The order between the time-average (denoted by $\langle \rangle$) and the space-average (the average over the particles) can be changed:
+上式中的时间平均 ($\langle \rangle$) 和空间平均 (对粒子的平均) 是可以交换的：
 
 $$
-\boxed{
-\text{VAC}_{xx}(t) =
-\left\langle \frac{1}{N} \sum_{i=1}^{N}  v_{xi}(0) v_{xi}(t) \right\rangle
-}.
+\text{VAC} _{xx}(t) = \left\langle \frac{1}{N} \sum _{i=1}^{N}  v _{xi}(0) v _{xi}(t) \right\rangle.
 $$
 
-
-After obtaining the VAC, we can calculate the running diffusion constant $D_{xx}(t)$ as
-
-$$
-D_{xx}(t) = \int_0^{t} dt' ~\text{VAC}_{xx}(t')
-$$
-
-One can prove that this is equivalent to the time-derivative of the MSD, i.e., the Einstein formula:
+得到 VAC 之后，对关联时间积分就得到跑动扩散系数
 
 $$
-\boxed{
-D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t)
-},
+D _{xx}(t) = \int_0^{t} dt' ~\text{VAC} _{xx}(t')
 $$
 
-where the MSD $\Delta x^2(t)$ is defined as
+可以证明，格林-久保公式等价于爱因斯坦公式：
 
 $$
-\boxed{
+D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t),
+$$
+
+其中 $\Delta x^2(t)$ 是均方位移 （MSD），定义为
+
+$$
 \Delta x^2(t) =
 \left\langle
-\frac{1}{N} \sum_{i=1}^{N}  \left[ x_i(t) - x_i(0) \right]^2
+\frac{1}{N} \sum _{i=1}^{N}  \left[ x _i(t) - x _i(0) \right]^2
 \right\rangle =
-\frac{1}{N} \sum_{i=1}^{N}
-\left\langle
-  \left[ x_i(t) - x_i(0) \right]^2
-\right\rangle
-}.
+\frac{1}{N} \sum _{i=1}^{N}
+\left\langle \left[ x i(t) - x _i(0) \right]^2 \right\rangle.
 $$
 
-Here is the proof. Starting from the relation between position and velocity,
+证明留作习题。
 
-$$
-x_i(t) - x_i(0) = \int_{0}^{t}dt' v_{xi}(t'),
-$$
-
-we have
-
-$$
-[x_i(t) - x_i(0)]^2 =
-\int_{0}^{t} dt' v_{xi}(t') \int_{0}^{t}dt''  v_{xi}(t'')=
-\int_{0}^{t} dt' \int_{0}^{t}dt'' v_{xi}(t') v_{xi}(t'').
-$$
-
-Then, the MSD can be expressed as
-
-$$
-\Delta x^2(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{0}^{t} dt' \int_{0}^{t}dt''
-\left\langle v_{xi}(t') v_{xi}(t'') \right\rangle.
-$$
-
-Using Lebniz's rule, we have
-$$
-D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{0}^{t} dt'
-\left\langle v_{xi}(t) v_{xi}(t') \right\rangle,
-$$
-
-which can be rewritten as
-$$
-D_{xx}(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{0}^{t} dt'
-\left\langle v_{xi}(0) v_{xi}(t'-t) \right\rangle.
-$$
-
-Letting $\tau=t'-t$, we get (note that here $t$ is considered as a constant)
-
-$$
-D_{xx}(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{-t}^{0} d\tau
-\left\langle v_{xi}(0) v_{xi}(\tau) \right\rangle,
-$$
-
-which can be rewritten as
-
-$$
-D_{xx}(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{-t}^{0} d\tau
-\left\langle v_{xi}(-\tau) v_{xi}(0) \right\rangle.
-$$
-
-Letting $t'=-\tau$, we finally get
-
-$$
-D_{xx}(t) =
-\frac{1}{N}\sum_{i=1}^{N}
-\int_{0}^{t} dt'
-\left\langle v_{xi}(t') v_{xi}(0) \right\rangle
-=\int_0^t dt' ~\text{VAC}_{xx}(t').
-$$
-
-We thus have derived the Green-Kubo formula from the Einstein formula.
 
 In summary,
 - The derivative of half of the MSD gives the running diffusion coefficient.
@@ -388,5 +313,78 @@ U_i = \frac{1}{2}\sum_{j\neq i} U_{ij},
 \end{equation}
 这个公式就是~LAMMPS 中用的热流公式，但它只适用于两体势，不适用于多体势（many-body potentials）。对多体势的讨论，请参看我的论文。
 
+
+## 习题
+
+### 证明扩散系数的格林久保公式和爱因斯坦公式的等价性。
+
+Here is the proof. Starting from the relation between position and velocity,
+
+$$
+x_i(t) - x_i(0) = \int_{0}^{t}dt' v_{xi}(t'),
+$$
+
+we have
+
+$$
+[x_i(t) - x_i(0)]^2 =
+\int_{0}^{t} dt' v_{xi}(t') \int_{0}^{t}dt''  v_{xi}(t'')=
+\int_{0}^{t} dt' \int_{0}^{t}dt'' v_{xi}(t') v_{xi}(t'').
+$$
+
+Then, the MSD can be expressed as
+
+$$
+\Delta x^2(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{0}^{t} dt' \int_{0}^{t}dt''
+\left\langle v_{xi}(t') v_{xi}(t'') \right\rangle.
+$$
+
+Using Lebniz's rule, we have
+$$
+D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{0}^{t} dt'
+\left\langle v_{xi}(t) v_{xi}(t') \right\rangle,
+$$
+
+which can be rewritten as
+$$
+D_{xx}(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{0}^{t} dt'
+\left\langle v_{xi}(0) v_{xi}(t'-t) \right\rangle.
+$$
+
+Letting $\tau=t'-t$, we get (note that here $t$ is considered as a constant)
+
+$$
+D_{xx}(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{-t}^{0} d\tau
+\left\langle v_{xi}(0) v_{xi}(\tau) \right\rangle,
+$$
+
+which can be rewritten as
+
+$$
+D_{xx}(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{-t}^{0} d\tau
+\left\langle v_{xi}(-\tau) v_{xi}(0) \right\rangle.
+$$
+
+Letting $t'=-\tau$, we finally get
+
+$$
+D_{xx}(t) =
+\frac{1}{N}\sum_{i=1}^{N}
+\int_{0}^{t} dt'
+\left\langle v_{xi}(t') v_{xi}(0) \right\rangle
+=\int_0^t dt' ~\text{VAC}_{xx}(t').
+$$
+
+We thus have derived the Green-Kubo formula from the Einstein formula.
 
 
