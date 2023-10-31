@@ -18,20 +18,21 @@
 
 ### Berendsen控温算法
 
-Using the Berendsen thermostat, the integration algorithm in the $NVT$ ensemble only requires an extra scaling of all the velocity components. For the $NPT$ ensemble, the Berendsen barostat requires an extra scaling of positions and box lengths. The Berendsen thermostat and barosat are very suitable for equilibrating the system to a target temperature and pressure.
+在 Berendsen 控温算法中，用如下方式对原子速度进行变换：
 
-The velocities are scaled in the Berendsen thermostat in the following way:
-\begin{equation}
-\vec{v}_i^{\text{scaled}}
-= \vec{v}_i
-\sqrt{1 + \alpha_T \left(\frac{T_0}{T} - 1\right)}.
-\end{equation}
-Here, $\alpha_T$ is a dimensionless parameter, $T_0$ is the target temperature, and $T$ is the instant temperature calculated from the current velocities $\{ \vec{v}_i \}$. The parameter $\alpha_T$ should be positive and not larger than 1. When $\alpha_T=1$, the above formula reduces to the simple velocity-scaling formula:
-\begin{equation}
-\vec{v}_i^{\text{scaled}}
-= \vec{v}_i \sqrt{\frac{T_0}{T}}.
-\end{equation}
-A smaller $\alpha_T$ represents a weaker coupling between the system and the thermostat. Practically, any value of $\alpha_T$ in the range of $0.001 \sim 1$ can be used.
+$$
+\vec{v} _i^{\text{scaled}} = \vec{v} _i \sqrt{1 + \frac{\Delta t}{\tau _T}  \left(\frac{T_0}{T} - 1\right)}.
+$$
+
+此处, $\tau_T$ 是一个时间参数, $T_0$ 是目标温度,  $T$ 当前根据速速计算出来的瞬时温度。一般来说 $\tau_T$ 取 100 倍步长比较合适。
+
+如果 $\tau_T=\Delta t$, 那么上述公式变为简单的速度重标
+
+$$
+\vec{v} _i^{\text{scaled}} = \vec{v} _i \sqrt{\frac{T_0}{T}}.
+$$
+
+结合文献讲一讲 Berendsen 控温算法的优缺点。优点是编程实现简单、一般情况下很稳定，适合从非平衡态到平衡态过渡期间的模拟，缺点是该算法并不给出真正的正则系综，而且可能会出现所谓的“飞冰”现象。
 
 ### Nose-Hoover-chain控温算法
 
