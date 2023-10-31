@@ -267,11 +267,11 @@ $$
 另外一种情况是单独为每一个方向控压，不涉及剪切。如果一个方向是非周期的，则不参与控压。
 
 $$
-\mu_{xx}= 1-\frac{\beta_{xx} \Delta t}{3 \tau_p} (p^{\rm target}_{xx} - p^{\rm instant}_{xx}) \\
+\mu_{xx}= 1-\frac{\beta_{xx} \Delta t}{3 \tau_p} (p^{\rm target}_{xx} - p^{\rm instant} _{xx}) \\
 $$
 
 $$
-\mu_{yy}= 1-\frac{\beta_{yy} \Delta t}{3 \tau_p} (p^{\rm target}_{yy} - p^{\rm instant}_{yy}) \\
+\mu_{yy}= 1-\frac{\beta_{yy} \Delta t}{3 \tau_p} (p^{\rm target}_{yy} - p^{\rm instant} _{yy}) \\
 $$
 
 $$
