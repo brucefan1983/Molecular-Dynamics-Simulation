@@ -280,9 +280,9 @@ $$
 
 最后一种方式是最一般的6自由度控压，
 
-$
+$$
 \mu _{\alpha\beta}= 1-\frac{\beta _{\alpha\beta} \Delta t}{3 \tau _p} (p^{\rm target} _{\alpha\beta} - p^{\rm instant} _{\alpha\beta}).
-$
+$$
 
 $\beta_{\alpha\beta}$ 是等温压缩率，也就是弹性模量的倒数。  $\tau_p$ 是一个时间参数，通常取 1000个步长。
 
