@@ -209,52 +209,13 @@ Therefore, the effect of the operator $e^{iL_{T3}\Delta t/2}$ is to scale the mo
 Berendsen 控压算法中，体系的盒子矩阵和原子坐标都按照一个形变矩阵变换： 
 
 $$
-\left(
-\begin{array}{ccc}
-a_x^{\rm scaled} & b_x^{\rm scaled} & c_x^{\rm scaled} \\
-a_y^{\rm scaled} & b_y^{\rm scaled} & c_y^{\rm scaled} \\
-a_z^{\rm scaled} & b_z^{\rm scaled} & c_z^{\rm scaled} 
-\end{array}
-\right)
-=
-\left(
-\begin{array}{ccc}
-\mu_{xx} & \mu_{xy} & \mu_{xz} \\
-\mu_{yx} & \mu_{yy} & \mu_{yz} \\
-\mu_{zx} & \mu_{zy} & \mu_{zz} \\
-\end{array}
-\right)
-\left(
-\begin{array}{ccc}
-a_x & b_x & c_x \\
-a_y & b_y & c_y \\
-a_z & b_z & c_z 
-\end{array}
-\right)
+h _{\alpha\beta}^{\rm scaled} = \sum _{\gamma} \mu _{\alpha\gamma}  h _{\gamma\beta}
 $$
 
 $$
-\left( \begin{array}{c}
-x^{\rm scaled}_i \\
-y^{\rm scaled}_i \\
-z^{\rm scaled}_i
-\end{array} \right)
-=
-\left(
-\begin{array}{ccc}
-\mu_{xx} & \mu_{xy} & \mu_{xz} \\
-\mu_{yx} & \mu_{yy} & \mu_{yz} \\
-\mu_{zx} & \mu_{zy} & \mu_{zz} \\
-\end{array}
-\right)
-\left(
-\begin{array}{c}
-x_i \\
-y_i \\
-z_i
-\end{array}
-\right).
+r _{\alpha}^{\rm scaled} = \sum _{\gamma} \mu _{\alpha\gamma}  r _{\gamma}
 $$
+
 
 有时候我们会考虑一些特殊情况。如果认为体系是各向同性）的，通常让三个方向的盒子变化步调一致。此次的控压叫做静水压控压。
 
