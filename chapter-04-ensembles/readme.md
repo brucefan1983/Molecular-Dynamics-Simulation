@@ -6,13 +6,13 @@
 # Table of contents
 - [控温算法](#控温算法)
   - [Berendsen控温算法](#Berendsen控温算法)
-  - [Nose-Hoover-chain控温算法](#Nose-Hoover-chain控温算法)
   - [BDP控温算法](#BDP控温算法)
+  - [Nose-Hoover-chain控温算法](#Nose-Hoover-chain控温算法)
   - [郎之万控温算法](#郎之万控温算法)
 - [控压算法](#控压算法)
   - [Berendsen控压算法](#Berendsen控压算法)
   - [SCR控压算法](#SCR控压算法)
-
+  - [MTTK控压算法](#MTTK控压算法)
 
 ## 控温算法
 
@@ -186,3 +186,7 @@ Here, $\alpha_p$ is a parameter and $\vec{p}_0$ ($\vec{p}$) is the target (insta
 Only directions with periodic boundary conditions will be affected by the barostat.
 
 ### SCR控压算法
+
+### MTTK控压算法
+
+从 Andersen 到 Parrinello-Rahman， 到 MTTK.
