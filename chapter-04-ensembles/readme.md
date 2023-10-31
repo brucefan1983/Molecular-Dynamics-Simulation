@@ -204,7 +204,7 @@ Therefore, the effect of the operator $e^{iL_{T3}\Delta t/2}$ is to scale the mo
 使得体系在平衡之后具有确定的温度平均值和压强平均值。
 注意，我们不能说在 NPT 系综具有恒定的温度和压强，因为它们总是有涨落的。
 
-### Berendsen 控压算法
+### Berendsen控压算法
 
 Berendsen 控压算法中，体系的盒子矩阵和原子坐标都按照一个形变矩阵变换： 
 
