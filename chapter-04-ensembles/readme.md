@@ -206,95 +206,85 @@ Therefore, the effect of the operator $e^{iL_{T3}\Delta t/2}$ is to scale the mo
 
 ### Berendsen 控压算法
 
-The Berendsen barostat [Berendsen1984]_ is used with the Berendsen thermostat discussed above.
-The barostat scales the box and positions as follows:
+Berendsen 控压算法中，体系的盒子矩阵和原子坐标都按照一个形变矩阵变换： 
 
-.. math::
+$$
+\left(
+\begin{array}{ccc}
+a_x^{\rm scaled} & b_x^{\rm scaled} & c_x^{\rm scaled} \\
+a_y^{\rm scaled} & b_y^{\rm scaled} & c_y^{\rm scaled} \\
+a_z^{\rm scaled} & b_z^{\rm scaled} & c_z^{\rm scaled} 
+\end{array}
+\right)
+=
+\left(
+\begin{array}{ccc}
+\mu_{xx} & \mu_{xy} & \mu_{xz} \\
+\mu_{yx} & \mu_{yy} & \mu_{yz} \\
+\mu_{zx} & \mu_{zy} & \mu_{zz} \\
+\end{array}
+\right)
+\left(
+\begin{array}{ccc}
+a_x & b_x & c_x \\
+a_y & b_y & c_y \\
+a_z & b_z & c_z 
+\end{array}
+\right)
+$$
 
-   \left(
-   \begin{array}{ccc}
-   a_x^{\rm scaled} & b_x^{\rm scaled} & c_x^{\rm scaled} \\
-   a_y^{\rm scaled} & b_y^{\rm scaled} & c_y^{\rm scaled} \\
-   a_z^{\rm scaled} & b_z^{\rm scaled} & c_z^{\rm scaled} 
-   \end{array}
-   \right)
-   =
-   \left(
-   \begin{array}{ccc}
-   \mu_{xx} & \mu_{xy} & \mu_{xz} \\
-   \mu_{yx} & \mu_{yy} & \mu_{yz} \\
-   \mu_{zx} & \mu_{zy} & \mu_{zz} \\
-   \end{array}
-   \right)
-   \left(
-   \begin{array}{ccc}
-   a_x & b_x & c_x \\
-   a_y & b_y & c_y \\
-   a_z & b_z & c_z 
-   \end{array}
-   \right)
+$$
+\left( \begin{array}{c}
+x^{\rm scaled}_i \\
+y^{\rm scaled}_i \\
+z^{\rm scaled}_i
+\end{array} \right)
+=
+\left(
+\begin{array}{ccc}
+\mu_{xx} & \mu_{xy} & \mu_{xz} \\
+\mu_{yx} & \mu_{yy} & \mu_{yz} \\
+\mu_{zx} & \mu_{zy} & \mu_{zz} \\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x_i \\
+y_i \\
+z_i
+\end{array}
+\right).
+$$
 
-and
+有时候我们会考虑一些特殊情况。如果认为体系是各向同性）的，通常让三个方向的盒子变化步调一致。此次的控压叫做静水压控压。
 
-.. math::
+此时有
 
-   \left(
-   \begin{array}{c}
-   x^{\rm scaled}_i \\
-   y^{\rm scaled}_i \\
-   z^{\rm scaled}_i
-   \end{array}
-   \right)
-   =
-   \left(
-   \begin{array}{ccc}
-   \mu_{xx} & \mu_{xy} & \mu_{xz} \\
-   \mu_{yx} & \mu_{yy} & \mu_{yz} \\
-   \mu_{zx} & \mu_{zy} & \mu_{zz} \\
-   \end{array}
-   \right)
-   \left(
-   \begin{array}{c}
-   x_i \\
-   y_i \\
-   z_i
-   \end{array}
-   \right).
+$$
+\mu_{xx}=\mu_{yy}=\mu_{zz}= 1-\frac{\beta_{\rm hydro} \Delta t}{3 \tau_p} (p^{\rm target} _{\rm hydro} - p^{\rm instant} _{\rm hydro}).
+$$
 
-We consider the following three pressure-controlling conditions:
+另外一种情况是单独为每一个方向控压，不涉及剪切。如果一个方向是非周期的，则不参与控压。
 
-* *Condition 1*:
-  The simulation box is *orthogonal* and only the hydrostatic pressure (trace of the pressure tensor) is controlled.
-  The simulation box must be periodic in all three directions.
-  The scaling matrix only has nonzero diagonal components and the diagonal components can be written as:
+$$
+\mu_{xx}= 1-\frac{\beta_{xx} \Delta t}{3 \tau_p} (p^{\rm target}_{xx} - p^{\rm instant}_{xx}) \\
+$$
 
-  .. math::
+$$
+\mu_{yy}= 1-\frac{\beta_{yy} \Delta t}{3 \tau_p} (p^{\rm target}_{yy} - p^{\rm instant}_{yy}) \\
+$$
 
-     \mu_{xx}=\mu_{yy}=\mu_{zz}= 1-\frac{\beta_{\rm hydro} \Delta t}{3 \tau_p} (p^{\rm target}_{\rm hydro} - p^{\rm instant}_{\rm hydro}).
+$$
+\mu_{zz}= 1-\frac{\beta_{zz} \Delta t}{3 \tau_p} (p^{\rm target}_{zz} - p^{\rm instant} _{zz}).
+$$
 
-* *Condition 2*:
-  The simulation box is *orthogonal* and the three diagonal pressure components are controlled independently.
-  The simulation box can be periodic or non-periodic in any of the three directions.
-  Pressure is only controlled for periodic directions.
-  The diagonal components of the scaling matrix can be written as:
+最后一种方式是最一般的6自由度控压，
 
-  .. math::
+$
+\mu_{\alpha\beta}= 1-\frac{\beta_{\alpha\beta} \Delta t}{3 \tau_p} (p^{\rm target}_{\alpha\beta} - p^{\rm instant} _{\alpha\beta}).
+$
 
-     \mu_{xx}= 1-\frac{\beta_{xx} \Delta t}{3 \tau_p} (p^{\rm target}_{xx} - p^{\rm instant}_{xx}) \\
-     \mu_{yy}= 1-\frac{\beta_{yy} \Delta t}{3 \tau_p} (p^{\rm target}_{yy} - p^{\rm instant}_{yy}) \\
-     \mu_{zz}= 1-\frac{\beta_{zz} \Delta t}{3 \tau_p} (p^{\rm target}_{zz} - p^{\rm instant}_{zz}).
-
-* *Condition 3*:
-  The simulation box is *triclinic* and the 6 nonequivalent pressure components are controlled independently. The
-  simulation box must be periodic in all three directions.
-  The scaling matrix components are:
-
-  .. math::
-
-     \mu_{\alpha\beta}= 1-\frac{\beta_{\alpha\beta} \Delta t}{3 \tau_p} (p^{\rm target}_{\alpha\beta} - p^{\rm instant}_{\alpha\beta}).
-
-The parameter :math:`\beta_{\alpha\beta}` is the isothermal compressibility, which is the inverse of the elastic modulus.
-:math:`\Delta t` is the time step and :math:`\tau_p` is the pressure coupling time (relaxation time).
+$\beta_{\alpha\beta}$ 是等温压缩率，也就是弹性模量的倒数。  $\tau_p$ 是一个时间参数，通常取 1000个步长。
 
 ### SCR控压算法
 
