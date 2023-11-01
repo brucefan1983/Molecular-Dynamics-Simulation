@@ -194,6 +194,31 @@ $$
 #### 例子：计算水的振动态密度并讨论质量加权的意义
 
 ### 粘滞系数
+ 
+粘滞系数可以表达为压强自关联函数的积分。记 $\alpha\beta$ 方向的压强与体积的乘积为 $S_{\alpha\beta}$ ，可以定义如下格林-久保积分公式：
+
+$$
+\eta _{\alpha\beta}(t) = \int_0^t \langle S _{\alpha\beta}(0) S _{\alpha\beta}(t') \rangle dt'
+$$
+
+剪切粘滞系数为
+
+$$
+\eta _{\rm S}(t) =  \frac{\eta _{xy}(t) +  \eta _{yz}(t) + \eta _{zx}(t) }{3}
+$$
+
+longitudinal 粘滞系数为
+
+$$
+\eta _{\rm L}(t) =  \frac{\eta _{xx}(t) +  \eta _{yy}(t) + \eta _{zz}(t) }{3}
+$$
+
+Bulk 粘滞系数为
+
+$$
+\eta _{\rm B}(t) =  \eta _{\rm L}(t) - \frac{4}{3} \eta _{\rm S}(t)
+$$
+
 
 ### 热导率
 
