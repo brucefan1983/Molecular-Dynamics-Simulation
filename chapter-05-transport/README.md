@@ -310,17 +310,25 @@ $$
 \frac{dH(\{\vec{r}_i,\vec{p}_i\})}{dt} = \vec{J} _{\rm d} \cdot \vec{F} _{\rm e},
 $$
 
-%
-where $\vec{J}_{\rm d}=\vec{J}_{\rm d}(\{\vec{r}_i,\vec{p}_i\})$ is called the dissipative flux vecor. In terms of the dissipative flux, the nonequilibrium ensemble average $\langle \rangle_{\rm ne}$ of a general vecor physical quantity $\vec{A}(\{\vec{r}_i,\vec{p}_i\})$ at time $t$ after switching on the external driving force can be written as \cite{evans1990book,tuckerman2010book} ($k_{\rm B}T$ is the thermal energy)
-%
-\begin{align}
-\langle \vec{A}(t)\rangle_{\rm ne}=\langle \vec{A}(0)\rangle 
-+\left( \int_0^tdt'\frac{\langle \vec{A}(t')\otimes \vec{J}_{\rm d}(0)\rangle}{k_{\rm B}T} \right)
-\cdot \vec{F}_{\rm e}.
-\label{equation:A(t)}
-\end{align}
-%
-Here, $\langle \vec{A}(0)\rangle$ is the usual equilibrium ensemble average of $\vec{A}$ and $\langle \vec{A}(t')\otimes \vec{J}_{\rm d}(0)\rangle$ is the equilibrium time correlation function between $\vec{A}$ and $\vec{J}_{\rm d}$.
+
+$$
+\vec{J} _{\rm d}=\vec{J} _{\rm d}(\{\vec{r} _i,\vec{p} _i\})
+$$
+
+称为耗散通量（dissipative flux）。
+
+
+物理量 $\vec{A}$ 的非平衡系综平均  
+
+$$
+\langle \vec{A}(t)\rangle _{\rm ne} = \langle \vec{A}(0)\rangle +\left( \int _0^tdt'\frac{\langle \vec{A}(t')\otimes \vec{J} _{\rm d}(0)\rangle}{k _{\rm B}T} \right) \cdot \vec{F} _{\rm e}.
+$$
+
+$\langle \vec{A}(0)\rangle$ 是平衡系综的平均。 
+
+$\langle \vec{A}(t') \otimes \vec{J} _{\rm d}(0) \rangle$ 
+
+是物理量 $\vec{A}$ 和 $\vec{J}_{\rm d}$ 之间的时间关联函数。
 
 The central idea of the HNEMD method by Evans \cite{evans1982pla} is to set both $\vec{A}$ and $\vec{J}_{\rm d}$ in Eq. (\ref{equation:A(t)}) to the heat current operator $\vec{J}_{\rm q}$, giving (note that $\langle \vec{J}_{\rm q}(0)\rangle=0$)
 %
