@@ -235,13 +235,15 @@ $$
 
 ### 证明扩散系数的格林久保公式和爱因斯坦公式的等价性。
 
-Here is the proof. Starting from the relation between position and velocity,
+证明如下：
+
+我们从坐标与速度的关系出发：
 
 $$
 x_i(t) - x_i(0) = \int_{0}^{t}dt' v_{xi}(t'),
 $$
 
-we have
+可以得到：
 
 $$
 [x_i(t) - x_i(0)]^2 =
@@ -249,7 +251,7 @@ $$
 \int_{0}^{t} dt' \int_{0}^{t}dt'' v_{xi}(t') v_{xi}(t'').
 $$
 
-Then, the MSD can be expressed as
+那么，MSD可以表达为：
 
 $$
 \Delta x^2(t) =
@@ -258,7 +260,9 @@ $$
 \left\langle v_{xi}(t') v_{xi}(t'') \right\rangle.
 $$
 
-Using Lebniz's rule, we have
+利用求导的莱布尼茨规则，可得：
+
+
 $$
 D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t) =
 \frac{1}{N}\sum_{i=1}^{N}
@@ -266,7 +270,8 @@ D_{xx}(t) = \frac{1}{2} \frac{d}{dt} \Delta x^2(t) =
 \left\langle v_{xi}(t) v_{xi}(t') \right\rangle,
 $$
 
-which can be rewritten as
+上式也可以写为：
+
 $$
 D_{xx}(t) =
 \frac{1}{N}\sum_{i=1}^{N}
@@ -274,7 +279,7 @@ D_{xx}(t) =
 \left\langle v_{xi}(0) v_{xi}(t'-t) \right\rangle.
 $$
 
-Letting $\tau=t'-t$, we get (note that here $t$ is considered as a constant)
+令 $\tau=t'-t$ 可得
 
 $$
 D_{xx}(t) =
@@ -283,7 +288,7 @@ D_{xx}(t) =
 \left\langle v_{xi}(0) v_{xi}(\tau) \right\rangle,
 $$
 
-which can be rewritten as
+进一步推到可得
 
 $$
 D_{xx}(t) =
@@ -292,7 +297,7 @@ D_{xx}(t) =
 \left\langle v_{xi}(-\tau) v_{xi}(0) \right\rangle.
 $$
 
-Letting $t'=-\tau$, we finally get
+再令 $t'=-\tau$ 可得
 
 $$
 D_{xx}(t) =
@@ -302,6 +307,6 @@ D_{xx}(t) =
 =\int_0^t dt' ~\text{VAC}_{xx}(t').
 $$
 
-We thus have derived the Green-Kubo formula from the Einstein formula.
+这就从基于MSD的爱因斯坦公式推导出了基于VAC的格林-久保公式。所以，它们是等价的。
 
 
