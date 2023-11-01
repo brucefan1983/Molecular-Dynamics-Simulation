@@ -372,15 +372,7 @@ $$
 \frac{dH(\{\vec{r}_i,\vec{p}_i\})}{dt} = \vec{J} _{\rm q} \cdot \vec{F} _{\rm e},
 $$
 
-再根据第三种推导的热流公式
-
-$$
-\vec{J} _{\rm q} 
-= \sum_i \frac{\vec{p} _i}{m_ i} E _i
-+ \sum_ {i,j\neq i} \frac{\vec{p}_ i}{m_ i} \cdot \left(\frac{\partial U_ j}{\partial \vec{r}_ {ji}} \otimes \vec{r}_ {ij} \right),
-$$
-
-可以推导如下公式：
+再根据第三章推导的热流公式，可得：
 
 $$
 \mathbf{D}_ i \cdot \vec{F}_ {\rm e} = E_i \vec{F}_ {\rm e} +  \sum_ {j \neq i} \left(\frac{\partial U_j}{\partial \vec{r}_ {ji}} \otimes \vec{r}_ {ij}\right) \cdot \vec{F}_ {\rm e}.    
