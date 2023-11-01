@@ -360,42 +360,34 @@ $$
 \frac{\langle J^{\mu} _{\rm q}(t)\rangle _{\rm ne}}{TV} = \sum _{\nu} \kappa^{\mu\nu}(t) F _{\rm e}^{\nu}.    
 $$
 
+取 $\mathbf{C}=0$ ，可将哈密顿的时间导数写为
 
-To complete the derivation of the generalized HNEMD method, we need to determine the equations of motion, which are the foundation of the MD simulations. They are closely related to the heat current $\vec{J}_{\rm q}$ when the dissipative flux $\vec{J}_{\rm d}$ defined in Eq. (\ref{equation:dHdt}) is chosen to be the same as $\vec{J}_{\rm q}$. We discuss the heat current and the equations of motion next.
+$$
+\frac{dH}{dt} =\sum_ i \frac{\vec{p}_ i}{m_ i} \cdot \left(\mathbf{D}_ i\cdot \vec{F}_ {\rm e} \right).    
+$$
 
-The general heat current formulae in MD simulations have been discussed in Ref. \cite{fan2015prb} in great detail. For a general many-body potential with the total potential energy $U=\sum_i U_i(\{\vec{r}_{ij}\}_{j\neq i})$, the heat current can be written as \cite{fan2015prb}
-%
-\begin{equation}
-\label{equation:J_many-body}
-\vec{J}_{\rm q} = \vec{J}_{\rm q}^{\rm kin}  + \vec{J}_{\rm q}^{\rm pot} 
-= \sum_i \frac{\vec{p}_i}{m_i} E_i
-+ \sum_{i,j\neq i} \frac{\vec{p}_i}{m_i} \cdot \left(\frac{\partial U_j}{\partial \vec{r}_{ji}} \otimes \vec{r}_{ij} \right),
-\end{equation}
-%
-where $E_i=\vec{p}_i^2/2m_i+U_i$ is the total energy of particle $i$ and $U_i$ is the potential energy. The position difference is defined as $\vec{r}_{ij} \equiv \vec{r}_j - \vec{r}_i$. The equations of motion are constructed to make the dissipative flux $\vec{J}_{\rm d}$ identical to the heat current $\vec{J}_{\rm q}$. Evans chose the term $\mathbf{C}_i(\{\vec{r}_i,\vec{p}_i\})=0$. Then, the time derivative of the Hamiltonian (\ref{equation:H}) can be derived from the equations of motion (\ref{equation:eom-r}) and (\ref{equation:eom-p}) to be
-%
-\begin{equation}
-\frac{dH}{dt} =\sum_i \frac{\vec{p}_i}{m_i} \cdot \left(\mathbf{D}_i\cdot \vec{F}_{\rm e} \right).    
-\end{equation}
-%
-Comparing this with Eqs. (\ref{equation:dHdt}) and (\ref{equation:J_many-body}) and setting $\vec{J}_{\rm d}=\vec{J}_{\rm q}$, we have
-%
-\begin{equation}
-\label{equation:driving_force}
-\mathbf{D}_i \cdot \vec{F}_{\rm e} = E_i \vec{F}_{\rm e} +  \sum_{j \neq i} \left(\frac{\partial U_j}{\partial \vec{r}_{ji}} \otimes \vec{r}_{ij}\right) \cdot \vec{F}_{\rm e}.    
-\end{equation}
-%
-This driving force will be added to the total force for particle $i$. Because the summation $\sum_i \mathbf{D}_i \cdot \vec{F}_{\rm e} \neq 0$, the total momentum of the system will not be conserved under this driving force. To restore momentum conservation, one needs to subtract the mean force of the total system from the force on each particle. Formally, this is equivalent to modifying the driving force to 
-%
-\begin{align}
-\label{equation:DF-many-body}
-\mathbf{D}_i \cdot \vec{F}_{\rm e}
-&= E_i\vec{F}_{\rm e} -\frac{1}{N}\sum_jE_j \vec{F}_{\rm e} \nonumber \\
-&+ \sum_{j \neq i} \left(\frac{\partial U_j}{\partial \vec{r}_{ji}} \otimes \vec{r}_{ij}\right) \cdot \vec{F}_{\rm e} \nonumber \\
-&- \frac{1}{N}\sum_j \sum_{k \neq j} \left(\frac{\partial U_k}{\partial \vec{r}_{kj}} \otimes \vec{r}_{jk}\right) \cdot \vec{F}_{\rm e}.
-\end{align}
-%
-One can easily verify that for two-body potentials, Eq. (\ref{equation:DF-many-body}) reduces to that by Evans \cite{evans1982pla}. However, we emphasize that the heat current formula for two-body potentials does not apply to many-body potentials \cite{fan2015prb}. One also needs to apply a thermostat to keep the temperature of the system at the target. To this end, we use the Nos\'{e}-Hoover chain thermostat \cite{tuckerman2010book} here. 
+将 $\vec{J} _{\rm d}$ 取为热流 $\vec{J} _{\rm q}$ 后，我们有
+
+$$
+\frac{dH(\{\vec{r}_i,\vec{p}_i\})}{dt} = \vec{J} _{\rm q} \cdot \vec{F} _{\rm e},
+$$
+
+再根据第三种推导的热流公式
+
+$$
+\vec{J} _{\rm q} 
+= \sum_i \frac{\vec{p} _i}{m_ i} E _i
++ \sum_ {i,j\neq i} \frac{\vec{p}_ i}{m_ i} \cdot \left(\frac{\partial U_ j}{\partial \vec{r}_ {ji}} \otimes \vec{r}_ {ij} \right),
+$$
+
+可以推导如下公式：
+
+$$
+\mathbf{D}_ i \cdot \vec{F}_ {\rm e} = E_i \vec{F}_ {\rm e} +  \sum_ {j \neq i} \left(\frac{\partial U_j}{\partial \vec{r}_ {ji}} \otimes \vec{r}_ {ij}\right) \cdot \vec{F}_ {\rm e}.    
+$$
+
+这就是作用在每个原子上的驱动力。
+
 
 ## 非齐性非平衡分子动力学模拟
 
