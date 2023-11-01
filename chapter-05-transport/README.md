@@ -113,33 +113,39 @@ $$
 
 证明留作习题。
 
+#### 振动态密度
 
-In summary,
-- The derivative of half of the MSD gives the running diffusion coefficient.
-- The integral of the VAC gives the running diffusion coefficient.
-- One can obtain the MSD by integrating the VAC twice (numerically).
-
-It is interesting that the same VAC can be used to compute the PDOS, as first demonstrated by Dickey and Paskin. The PDOS is simply the Fourier transform of the normalized VAC:
+VAC 还可以用来计算振动态密度 （VDOS）[cite Dickey and Paskin]。VDOS 是归一化的 VAC 的傅里叶变换：
 
 $$
 \rho_x(\omega) = \int_{-\infty}^{\infty} dt e^{i\omega t}~\text{VAC}_{xx}(t).
 $$
 
-Here, $\text{VAC}_{xx}(t)$ should be understood as the normalized function $\text{VAC}_{xx}(t)/\text{VAC}_{xx}(0)$. Although it looks simple, it does not mean that one can get the correct PDOS by a naive fast Fourier transform (FFT) routine. Actually, this computation is very cheap and we do not need FFT at all. What we need is a discrete cosine transform. To see this, we first note that, by definition, $\text{VAC}_{xx}(-t) = \text{VAC}_{xx}(t)$. Using this, we have
+$\text{VAC} _{xx}(t)$ 应该被理解为 
 
 $$
-\rho_x(\omega) = \int_{-\infty}^{\infty} dt \cos (\omega t)~\text{VAC}_{xx}(t).
+\text{VAC} _{xx}(t)/\text{VAC} _{xx}(0)
 $$
 
-Because we only have the VAC data at the $N_c$ discrete time points, the above integral is approximated by the following discrete cosine transform:
+利用自关联函数的对称性：
+
+$$\text{VAC} _{xx}(-t) = \text{VAC} _{xx}(t)$$ 
+
+我们有
 
 $$
-\rho_x(\omega) \approx \sum_{n_c=0}^{N_c-1}
-(2-\delta_{n_c0}) \Delta \tau
-\cos (\omega n_c \Delta \tau)~\text{VAC}_{xx}(n_c \Delta \tau).
+\rho _x(\omega) = \int _{-\infty}^{\infty} dt \cos (\omega t)~\text{VAC} _{xx}(t).
 $$
 
-Here, $\delta_{n_c0}$ is the Kronecker $\delta$ function and the factor $(2-\delta_{n_c0})$ accounts for the fact that there is only one point for $t = 0$ and there are two equivalent points for $t \neq 0$. Last, we note that a window function is needed to suppress the unwanted Gibbs oscillation in the calculated PDOS. In GPUMD, the Hann window $H(n_c)$ is applied:
+因为我们只能在  $N_c$ 个离散的时间点计算 VAC，所以上述积分可以写成如下离散余弦变换：
+
+$$
+\rho_x(\omega) \approx \sum_{n_c=0}^{N_c-1} (2-\delta_{n_c0}) \Delta \tau \cos (\omega n_c \Delta \tau)~\text{VAC}_{xx}(n_c \Delta \tau).
+$$
+
+$\delta_{n_c0}$ 是克罗内克符号， 而因子 $(2-\delta_{n_c0})$ 表示时刻  $t = 0$ 只有一个关联数据，而其它时刻都有两个等价的数据。
+
+为了消除吉布斯振荡，得到较为光滑的曲线，一般需要施加一个所谓的窗口函数。我们可以施加如下Hann窗口函数： 
 
 $$
 \rho_x(\omega) \approx \sum_{n_c=0}^{N_c-1}
@@ -152,29 +158,24 @@ H(n_c) = \frac{1}{2}
 \left[ \cos \left( \frac{\pi n_c}{N_c} \right) + 1 \right].
 $$
 
-Here are some comments on the normalization of the PDOS. In the literature, one usually uses an arbitrary unit for the PDOS, but it actually has a dimension of [time], and an appropriate unit for it can be 1/THz or ps. The normalization of $\rho_x(\omega)$ can be determined by the inverse Fourier transform:
+根据逆傅里叶变换：
 
 $$
-\text{VAC}_{xx}(t)
- = \int_{-\infty}^{\infty} \frac{d\omega}{2\pi} e^{-i\omega t}\rho_x(\omega).
+\text{VAC} _{xx}(t) = \int _{-\infty}^{\infty} \frac{d\omega}{2\pi} e^{-i\omega t}\rho_x(\omega).
 $$
 
-As we have normalized the VAC, we have
+我们有
 
 $$
-1 = \text{VAC}_{xx}(0)
- = \int_{-\infty}^{\infty}
- \frac{d\omega}{2\pi}\rho_x(\omega).
+1 = \text{VAC} _{xx}(0) = \int _{-\infty}^{\infty} \frac{d\omega}{2\pi}\rho_x(\omega).
 $$
 
-Because $\rho_x(-\omega)=\rho_x(\omega)$, we have
+因为 $\rho_x(-\omega)=\rho_x(\omega)$ 所以有
 
 $$
 \int_{0}^{\infty}
  \frac{d\omega}{2\pi}\rho_x(\omega) = \frac{1}{2}.
 $$
-
-The calculated PDOS should meet this normalization condition (approximately).
 
 ### 粘滞系数
 
