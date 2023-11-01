@@ -198,7 +198,7 @@ $$
 粘滞系数可以表达为压强自关联函数的积分。记 $\alpha\beta$ 方向的压强与体积的乘积为 $S_{\alpha\beta}$ ，可以定义如下格林-久保积分公式：
 
 $$
-\eta _{\alpha\beta}(t) = \int_0^t \langle S _{\alpha\beta}(0) S _{\alpha\beta}(t') \rangle dt'
+\eta _{\alpha\beta}(t) = \frac{1}{k _{\rm B} TV} \int_0^t \langle S _{\alpha\beta}(0) S _{\alpha\beta}(t') \rangle dt'
 $$
 
 剪切粘滞系数为
@@ -222,10 +222,10 @@ $$
 
 ### 热导率
 
-热传导现象的宏观规律由傅里叶定律描述。假设输运方向沿着一个特定方向（假设是~$x$ 方向）的情形。傅里叶定律是说热流密度~(heat flux) $J$，即单位时间穿过单位面积的热量，在数量上正比于温度梯度 $\frac{dT}{dx}$：
+热传导现象的宏观规律由傅里叶定律描述。傅里叶定律是说热流密度（热通量） $\vec{J}/V$，即单位时间穿过单位面积的热量，正比于温度梯度 $\vec{\nabla} T$：
 
 $$
-J = - \kappa \frac{dT}{dx}.
+J _{\mu} = - \frac{\nu} \kappa _{\mu\nu} \frac{\partial T}{\partial r^{\nu}}.
 $$
 
 
@@ -234,7 +234,7 @@ $$
 对热导率的计算有如下格林-久保公式：
 
 $$
-\kappa_{\mu\nu}(t) = \frac{V}{k_B T^2} \int_0^{t} dt' C_{\mu\nu} (t').
+\kappa_{\mu\nu}(t) = \frac{1}{k_B T^2 V} \int_0^{t} dt' C_{\mu\nu} (t').
 $$
 
 其中， $\kappa_{\mu\nu}(t)$ ($\mu, \nu = x, y, z$) 是热导率张量， $t'$ 是关联时间， $k_B$ 是 Boltzmann 常数,  $T$ 是温度,  $V$ 是体积， $C_{\mu\nu}(t)$ 是热流自关联函数（heat current autocorrelation function，常简称为 HCACF）。上式计算的跑动热导率（running thermal conductivity）。
