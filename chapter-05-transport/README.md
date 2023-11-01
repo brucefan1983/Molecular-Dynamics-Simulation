@@ -225,7 +225,7 @@ $$
 热传导现象的宏观规律由傅里叶定律描述。傅里叶定律是说热流密度（热通量） $\vec{J}/V$，即单位时间穿过单位面积的热量，正比于温度梯度 $\vec{\nabla} T$：
 
 $$
-J _{\mu} = - \frac{\nu} \kappa _{\mu\nu} \frac{\partial T}{\partial r^{\nu}}.
+J _{\mu} = - \sum _{\nu} \kappa _{\mu\nu} \frac{\partial T}{\partial r^{\nu}}.
 $$
 
 
