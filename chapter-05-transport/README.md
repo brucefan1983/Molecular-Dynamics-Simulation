@@ -4,13 +4,12 @@
 
 # Table of contents
 - [时间关联函数](#时间关联函数)
-- [线性响应理论](#线性响应理论)
+- [平衡态分子动力学模拟](#平衡态分子动力学模拟)
   - [扩散系数](#扩散系数)
   - [粘滞系数](#粘滞系数)
   - [热导率](#热导率)
-- [非平衡分子动力学模拟](#非平衡分子动力学模拟)
-  - [齐性非平衡分子动力学模拟](#齐性非平衡分子动力学模拟)
-  - [非齐性非平衡分子动力学模拟](#非齐性非平衡分子动力学模拟)
+- [齐性非平衡分子动力学模拟](#齐性非平衡分子动力学模拟)
+- [非齐性非平衡分子动力学模拟](#非齐性非平衡分子动力学模拟)
 - [习题](#习题)
 
 
@@ -258,9 +257,8 @@ $$
 * 如果要研究准两维系统（如薄膜或者两维材料），则在垂直于薄膜的方向用自由边界条件，在平行于薄膜的方向用周期边界条件。而且，此时垂直方向热导率的计算结果的意义比较特殊（我们后面会讨论）。
 * 如果要研究的是准一维系统（如纳米线或者纳米管），则在垂直于线或者管的方向都要用自由边界条件，在平行于线或者管的方向用周期边界条件。
 
-## 非平衡分子动力学模拟
 
-### 齐性非平衡分子动力学模拟
+## 齐性非平衡分子动力学模拟
 
 Consider a system of $N$ particles described by the general Hamiltonian
 
@@ -400,7 +398,7 @@ This driving force will be added to the total force for particle $i$. Because th
 %
 One can easily verify that for two-body potentials, Eq. (\ref{equation:DF-many-body}) reduces to that by Evans \cite{evans1982pla}. However, we emphasize that the heat current formula for two-body potentials does not apply to many-body potentials \cite{fan2015prb}. One also needs to apply a thermostat to keep the temperature of the system at the target. To this end, we use the Nos\'{e}-Hoover chain thermostat \cite{tuckerman2010book} here. 
 
-### 非齐性非平衡分子动力学模拟
+## 非齐性非平衡分子动力学模拟
 
 讲热导率模拟的 NEMD 方法
 
