@@ -328,47 +328,38 @@ $\langle \vec{A}(0)\rangle$ 是平衡系综的平均。
 
 $\langle \vec{A}(t') \otimes \vec{J} _{\rm d}(0) \rangle$ 
 
-是物理量 $\vec{A}$ 和 $\vec{J}_{\rm d}$ 之间的时间关联函数。
+是物理量 $\vec{A}$ 和 $\vec{J} _{\rm d}$ 之间的时间关联函数。
 
-The central idea of the HNEMD method by Evans \cite{evans1982pla} is to set both $\vec{A}$ and $\vec{J}_{\rm d}$ in Eq. (\ref{equation:A(t)}) to the heat current operator $\vec{J}_{\rm q}$, giving (note that $\langle \vec{J}_{\rm q}(0)\rangle=0$)
-%
-\begin{equation}
-\langle \vec{J}_{\rm q}(t)\rangle_{\rm ne}
-=
+如果将  $\vec{A}$ 和 $\vec{J} _{\rm d}$ 都取为热流 $\vec{J} _{\rm q}$ ， 那么我们有（注意到热流的平衡态系综平均是零）
+
+$$
+\langle \vec{J} _{\rm q}(t)\rangle _{\rm ne} =
 \left(
-\frac{1}{k_{\rm B}T}\int_0^tdt'\langle \vec{J}_{\rm q}(t')\otimes \vec{J}_{\rm q}(0)\rangle
+\frac{1}{k _{\rm B}T}\int_0^tdt'\langle \vec{J} _{\rm q}(t')\otimes \vec{J} _{\rm q}(0)\rangle
 \right)
-\cdot \vec{F}_{\rm e}.
-\label{equation:J(t)}
-\end{equation}
-%
-where $\langle \vec{J}_{\rm q}(t')\otimes \vec{J}_{\rm q}(0)\rangle$ is the equilibrium heat current autocorrelation function. Setting $\vec{J}_{\rm d}$ to $\vec{J}_{\rm q}$ fixes the equations of motion, as we will discuss soon. According to the Green-Kubo relation \cite{green1954jcp,kubo1957jpsj,mcquarrie2000book}, the quantity in the parentheses is related to the (running) thermal conductivity tensor, 
-%
-\begin{equation}
-   \kappa^{\mu\nu}(t) = \frac{1}{k_{\rm B}T^2V} \int_0^t dt'\langle J_{\rm q}^{\mu}(t') J_{\rm q}^{\nu}(0)\rangle,
-\end{equation}
-%
-$V$ being the system volume. Therefore, Eq. (\ref{equation:J(t)}) can be interpreted as 
-%
-\begin{equation}
-\frac{\langle J^{\mu}_{\rm q}(t)\rangle_{\rm ne}}{TV} = \sum_{\nu} \kappa^{\mu\nu}(t) F_{\rm e}^{\nu}.    
-\end{equation}
-%
-Working with principal axes \cite{nye1957book}, the thermal conductivity tensor is diagonal and the thermal conductivity $\kappa$ in a given direction is given by 
-%
-\begin{equation}
-\label{equation:kappa}
-\kappa(t) = \frac{\langle J_{\rm q}(t)\rangle_{\rm ne}}{TV F_{\rm e}}.    
-\end{equation}
-%
-The running thermal conductivity $\kappa(t)$ calculated using this equation will show large fluctuations and it is not easy to judge when $\kappa(t)$ has converged. One can circumvent this difficulty by redefining $\kappa(t)$ as the following cumulative average:
-%
-\begin{equation}
-\label{equation:kappa_prime}
-\kappa(t)= \frac{1}{t} \int_0^{t} ds \frac{\langle J_{\rm q}(s)\rangle_{\rm ne}}{TV F_{\rm e}}.
-\end{equation}
-%
-A similar definition has been implicitly used in previous works \cite{mandadapu2009jcp,dongre2017msmse} on the HNEMD method. 
+\cdot \vec{F} _{\rm e}.
+$$
+
+其中
+
+$$
+\langle \vec{J} _{\rm q}(t') \otimes \vec{J} _{\rm q}(0)\rangle
+$$ 
+
+是平衡态的热流自关联函数。
+
+根据热导率的格林-久保公式
+
+$$
+  \kappa^{\mu\nu}(t) = \frac{1}{k _{\rm B}T^2V} \int_0^t dt'\langle J _{\rm q}^{\mu}(t') J _{\rm q}^{\nu}(0)\rangle,
+$$
+
+可得
+
+$$
+\frac{\langle J^{\mu} _{\rm q}(t)\rangle _{\rm ne}}{TV} = \sum _{\nu} \kappa^{\mu\nu}(t) F _{\rm e}^{\nu}.    
+$$
+
 
 To complete the derivation of the generalized HNEMD method, we need to determine the equations of motion, which are the foundation of the MD simulations. They are closely related to the heat current $\vec{J}_{\rm q}$ when the dissipative flux $\vec{J}_{\rm d}$ defined in Eq. (\ref{equation:dHdt}) is chosen to be the same as $\vec{J}_{\rm q}$. We discuss the heat current and the equations of motion next.
 
