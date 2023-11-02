@@ -4,19 +4,16 @@
 本章介绍几个常用的控温与控压算法。
 
 # Table of contents
-- [控温算法](#控温算法)
-  - [Berendsen控温算法](#Berendsen控温算法)
-  - [BDP控温算法](#BDP控温算法)
-  - [Nose-Hoover-chain控温算法](#Nose-Hoover-chain控温算法)
-  - [郎之万控温算法](#郎之万控温算法)
-- [控压算法](#控压算法)
-  - [Berendsen控压算法](#Berendsen控压算法)
-  - [SCR控压算法](#SCR控压算法)
-  - [MTTK控压算法](#MTTK控压算法)
+- [Berendsen控温算法](#Berendsen控温算法)
+- [BDP控温算法](#BDP控温算法)
+- [Nose-Hoover-chain控温算法](#Nose-Hoover-chain控温算法)
+- [郎之万控温算法](#郎之万控温算法)
+- [Berendsen控压算法](#Berendsen控压算法)
+- [SCR控压算法](#SCR控压算法)
+- [MTTK控压算法](#MTTK控压算法)
 
-## 控温算法
 
-### Berendsen控温算法
+## Berendsen控温算法
 
 在 Berendsen 控温算法中，用如下方式对原子速度进行变换：
 
@@ -34,7 +31,9 @@ $$
 
 结合文献讲一讲 Berendsen 控温算法的优缺点。优点是编程实现简单、一般情况下很稳定，适合从非平衡态到平衡态过渡期间的模拟，缺点是该算法并不给出真正的正则系综，而且可能会出现所谓的“飞冰”现象。
 
-### Nose-Hoover-chain 控温算法
+## BDP控温算法
+
+## Nose-Hoover-chain控温算法
 
 运动方程：
 
@@ -193,18 +192,14 @@ $$
 
 Therefore, the effect of the operator $e^{iL_{T3}\Delta t/2}$ is to scale the momenta of all the particles in the system by a uniform factor $e^{-(\pi_0/Q_0)\Delta t/2}$. Although this operator appears in the factorization of $e^{iL_{T}\Delta t/2}$, its does not affect the thermostat variables. Therefore, when applying the operator $e^{iL_{T}\Delta t/2}$, we only need to update the variables related to the thermostats and save this factor for later use when we update the variables for the particles. In this way, the update for the thermostat variables and that for the particle variables are separated.
 
-### BDP控温算法
 
-### 郎之万控温算法
+## 郎之万控温算法
 
-## 控压算法
-
+## Berendsen控压算法
 
 控压算法是实现 NPT系综的关键。在 NPT 系综中，我们同时对温度和压强进行控制，
 使得体系在平衡之后具有确定的温度平均值和压强平均值。
 注意，我们不能说在 NPT 系综具有恒定的温度和压强，因为它们总是有涨落的。
-
-### Berendsen控压算法
 
 Berendsen 控压算法中，体系的盒子矩阵和原子坐标都按照一个形变矩阵变换： 
 
@@ -247,7 +242,7 @@ $$
 
 $\beta_{\alpha\beta}$ 是等温压缩率，也就是弹性模量的倒数。  $\tau_p$ 是一个时间参数，通常取 1000个步长。
 
-### SCR控压算法
+## SCR控压算法
 
 Berendsen 方法并不给出真正的 NPT 系综。2020年，Bernetti 和 Bussi 对Berendsen系综进行了推广，提出了随机盒子重标 （stochastic cell rescaling ）控压算法，详见：[Mattia Bernetti and Giovanni Bussi, Pressure control using stochastic cell rescalin](https://doi.org/10.1063/5.0020514)。该控压算法于 BDP 控温算法结合可以实现 NPT 系综。
 
@@ -267,6 +262,6 @@ $$
 
 $D_{\rm couple}$ 是一个和盒子“耦合”有关的自由度。
 
-### MTTK控压算法
+## MTTK控压算法
 
 从 Andersen 到 Parrinello-Rahman， 到 MTTK.
