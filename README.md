@@ -14,6 +14,7 @@ To be published in the spring of 2024.
 - [chapter 10: Barostat](chapter-10-barostat/readme.md)
 - [chapter 11: Static proeprties](chapter-11-static_properties/readme.md)
 - [chapter 12: Transport from EMD](chapter-12-transport_EMD/readme.md)
+- [chapter 13: Transport from HNEMD](chapter-13-transport_HNEMD/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
