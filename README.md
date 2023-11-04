@@ -7,6 +7,7 @@
 - [第3章：经典统计力学](chapter-01-classical_statistical_mechanics/readme.md)
 - [第4章：简单的分子动力学模拟程序](chapter-04-simple_md/readme.md)
 - [第5章：线性标度的分子动力学模拟程序](chapter-05-linear_md/readme.md)
+- [第6章：GPU加速的分子动力学模拟程序](chapter-05-gpumd/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
