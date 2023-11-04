@@ -13,7 +13,7 @@ To be published in the spring of 2024.
 - [chapter 9: Thermostat](chapter-09-thermostat/readme.md)
 - [chapter 10: Barostat](chapter-10-barostat/readme.md)
 - [chapter 11: Static proeprties](chapter-11-static_properties/readme.md)
-- [chapter 12: Transport from EMD](chapter-11-transport_EMD/readme.md)
+- [chapter 12: Transport from EMD](chapter-12-transport_EMD/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
