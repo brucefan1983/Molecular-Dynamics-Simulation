@@ -2,16 +2,17 @@
 
 这是一项正在进行的工作。本书预计2024年上半年出版。本仓库将公开相关源代码与范例。
 
-- [第1章：经典力学](chapter-01-classical_mechanics/readme.md)
-- [第2章：热力学](chapter-01-thermodynamics/readme.md)
-- [第3章：经典统计力学](chapter-01-classical_statistical_mechanics/readme.md)
-- [第4章：简单的分子动力学模拟程序](chapter-04-simple_md/readme.md)
-- [第5章：线性标度的分子动力学模拟程序](chapter-05-linear_md/readme.md)
-- [第6章：GPU加速的分子动力学模拟程序](chapter-06-gpumd/readme.md)
-- [第7章：经验势函数](chapter-07-empirical_potentials/readme.md)
-- [第8章：机器学习势函数](chapter-08-machine_learned_potentials/readme.md)
-- [第9章：控温算法](chapter-09-thermostat/readme.md)
-- [第10章：控压算法](chapter-10-barostat/readme.md)
+- [chapter 1: Classical mechanics](chapter-01-classical_mechanics/readme.md)
+- [chapter 2: Thermodynamics](chapter-01-thermodynamics/readme.md)
+- [chapter 3: Classical statistical mechanics](chapter-01-classical_statistical_mechanics/readme.md)
+- [chapter 4: A simple MD program](chapter-04-simple_md/readme.md)
+- [chapter 5: A linear-scaling MD program](chapter-05-linear_md/readme.md)
+- [chapter 6: GPU-accelerated MD program](chapter-06-gpumd/readme.md)
+- [chapter 7: Emprical many-body potentials](chapter-07-empirical_potentials/readme.md)
+- [chapter 8: Machine-learned potentials](chapter-08-machine_learned_potentials/readme.md)
+- [chapter 9: Thermostat](chapter-09-thermostat/readme.md)
+- [chapter 10: Barostat](chapter-10-barostat/readme.md)
+- [chapter 11: Static proeprties](chapter-11-static_properties/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
