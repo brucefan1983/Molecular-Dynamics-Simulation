@@ -11,6 +11,7 @@
 - [第7章：经验势函数](chapter-07-empirical_potentials/readme.md)
 - [第8章：机器学习势函数](chapter-08-machine_learned_potentials/readme.md)
 - [第9章：控温算法](chapter-09-thermostat/readme.md)
+- [第10章：控压算法](chapter-10-barostat/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
