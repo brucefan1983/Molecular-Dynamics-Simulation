@@ -21,6 +21,7 @@ To be published in the spring of 2024.
 - [chapter 17: Free energy calculations](chapter-17-free_energy/readme.md)
 - [chapter 18: PIMD](chapter-18-pimd/readme.md)
 - [chapter 19: TBMD](chapter-19-tbmd/readme.md)
+- [chapter 20: LSQT](chapter-20-lsqt/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
