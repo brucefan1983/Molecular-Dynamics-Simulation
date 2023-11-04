@@ -17,6 +17,7 @@ To be published in the spring of 2024.
 - [chapter 13: Static proeprties](chapter-13-static_properties/readme.md)
 - [chapter 14: Transport from EMD](chapter-14-transport_EMD/readme.md)
 - [chapter 15: Transport from HNEMD](chapter-15-transport_HNEMD/readme.md)
+- [chapter 16: Transport from NEMD](chapter-16-transport_NEMD/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
