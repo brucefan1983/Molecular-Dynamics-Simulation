@@ -8,6 +8,8 @@
 - [第4章：简单的分子动力学模拟程序](chapter-04-simple_md/readme.md)
 - [第5章：线性标度的分子动力学模拟程序](chapter-05-linear_md/readme.md)
 - [第6章：GPU加速的分子动力学模拟程序](chapter-06-gpumd/readme.md)
+- [第7章：经验势函数](chapter-07-empirical_potentials/readme.md)
+- [第8章：机器学习势函数](chapter-08-machine_learned_potentials/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
