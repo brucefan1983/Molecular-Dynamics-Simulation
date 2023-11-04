@@ -1,6 +1,6 @@
-# 《分子动力学模拟: 原理、算法、编程、应用》书稿与源代码
+# Source code and examples for my on-going book《分子动力学模拟: 原理、算法、编程、应用》 (Molecular dynamics simulation: pricinples, algorithms, codes, and applications)
 
-这是一项正在进行的工作。本书预计2024年上半年出版。本仓库将公开相关源代码与范例。
+To be published in the spring of 2024.
 
 - [chapter 1: Classical mechanics](chapter-01-classical_mechanics/readme.md)
 - [chapter 2: Thermodynamics](chapter-01-thermodynamics/readme.md)
@@ -13,6 +13,7 @@
 - [chapter 9: Thermostat](chapter-09-thermostat/readme.md)
 - [chapter 10: Barostat](chapter-10-barostat/readme.md)
 - [chapter 11: Static proeprties](chapter-11-static_properties/readme.md)
+- [chapter 12: Transport from EMD](chapter-11-transport_EMD/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
