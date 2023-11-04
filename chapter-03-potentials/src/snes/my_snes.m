@@ -3,7 +3,7 @@ population_size = 4 + floor(3 * log(number_of_variables));
 best_fitness = ones(maximal_generation, 1);
 elite = zeros(maximal_generation, number_of_variables);
 mu = 2*rand(1, number_of_variables)-1; % initial mean
-sigma = ones(1, number_of_variables); % initial variance
+sigma = ones(1, number_of_variables)/10; % initial variance
 learn_rates = [1, (3 + log(number_of_variables))/(5 * sqrt(number_of_variables)) / 2];
 utility = max(0, log(population_size/2+1)-log(1:population_size));
 utility = utility / sum(utility) - 1/population_size; % sum of utility is zero
@@ -18,7 +18,7 @@ for generation = 1 : maximal_generation
     elite(generation, :) = population(1, :);
     mu = mu + learn_rates(1) * sigma .* (utility * s); % update mean
     sigma = sigma .* exp(learn_rates(2) * (utility * (s .* s - 1))); % update variance
-    if mod(generation, 100) == 0
+    if mod(generation, 10) == 0
         disp(['Generation = ', num2str(generation), ', best fitness = ', num2str(cost(1))]);
     end
 end

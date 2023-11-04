@@ -3,7 +3,7 @@ clear; %close all;
 % Call my_snes to evolve
 N_neurons = 10;
 dim = N_neurons*(N_neurons+4)+1;
-[best_fitness, elite] = my_snes(dim, 10000);
+[best_fitness, elite] = my_snes(dim, 1000);
 num_generations = length(best_fitness);
 
 % Evolution of the best fitness:
