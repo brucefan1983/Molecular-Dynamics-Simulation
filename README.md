@@ -18,6 +18,7 @@ To be published in the spring of 2024.
 - [chapter 14: Transport from EMD](chapter-14-transport_EMD/readme.md)
 - [chapter 15: Transport from HNEMD](chapter-15-transport_HNEMD/readme.md)
 - [chapter 16: Transport from NEMD](chapter-16-transport_NEMD/readme.md)
+- [chapter 17: Free energy calculations](chapter-17-free_energy/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
