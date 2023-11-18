@@ -1,4 +1,4 @@
-# Source code and examples for my on-going book《分子动力学模拟: 原理、算法、编程、应用》 (Molecular dynamics simulation: pricinples, algorithms, codes, and applications)
+# Source code and examples for my on-going book《分子动力学模拟》 (Molecular dynamics simulation)
 
 To be published in the spring of 2024.
 
