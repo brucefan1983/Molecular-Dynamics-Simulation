@@ -234,6 +234,8 @@ void readRun(int& numSteps, double& timeStep, double& temperature)
     }
   }
 
+  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
+
   input.close();
 }
 
@@ -305,8 +307,6 @@ int main(int argc, char** argv)
   double temperature;
   double timeStep;
   readRun(numSteps, timeStep, temperature);
-
-  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
 
   Atom atom;
   readXyz(atom);
