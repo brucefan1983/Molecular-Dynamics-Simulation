@@ -32,4 +32,4 @@ ax2.plot(r, F(r, rc), color=color)
 ax2.set_ylabel(r"Force ($\epsilon$/$\sigma$)", color=color)
 ax2.set_ylim(-25, 25)
 
-plt.savefig("LJ.pdf")
+plt.savefig("fig-chapter-6-lj.pdf")
