@@ -30,7 +30,6 @@ struct Atom {
   std::vector<double> x0, y0, z0, x, y, z, fx, fy, fz, b, bp;
 };
 
-
 void applyMicOne(const double length, const double halfLength, double& x12)
 {
   if (x12 < -halfLength)
@@ -162,7 +161,7 @@ void find_b_and_bp(Atom& atom)
   const double minus_half_over_n = -0.5 / n;
   for (int n1 = 0; n1 < atom.number; ++n1) {
     for (int i1 = 0; i1 < atom.NN[n1]; ++i1) {
-      int n2 = atom.NL[n1 * atom.MN + i1]; // we only know n2 != n1
+      int n2 = atom.NL[n1 * atom.MN + i1];
       double x12, y12, z12;
       x12 = atom.x[n2] - atom.x[n1];
       y12 = atom.y[n2] - atom.y[n1];
@@ -207,9 +206,6 @@ void find_force_tersoff(Atom& atom)
   for (int n1 = 0; n1 < atom.number; ++n1) {
     for (int i1 = 0; i1 < atom.NN[n1]; ++i1) {
       int n2 = atom.NL[n1 * atom.MN + i1];
-      if (n2 < n1) {
-        continue;
-      }
       double x12, y12, z12;
       x12 = atom.x[n2] - atom.x[n1];
       y12 = atom.y[n2] - atom.y[n1];
@@ -229,12 +225,11 @@ void find_force_tersoff(Atom& atom)
 
       double b12, bp12;
 
-      double f12[3] = {0.0, 0.0, 0.0}; // d_U_i_d_r_ij
-      double f21[3] = {0.0, 0.0, 0.0}; // d_U_j_d_r_ji
-      double p12 = 0.0;                // U_ij
-      double p21 = 0.0;                // U_ji
+      double f12[3] = {0.0, 0.0, 0.0}; // d_Ui_d_rij
+      double p12 = 0.0;                // Uij
 
       b12 = atom.b[n1 * atom.MN + i1];
+      bp12 = atom.bp[n1 * atom.MN + i1];
       double factor1 = -b12 * fa12 + fr12;
       double factor2 = -b12 * fap12 + frp12;
       double factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
@@ -242,24 +237,7 @@ void find_force_tersoff(Atom& atom)
       f12[1] += y12 * factor3 * 0.5;
       f12[2] += z12 * factor3 * 0.5;
       p12 += factor1 * fc12;
-
-      int offset = 0;
-      for (int k = 0; k < atom.NN[n2]; ++k) {
-        if (atom.NL[n2 * atom.MN + k] == n1) {
-          offset = k;
-          break;
-        }
-      }
-      b12 = atom.b[n2 * atom.MN + offset];
-      factor1 = -b12 * fa12 + fr12;
-      factor2 = -b12 * fap12 + frp12;
-      factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
-      f21[0] += -x12 * factor3 * 0.5;
-      f21[1] += -y12 * factor3 * 0.5;
-      f21[2] += -z12 * factor3 * 0.5;
-      p21 += factor1 * fc12;
-
-      bp12 = atom.bp[n1 * atom.MN + i1];
+      
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
         int n3 = atom.NL[n1 * atom.MN + i2];
         if (n3 == n2) {
@@ -291,48 +269,13 @@ void find_force_tersoff(Atom& atom)
         f12[2] += (z12 * factor123b + factor123a * cos_z) * 0.5;
       }
 
-      bp12 = atom.bp[n2 * atom.MN + offset];
-      for (int i2 = 0; i2 < atom.NN[n2]; ++i2) {
-        int n3 = atom.NL[n2 * atom.MN + i2];
-        if (n3 == n1) {
-          continue;
-        }
-        double x23, y23, z23;
-        x23 = atom.x[n3] - atom.x[n2];
-        y23 = atom.y[n3] - atom.y[n2];
-        z23 = atom.z[n3] - atom.z[n2];
-        applyMic(atom.box, x23, y23, z23);
-
-        double d23 = sqrt(x23 * x23 + y23 * y23 + z23 * z23);
-        double fc23, fa23;
-        find_fc(d23, fc23);
-        find_fa(d23, fa23);
-        double bp13 = atom.bp[n2 * atom.MN + i2];
-
-        double cos213 = -(x12 * x23 + y12 * y23 + z12 * z23) / (d12 * d23);
-        double g213, gp213;
-        find_g_and_gp(cos213, g213, gp213);
-        double cos_x = x23 / (d12 * d23) + x12 * cos213 / (d12 * d12);
-        double cos_y = y23 / (d12 * d23) + y12 * cos213 / (d12 * d12);
-        double cos_z = z23 / (d12 * d23) + z12 * cos213 / (d12 * d12);
-        double factor213a =
-          (-bp12 * fc12 * fa12 * fc23 - bp13 * fc23 * fa23 * fc12) * gp213;
-        double factor213b = -bp13 * fc23 * fa23 * fcp12 * g213 * d12inv;
-        f21[0] += (-x12 * factor213b + factor213a * cos_x) * 0.5;
-        f21[1] += (-y12 * factor213b + factor213a * cos_y) * 0.5;
-        f21[2] += (-z12 * factor213b + factor213a * cos_z) * 0.5;
-      }
-
-      double fx12 = f12[0] - f21[0];
-      double fy12 = f12[1] - f21[1];
-      double fz12 = f12[2] - f21[2];
-      atom.pe += (p12 + p21) * 0.5;
-      atom.fx[n1] += fx12;
-      atom.fy[n1] += fy12;
-      atom.fz[n1] += fz12;
-      atom.fx[n2] -= fx12;
-      atom.fy[n2] -= fy12;
-      atom.fz[n2] -= fz12;
+      atom.pe += p12 * 0.5;
+      atom.fx[n1] += f12[0];
+      atom.fy[n1] += f12[1];
+      atom.fz[n1] += f12[2];
+      atom.fx[n2] -= f12[0];
+      atom.fy[n2] -= f12[1];
+      atom.fz[n2] -= f12[2];
     }
   }
 }
@@ -383,6 +326,7 @@ void createXyz(Atom& atom)
   }
 
   std::ofstream ofile("model.xyz");
+  ofile << std::fixed << std::setprecision(16);
   ofile << atom.number << std::endl;
   ofile << "Lattice=\"" << atom.box[0] << " 0 0 0 " << atom.box[1] << " 0 0 0 " << atom.box[2] << "\" ";
   ofile << "Properties=species:S:1:pos:R:3" << std::endl;
