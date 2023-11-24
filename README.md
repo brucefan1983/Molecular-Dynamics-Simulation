@@ -15,12 +15,9 @@ To be published in the spring of 2024.
 - [chapter 11: Barostat](chapter-11-barostat/readme.md)
 - [chapter 12: Static proeprties](chapter-12-static_properties/readme.md)
 - [chapter 13: Transport from EMD](chapter-13-transport_EMD/readme.md)
-- [chapter 14: Transport from HNEMD](chapter-14-transport_HNEMD/readme.md)
-- [chapter 15: Transport from NEMD](chapter-15-transport_NEMD/readme.md)
-- [chapter 16: Free energy calculations](chapter-16-free_energy/readme.md)
-- [chapter 17: PIMD](chapter-17-pimd/readme.md)
-- [chapter 18: TBMD](chapter-18-tbmd/readme.md)
-- [chapter 19: LSQT](chapter-19-lsqt/readme.md)
+- [chapter 14: NEMD](chapter-14-NEMD/readme.md)
+- [chapter 15: Free energy calculations](chapter-15-free_energy/readme.md)
+- [chapter 16: PIMD](chapter-16-pimd/readme.md)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
