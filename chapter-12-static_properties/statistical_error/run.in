@@ -1,0 +1,11 @@
+potential   Si_Tersoff_1989.txt
+velocity    1000
+
+time_step   2
+
+ensemble    nvt_bdp 1000 1000 100
+run         100000
+
+ensemble    nvt_bdp 1000 1000 100
+dump_thermo 100
+run         1000000
