@@ -2,7 +2,7 @@
 
 To be published in the spring of 2024.
 
-- [chapter 1: Classical mechanics](chapter-01-classical_physics/readme.md)
+- [chapter 1: Classical physics](chapter-01-classical_physics/readme.md)
 - [chapter 2: A simple MD program](chapter-02-simple_md/readme.md)
 - [chapter 3: A linear-scaling MD program](chapter-03-linear_md/readme.md)
 - [chapter 4: Emprical many-body potentials](chapter-04-empirical_potentials/readme.md)
