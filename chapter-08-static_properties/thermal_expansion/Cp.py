@@ -21,7 +21,7 @@ Cp_err=np.std(Cp,axis=1)/np.sqrt(K)
     
 plt.figure(figsize=(6, 6))
 
-plt.errorbar(np.arange(2,num_T)*50,Cp_ave/3,yerr=Cp_err,linewidth=3)
+plt.errorbar(np.arange(2,num_T)*50,Cp_ave,yerr=Cp_err,linewidth=3)
 plt.xlabel('Temperature (K)', fontsize=15)
 plt.ylabel('Cp ($k_B$/atom)', fontsize=15)
 #plt.ylim((0,3.2))
