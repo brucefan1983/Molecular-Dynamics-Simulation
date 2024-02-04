@@ -1,10 +1,9 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ md1.cpp -O3 -o md1
+    g++ simpleMD.cpp -O3 -o simpleMD
 Run:
-    path/to/md1.out # Linux
-    path\to\md1.exe # Windows
+    path/to/simpleMD
 Inputs:
     xyz.in and run.in
 ------------------------------------------------------------------------------*/
