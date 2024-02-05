@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------80
+/*--------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
     g++ simpleMD.cpp -O3 -o simpleMD
@@ -6,7 +6,7 @@ Run:
     path/to/simpleMD
 Inputs:
     xyz.in and run.in
-------------------------------------------------------------------------------*/
+----------------------------------------------------------*/
 
 #include <cmath>    // sqrt() function
 #include <ctime>    // for timing
@@ -18,9 +18,11 @@ Inputs:
 #include <string>  // string
 #include <vector>  // vector
 
-const int Ns = 100;             // output frequency
-const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
-const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
+const int Ns = 100; // output frequency
+const double K_B =
+  8.617343e-5; // Boltzmann's constant in natural unit
+const double TIME_UNIT_CONVERSION =
+  1.018051e+1; // from natural unit to fs
 
 struct Atom {
   int number;
@@ -33,7 +35,8 @@ double findKineticEnergy(const Atom& atom)
 {
   double kineticEnergy = 0.0;
   for (int n = 0; n < atom.number; ++n) {
-    double v2 = atom.vx[n] * atom.vx[n] + atom.vy[n] * atom.vy[n] +
+    double v2 = atom.vx[n] * atom.vx[n] +
+                atom.vy[n] * atom.vy[n] +
                 atom.vz[n] * atom.vz[n];
     kineticEnergy += atom.mass[n] * v2;
   }
@@ -42,8 +45,8 @@ double findKineticEnergy(const Atom& atom)
 
 void scaleVelocity(const double T0, Atom& atom)
 {
-  const double temperature =
-    findKineticEnergy(atom) * 2.0 / (3.0 * K_B * atom.number);
+  const double temperature = findKineticEnergy(atom) * 2.0 /
+                             (3.0 * K_B * atom.number);
   double scaleFactor = sqrt(T0 / temperature);
   for (int n = 0; n < atom.number; ++n) {
     atom.vx[n] *= scaleFactor;
@@ -79,7 +82,8 @@ void initializeVelocity(const double T0, Atom& atom)
   scaleVelocity(T0, atom);
 }
 
-void applyMicOne(const double length, const double halfLength, double& x12)
+void applyMicOne(
+  const double length, const double halfLength, double& x12)
 {
   if (x12 < -halfLength)
     x12 += length;
@@ -87,7 +91,11 @@ void applyMicOne(const double length, const double halfLength, double& x12)
     x12 -= length;
 }
 
-void applyMic(const double box[6], double& x12, double& y12, double& z12)
+void applyMic(
+  const double box[6],
+  double& x12,
+  double& y12,
+  double& z12)
 {
   applyMicOne(box[0], box[3], x12);
   applyMicOne(box[1], box[4], y12);
@@ -140,7 +148,8 @@ void findForce(Atom& atom)
   }
 }
 
-void integrate(const bool isStepOne, const double timeStep, Atom& atom)
+void integrate(
+  const bool isStepOne, const double timeStep, Atom& atom)
 {
   const double timeStepHalf = timeStep * 0.5;
   for (int n = 0; n < atom.number; ++n) {
@@ -176,7 +185,8 @@ int getInt(std::string& token)
   try {
     value = std::stoi(token);
   } catch (const std::exception& e) {
-    std::cout << "Standard exception:" << e.what() << std::endl;
+    std::cout << "Standard exception:" << e.what()
+              << std::endl;
     exit(1);
   }
   return value;
@@ -188,13 +198,15 @@ double getDouble(std::string& token)
   try {
     value = std::stod(token);
   } catch (const std::exception& e) {
-    std::cout << "Standard exception:" << e.what() << std::endl;
+    std::cout << "Standard exception:" << e.what()
+              << std::endl;
     exit(1);
   }
   return value;
 }
 
-void readRun(int& numSteps, double& timeStep, double& temperature)
+void readRun(
+  int& numSteps, double& timeStep, double& temperature)
 {
   std::ifstream input("run.in");
   if (!input.is_open()) {
@@ -211,7 +223,8 @@ void readRun(int& numSteps, double& timeStep, double& temperature)
           std::cout << "timeStep should >= 0." << std::endl;
           exit(1);
         }
-        std::cout << "timeStep = " << timeStep << " fs." << std::endl;
+        std::cout << "timeStep = " << timeStep << " fs."
+                  << std::endl;
       } else if (tokens[0] == "run") {
         numSteps = getInt(tokens[1]);
         if (numSteps < 1) {
@@ -225,15 +238,18 @@ void readRun(int& numSteps, double& timeStep, double& temperature)
           std::cout << "temperature >= 0." << std::endl;
           exit(1);
         }
-        std::cout << "temperature = " << temperature << " K." << std::endl;
+        std::cout << "temperature = " << temperature
+                  << " K." << std::endl;
       } else if (tokens[0][0] != '#') {
-        std::cout << tokens[0] << " is not a valid keyword." << std::endl;
+        std::cout << tokens[0] << " is not a valid keyword."
+                  << std::endl;
         exit(1);
       }
     }
   }
 
-  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
+  timeStep /=
+    TIME_UNIT_CONVERSION; // from fs to natural unit
 
   input.close();
 }
@@ -250,11 +266,14 @@ void readXyz(Atom& atom)
 
   // line 1
   if (tokens.size() != 1) {
-    std::cout << "The first line of xyz.in should have one item." << std::endl;
+    std::cout
+      << "The first line of xyz.in should have one item."
+      << std::endl;
     exit(1);
   }
   atom.number = getInt(tokens[0]);
-  std::cout << "Number of atoms = " << atom.number << std::endl;
+  std::cout << "Number of atoms = " << atom.number
+            << std::endl;
 
   // allocate memory
   atom.mass.resize(atom.number, 0.0);
@@ -271,7 +290,9 @@ void readXyz(Atom& atom)
   // line 2
   tokens = getTokens(input);
   if (tokens.size() != 3) {
-    std::cout << "The second line of xyz.in should have 3 items." << std::endl;
+    std::cout
+      << "The second line of xyz.in should have 3 items."
+      << std::endl;
     exit(1);
   }
   std::cout << "box length = ";
@@ -286,7 +307,8 @@ void readXyz(Atom& atom)
   for (int n = 0; n < atom.number; ++n) {
     tokens = getTokens(input);
     if (tokens.size() != 5) {
-      std::cout << "The 3rd line and later of xyz.in should have 5 items."
+      std::cout << "The 3rd line and later of xyz.in "
+                   "should have 5 items."
                 << std::endl;
       exit(1);
     }
@@ -321,14 +343,18 @@ int main(int argc, char** argv)
     integrate(false, timeStep, atom); // step 3 in the book
     if (step % Ns == 0) {
       const double kineticEnergy = findKineticEnergy(atom);
-      const double T = kineticEnergy / (1.5 * K_B * atom.number);
-      ofile << T << " " << kineticEnergy << " " << atom.pe << std::endl;
+      const double T =
+        kineticEnergy / (1.5 * K_B * atom.number);
+      ofile << T << " " << kineticEnergy << " " << atom.pe
+            << std::endl;
     }
   }
   ofile.close();
   const clock_t tStop = clock();
-  const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
-  std::cout << "Time used = " << tElapsed << " s" << std::endl;
+  const float tElapsed =
+    float(tStop - tStart) / CLOCKS_PER_SEC;
+  std::cout << "Time used = " << tElapsed << " s"
+            << std::endl;
 
   return 0;
 }
