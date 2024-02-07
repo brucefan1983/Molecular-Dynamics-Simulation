@@ -148,6 +148,24 @@ void findForce(Atom& atom)
   }
 }
 
+void applyPbcOne(const double length, double& x)
+{
+  if (x < 0.0) {
+    x += length;
+  } else if (x > length) {
+    x -= length;
+  }
+}
+
+void applyPbc(Atom& atom)
+{
+  for (int n = 0; n < atom.number; ++n) {
+    applyPbcOne(atom.box[0], atom.x[n]);
+    applyPbcOne(atom.box[1], atom.y[n]);
+    applyPbcOne(atom.box[2], atom.z[n]);
+  }
+}
+
 void integrate(
   const bool isStepOne, const double timeStep, Atom& atom)
 {
@@ -338,6 +356,7 @@ int main(int argc, char** argv)
   ofile << std::fixed << std::setprecision(16);
 
   for (int step = 0; step < numSteps; ++step) {
+    applyPbc(atom);
     integrate(true, timeStep, atom);  // step 1 in the book
     findForce(atom);                  // step 2 in the book
     integrate(false, timeStep, atom); // step 3 in the book
