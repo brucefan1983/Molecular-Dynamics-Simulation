@@ -1,10 +1,9 @@
 /*----------------------------------------------------------------------------80
     Copyright 2022 Zheyong Fan
 Compile:
-    g++ md2.cpp -O3 -o md2
+    g++ linearMD.cpp -O3 -o linearMD
 Run:
-    path/to/md2.out # Linux
-    path\to\md2.exe # Windows
+    path/to/linearMD
 Inputs:
     xyz.in and run.in
 ------------------------------------------------------------------------------*/
@@ -19,9 +18,11 @@ Inputs:
 #include <string>  // string
 #include <vector>  // vector
 
-const int Ns = 100;             // output frequency
-const double K_B = 8.617343e-5; // Boltzmann's constant in natural unit
-const double TIME_UNIT_CONVERSION = 1.018051e+1; // from natural unit to fs
+const int Ns = 100; // output frequency
+const double K_B =
+  8.617343e-5; // Boltzmann's constant in natural unit
+const double TIME_UNIT_CONVERSION =
+  1.018051e+1; // from natural unit to fs
 
 struct Atom {
   int number;
@@ -32,14 +33,16 @@ struct Atom {
   double box[18];
   double pe;
   std::vector<int> NN, NL;
-  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz, fx, fy, fz;
+  std::vector<double> mass, x0, y0, z0, x, y, z, vx, vy, vz,
+    fx, fy, fz;
 };
 
 double findKineticEnergy(const Atom& atom)
 {
   double kineticEnergy = 0.0;
   for (int n = 0; n < atom.number; ++n) {
-    double v2 = atom.vx[n] * atom.vx[n] + atom.vy[n] * atom.vy[n] +
+    double v2 = atom.vx[n] * atom.vx[n] +
+                atom.vy[n] * atom.vy[n] +
                 atom.vz[n] * atom.vz[n];
     kineticEnergy += atom.mass[n] * v2;
   }
@@ -48,8 +51,8 @@ double findKineticEnergy(const Atom& atom)
 
 void scaleVelocity(const double T0, Atom& atom)
 {
-  const double temperature =
-    findKineticEnergy(atom) * 2.0 / (3.0 * K_B * atom.number);
+  const double temperature = findKineticEnergy(atom) * 2.0 /
+                             (3.0 * K_B * atom.number);
   double scaleFactor = sqrt(T0 / temperature);
   for (int n = 0; n < atom.number; ++n) {
     atom.vx[n] *= scaleFactor;
@@ -93,9 +96,12 @@ float getArea(const double* a, const double* b)
 void getThickness(const Atom& atom, double* thickness)
 {
   double volume = abs(getDet(atom.box));
-  const double a[3] = {atom.box[0], atom.box[3], atom.box[6]};
-  const double b[3] = {atom.box[1], atom.box[4], atom.box[7]};
-  const double c[3] = {atom.box[2], atom.box[5], atom.box[8]};
+  const double a[3] = {
+    atom.box[0], atom.box[3], atom.box[6]};
+  const double b[3] = {
+    atom.box[1], atom.box[4], atom.box[7]};
+  const double c[3] = {
+    atom.box[2], atom.box[5], atom.box[8]};
   thickness[0] = volume / getArea(b, c);
   thickness[1] = volume / getArea(c, a);
   thickness[2] = volume / getArea(a, b);
@@ -136,11 +142,15 @@ void applyMicOne(double& x12)
     x12 -= 1.0;
 }
 
-void applyMic(const double* box, double& x12, double& y12, double& z12)
+void applyMic(
+  const double* box, double& x12, double& y12, double& z12)
 {
-  double sx12 = box[9] * x12 + box[10] * y12 + box[11] * z12;
-  double sy12 = box[12] * x12 + box[13] * y12 + box[14] * z12;
-  double sz12 = box[15] * x12 + box[16] * y12 + box[17] * z12;
+  double sx12 =
+    box[9] * x12 + box[10] * y12 + box[11] * z12;
+  double sy12 =
+    box[12] * x12 + box[13] * y12 + box[14] * z12;
+  double sz12 =
+    box[15] * x12 + box[16] * y12 + box[17] * z12;
   applyMicOne(sx12);
   applyMicOne(sy12);
   applyMicOne(sz12);
@@ -176,18 +186,24 @@ void applyPbcOne(double& sx)
 void applyPbc(Atom& atom)
 {
   for (int n = 0; n < atom.number; ++n) {
-    double sx = atom.box[9] * atom.x[n] + atom.box[10] * atom.y[n] +
+    double sx = atom.box[9] * atom.x[n] +
+                atom.box[10] * atom.y[n] +
                 atom.box[11] * atom.z[n];
-    double sy = atom.box[12] * atom.x[n] + atom.box[13] * atom.y[n] +
+    double sy = atom.box[12] * atom.x[n] +
+                atom.box[13] * atom.y[n] +
                 atom.box[14] * atom.z[n];
-    double sz = atom.box[15] * atom.x[n] + atom.box[16] * atom.y[n] +
+    double sz = atom.box[15] * atom.x[n] +
+                atom.box[16] * atom.y[n] +
                 atom.box[17] * atom.z[n];
     applyPbcOne(sx);
     applyPbcOne(sy);
     applyPbcOne(sz);
-    atom.x[n] = atom.box[0] * sx + atom.box[1] * sy + atom.box[2] * sz;
-    atom.y[n] = atom.box[3] * sx + atom.box[4] * sy + atom.box[5] * sz;
-    atom.z[n] = atom.box[6] * sx + atom.box[7] * sy + atom.box[8] * sz;
+    atom.x[n] = atom.box[0] * sx + atom.box[1] * sy +
+                atom.box[2] * sz;
+    atom.y[n] = atom.box[3] * sx + atom.box[4] * sy +
+                atom.box[5] * sz;
+    atom.z[n] = atom.box[6] * sx + atom.box[7] * sy +
+                atom.box[8] * sz;
   }
 }
 
@@ -202,7 +218,8 @@ void updateXyz0(Atom& atom)
 
 void findNeighborON2(Atom& atom)
 {
-  const double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
+  const double cutoffSquare =
+    atom.cutoffNeighbor * atom.cutoffNeighbor;
   std::fill(atom.NN.begin(), atom.NN.end(), 0);
 
   for (int i = 0; i < atom.number - 1; ++i) {
@@ -214,12 +231,14 @@ void findNeighborON2(Atom& atom)
       double yij = atom.y[j] - y1;
       double zij = atom.z[j] - z1;
       applyMic(atom.box, xij, yij, zij);
-      const double distanceSquare = xij * xij + yij * yij + zij * zij;
+      const double distanceSquare =
+        xij * xij + yij * yij + zij * zij;
       if (distanceSquare < cutoffSquare) {
         atom.NL[i * atom.MN + atom.NN[i]++] = j;
         if (atom.NN[i] > atom.MN) {
-          std::cout << "Error: number of neighbors for atom " << i
-                    << " exceeds " << atom.MN << std::endl;
+          std::cout
+            << "Error: number of neighbors for atom " << i
+            << " exceeds " << atom.MN << std::endl;
           exit(1);
         }
       }
@@ -246,13 +265,15 @@ void findCell(
     if (cell[d] >= numCells[d])
       cell[d] -= numCells[d];
   }
-  cell[3] = cell[0] + numCells[0] * (cell[1] + numCells[1] * cell[2]);
+  cell[3] = cell[0] +
+            numCells[0] * (cell[1] + numCells[1] * cell[2]);
 }
 
 void findNeighborON1(Atom& atom)
 {
   const double cutoffInverse = 1.0 / atom.cutoffNeighbor;
-  double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
+  double cutoffSquare =
+    atom.cutoffNeighbor * atom.cutoffNeighbor;
   double thickness[3];
   getThickness(atom, thickness);
 
@@ -270,12 +291,15 @@ void findNeighborON1(Atom& atom)
 
   for (int n = 0; n < atom.number; ++n) {
     const double r[3] = {atom.x[n], atom.y[n], atom.z[n]};
-    findCell(atom.box, thickness, r, cutoffInverse, numCells, cell);
+    findCell(
+      atom.box, thickness, r, cutoffInverse, numCells,
+      cell);
     ++cellCount[cell[3]];
   }
 
   for (int i = 1; i < numCells[3]; ++i) {
-    cellCountSum[i] = cellCountSum[i - 1] + cellCount[i - 1];
+    cellCountSum[i] =
+      cellCountSum[i - 1] + cellCount[i - 1];
   }
 
   std::fill(cellCount.begin(), cellCount.end(), 0);
@@ -284,20 +308,28 @@ void findNeighborON1(Atom& atom)
 
   for (int n = 0; n < atom.number; ++n) {
     const double r[3] = {atom.x[n], atom.y[n], atom.z[n]};
-    findCell(atom.box, thickness, r, cutoffInverse, numCells, cell);
-    cellContents[cellCountSum[cell[3]] + cellCount[cell[3]]] = n;
+    findCell(
+      atom.box, thickness, r, cutoffInverse, numCells,
+      cell);
+    cellContents
+      [cellCountSum[cell[3]] + cellCount[cell[3]]] = n;
     ++cellCount[cell[3]];
   }
 
   std::fill(atom.NN.begin(), atom.NN.end(), 0);
 
   for (int n1 = 0; n1 < atom.number; ++n1) {
-    const double r1[3] = {atom.x[n1], atom.y[n1], atom.z[n1]};
-    findCell(atom.box, thickness, r1, cutoffInverse, numCells, cell);
+    const double r1[3] = {
+      atom.x[n1], atom.y[n1], atom.z[n1]};
+    findCell(
+      atom.box, thickness, r1, cutoffInverse, numCells,
+      cell);
     for (int k = -1; k <= 1; ++k) {
       for (int j = -1; j <= 1; ++j) {
         for (int i = -1; i <= 1; ++i) {
-          int neighborCell = cell[3] + (k * numCells[1] + j) * numCells[0] + i;
+          int neighborCell =
+            cell[3] + (k * numCells[1] + j) * numCells[0] +
+            i;
           if (cell[0] + i < 0)
             neighborCell += numCells[0];
           if (cell[0] + i >= numCells[0])
@@ -311,19 +343,24 @@ void findNeighborON1(Atom& atom)
           if (cell[2] + k >= numCells[2])
             neighborCell -= numCells[3];
 
-          for (int m = 0; m < cellCount[neighborCell]; ++m) {
-            const int n2 = cellContents[cellCountSum[neighborCell] + m];
+          for (int m = 0; m < cellCount[neighborCell];
+               ++m) {
+            const int n2 =
+              cellContents[cellCountSum[neighborCell] + m];
             if (n1 < n2) {
               double x12 = atom.x[n2] - r1[0];
               double y12 = atom.y[n2] - r1[1];
               double z12 = atom.z[n2] - r1[2];
               applyMic(atom.box, x12, y12, z12);
-              const double d2 = x12 * x12 + y12 * y12 + z12 * z12;
+              const double d2 =
+                x12 * x12 + y12 * y12 + z12 * z12;
               if (d2 < cutoffSquare) {
                 atom.NL[n1 * atom.MN + atom.NN[n1]++] = n2;
                 if (atom.NN[n1] > atom.MN) {
-                  std::cout << "Error: number of neighbors for atom " << n1
-                            << " exceeds " << atom.MN << std::endl;
+                  std::cout << "Error: number of neighbors "
+                               "for atom "
+                            << n1 << " exceeds " << atom.MN
+                            << std::endl;
                   exit(1);
                 }
               }
@@ -426,7 +463,8 @@ void findForce(Atom& atom)
   }
 }
 
-void integrate(const bool isStepOne, const double timeStep, Atom& atom)
+void integrate(
+  const bool isStepOne, const double timeStep, Atom& atom)
 {
   const double timeStepHalf = timeStep * 0.5;
   for (int n = 0; n < atom.number; ++n) {
@@ -462,7 +500,8 @@ int getInt(std::string& token)
   try {
     value = std::stoi(token);
   } catch (const std::exception& e) {
-    std::cout << "Standard exception:" << e.what() << std::endl;
+    std::cout << "Standard exception:" << e.what()
+              << std::endl;
     exit(1);
   }
   return value;
@@ -474,13 +513,18 @@ double getDouble(std::string& token)
   try {
     value = std::stod(token);
   } catch (const std::exception& e) {
-    std::cout << "Standard exception:" << e.what() << std::endl;
+    std::cout << "Standard exception:" << e.what()
+              << std::endl;
     exit(1);
   }
   return value;
 }
 
-void readRun(int& numSteps, double& timeStep, double& temperature, Atom& atom)
+void readRun(
+  int& numSteps,
+  double& timeStep,
+  double& temperature,
+  Atom& atom)
 {
   std::ifstream input("run.in");
   if (!input.is_open()) {
@@ -497,7 +541,8 @@ void readRun(int& numSteps, double& timeStep, double& temperature, Atom& atom)
           std::cout << "timeStep should >= 0." << std::endl;
           exit(1);
         }
-        std::cout << "timeStep = " << timeStep << " fs." << std::endl;
+        std::cout << "timeStep = " << timeStep << " fs."
+                  << std::endl;
       } else if (tokens[0] == "run") {
         numSteps = getInt(tokens[1]);
         if (numSteps < 1) {
@@ -511,16 +556,21 @@ void readRun(int& numSteps, double& timeStep, double& temperature, Atom& atom)
           std::cout << "temperature >= 0." << std::endl;
           exit(1);
         }
-        std::cout << "temperature = " << temperature << " K." << std::endl;
+        std::cout << "temperature = " << temperature
+                  << " K." << std::endl;
       } else if (tokens[0] == "neighbor_flag") {
         atom.neighbor_flag = getDouble(tokens[1]);
         if (atom.neighbor_flag<0 | atom.neighbor_flag> 2) {
-          std::cout << "neighbor_flag can only be 0 or 1 or 2." << std::endl;
+          std::cout
+            << "neighbor_flag can only be 0 or 1 or 2."
+            << std::endl;
           exit(1);
         }
-        std::cout << "neighbor_flag = " << atom.neighbor_flag << std::endl;
+        std::cout << "neighbor_flag = "
+                  << atom.neighbor_flag << std::endl;
       } else if (tokens[0][0] != '#') {
-        std::cout << tokens[0] << " is not a valid keyword." << std::endl;
+        std::cout << tokens[0] << " is not a valid keyword."
+                  << std::endl;
         exit(1);
       }
     }
@@ -541,11 +591,14 @@ void readXyz(Atom& atom)
 
   // line 1
   if (tokens.size() != 1) {
-    std::cout << "The first line of xyz.in should have one item." << std::endl;
+    std::cout
+      << "The first line of xyz.in should have one item."
+      << std::endl;
     exit(1);
   }
   atom.number = getInt(tokens[0]);
-  std::cout << "Number of atoms = " << atom.number << std::endl;
+  std::cout << "Number of atoms = " << atom.number
+            << std::endl;
 
   // allocate memory
   atom.NN.resize(atom.number, 0);
@@ -567,13 +620,16 @@ void readXyz(Atom& atom)
   // line 2
   tokens = getTokens(input);
   if (tokens.size() != 9) {
-    std::cout << "The second line of xyz.in should have 9 items." << std::endl;
+    std::cout
+      << "The second line of xyz.in should have 9 items."
+      << std::endl;
     exit(1);
   }
 
   for (int d1 = 0; d1 < 3; ++d1) {
     for (int d2 = 0; d2 < 3; ++d2) {
-      atom.box[d2 * 3 + d1] = getDouble(tokens[d1 * 3 + d2]);
+      atom.box[d2 * 3 + d1] =
+        getDouble(tokens[d1 * 3 + d2]);
     }
   }
   getInverseBox(atom.box);
@@ -598,7 +654,8 @@ void readXyz(Atom& atom)
   for (int n = 0; n < atom.number; ++n) {
     tokens = getTokens(input);
     if (tokens.size() != 5) {
-      std::cout << "The 3rd line and later of xyz.in should have 5 items."
+      std::cout << "The 3rd line and later of xyz.in "
+                   "should have 5 items."
                 << std::endl;
       exit(1);
     }
@@ -620,7 +677,8 @@ int main(int argc, char** argv)
 
   Atom atom;
   readRun(numSteps, timeStep, temperature, atom);
-  timeStep /= TIME_UNIT_CONVERSION; // from fs to natural unit
+  timeStep /=
+    TIME_UNIT_CONVERSION; // from fs to natural unit
   readXyz(atom);
   initializeVelocity(temperature, atom);
 
@@ -636,15 +694,20 @@ int main(int argc, char** argv)
     integrate(false, timeStep, atom); // step 3 in the book
     if (step % Ns == 0) {
       const double kineticEnergy = findKineticEnergy(atom);
-      const double T = kineticEnergy / (1.5 * K_B * atom.number);
-      ofile << T << " " << kineticEnergy << " " << atom.pe << std::endl;
+      const double T =
+        kineticEnergy / (1.5 * K_B * atom.number);
+      ofile << T << " " << kineticEnergy << " " << atom.pe
+            << std::endl;
     }
   }
   ofile.close();
   const clock_t tStop = clock();
-  const float tElapsed = float(tStop - tStart) / CLOCKS_PER_SEC;
-  std::cout << atom.numUpdates << " neighbor list updates" << std::endl;
-  std::cout << "Time used = " << tElapsed << " s" << std::endl;
+  const float tElapsed =
+    float(tStop - tStart) / CLOCKS_PER_SEC;
+  std::cout << atom.numUpdates << " neighbor list updates"
+            << std::endl;
+  std::cout << "Time used = " << tElapsed << " s"
+            << std::endl;
 
   return 0;
 }
