@@ -27,10 +27,12 @@ struct Atom {
   double box[6];
   double pe;
   std::vector<int> NN, NL;
-  std::vector<double> x0, y0, z0, x, y, z, fx, fy, fz, b, bp;
+  std::vector<double> x0, y0, z0, x, y, z, fx, fy, fz, b,
+    bp;
 };
 
-void applyMicOne(const double length, const double halfLength, double& x12)
+void applyMicOne(
+  const double length, const double halfLength, double& x12)
 {
   if (x12 < -halfLength)
     x12 += length;
@@ -38,14 +40,19 @@ void applyMicOne(const double length, const double halfLength, double& x12)
     x12 -= length;
 }
 
-void applyMic(const double box[6], double& x12, double& y12, double& z12)
+void applyMic(
+  const double box[6],
+  double& x12,
+  double& y12,
+  double& z12)
 {
   applyMicOne(box[0], box[3], x12);
   applyMicOne(box[1], box[4], y12);
   applyMicOne(box[2], box[5], z12);
 }
 
-inline void find_fr_and_frp(double d12, double& fr, double& frp)
+inline void
+find_fr_and_frp(double d12, double& fr, double& frp)
 {
   const double a = 1.8308e3;
   const double lambda = 2.4799;
@@ -53,9 +60,10 @@ inline void find_fr_and_frp(double d12, double& fr, double& frp)
   frp = -lambda * fr;
 }
 
-inline void find_fa_and_fap(double d12, double& fa, double& fap)
+inline void
+find_fa_and_fap(double d12, double& fa, double& fap)
 {
-  const double b = 471.18; 
+  const double b = 471.18;
   const double mu = 1.7322;
   fa = b * exp(-mu * d12);
   fap = -mu * fa;
@@ -68,7 +76,8 @@ inline void find_fa(double d12, double& fa)
   fa = b * exp(-mu * d12);
 }
 
-inline void find_fc_and_fcp(double d12, double& fc, double& fcp)
+inline void
+find_fc_and_fcp(double d12, double& fc, double& fcp)
 {
   const double r1 = 2.7;
   const double r2 = 3.0;
@@ -99,7 +108,7 @@ inline void find_fc(double d12, double& fc)
   } else {
     fc = 0.0;
   }
-}  
+}
 
 inline void find_g_and_gp(double cos, double& g, double& gp)
 {
@@ -128,7 +137,8 @@ inline void find_g(double cos, double& g)
 
 void findNeighborON2(Atom& atom)
 {
-  const double cutoffSquare = atom.cutoffNeighbor * atom.cutoffNeighbor;
+  const double cutoffSquare =
+    atom.cutoffNeighbor * atom.cutoffNeighbor;
   std::fill(atom.NN.begin(), atom.NN.end(), 0);
 
   for (int i = 0; i < atom.number; ++i) {
@@ -136,17 +146,20 @@ void findNeighborON2(Atom& atom)
     const double y1 = atom.y[i];
     const double z1 = atom.z[i];
     for (int j = 0; j < atom.number; ++j) {
-      if (j == i) continue;
+      if (j == i)
+        continue;
       double xij = atom.x[j] - x1;
       double yij = atom.y[j] - y1;
       double zij = atom.z[j] - z1;
       applyMic(atom.box, xij, yij, zij);
-      const double distanceSquare = xij * xij + yij * yij + zij * zij;
+      const double distanceSquare =
+        xij * xij + yij * yij + zij * zij;
       if (distanceSquare < cutoffSquare) {
         atom.NL[i * atom.MN + atom.NN[i]++] = j;
         if (atom.NN[i] > atom.MN) {
-          std::cout << "Error: number of neighbors for atom " << i
-                    << " exceeds " << atom.MN << std::endl;
+          std::cout
+            << "Error: number of neighbors for atom " << i
+            << " exceeds " << atom.MN << std::endl;
           exit(1);
         }
       }
@@ -171,7 +184,9 @@ void find_b_and_bp(Atom& atom)
 
       double zeta = 0.0;
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
-        int n3 = atom.NL[n1 * atom.MN + i2]; // we only know n3 != n1
+        int n3 =
+          atom
+            .NL[n1 * atom.MN + i2]; // we only know n3 != n1
         if (n3 == n2) {
           continue;
         } // ensure that n3 != n2
@@ -181,8 +196,10 @@ void find_b_and_bp(Atom& atom)
         z13 = atom.z[n3] - atom.z[n1];
         applyMic(atom.box, x13, y13, z13);
 
-        double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
-        double cos = (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
+        double d13 =
+          sqrt(x13 * x13 + y13 * y13 + z13 * z13);
+        double cos =
+          (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
         double fc13, g123;
         find_fc(d13, fc13);
         find_g(cos, g123);
@@ -191,7 +208,8 @@ void find_b_and_bp(Atom& atom)
       double bzn = pow(beta * zeta, n);
       double b12 = pow(1.0 + bzn, minus_half_over_n);
       atom.b[n1 * atom.MN + i1] = b12;
-      atom.bp[n1 * atom.MN + i1] = -b12 * bzn * 0.5 / ((1.0 + bzn) * zeta);
+      atom.bp[n1 * atom.MN + i1] =
+        -b12 * bzn * 0.5 / ((1.0 + bzn) * zeta);
     }
   }
 }
@@ -232,12 +250,13 @@ void find_force_tersoff(Atom& atom)
       bp12 = atom.bp[n1 * atom.MN + i1];
       double factor1 = -b12 * fa12 + fr12;
       double factor2 = -b12 * fap12 + frp12;
-      double factor3 = (fcp12 * factor1 + fc12 * factor2) / d12;
+      double factor3 =
+        (fcp12 * factor1 + fc12 * factor2) / d12;
       f12[0] += x12 * factor3 * 0.5;
       f12[1] += y12 * factor3 * 0.5;
       f12[2] += z12 * factor3 * 0.5;
       p12 += factor1 * fc12;
-      
+
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
         int n3 = atom.NL[n1 * atom.MN + i2];
         if (n3 == n2) {
@@ -249,24 +268,34 @@ void find_force_tersoff(Atom& atom)
         z13 = atom.z[n3] - atom.z[n1];
         applyMic(atom.box, x13, y13, z13);
 
-        double d13 = sqrt(x13 * x13 + y13 * y13 + z13 * z13);
+        double d13 =
+          sqrt(x13 * x13 + y13 * y13 + z13 * z13);
         double fc13, fa13;
         find_fc(d13, fc13);
         find_fa(d13, fa13);
         double bp13 = atom.bp[n1 * atom.MN + i2];
 
-        double cos123 = (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
+        double cos123 =
+          (x12 * x13 + y12 * y13 + z12 * z13) / (d12 * d13);
         double g123, gp123;
         find_g_and_gp(cos123, g123, gp123);
-        double cos_x = x13 / (d12 * d13) - x12 * cos123 / (d12 * d12);
-        double cos_y = y13 / (d12 * d13) - y12 * cos123 / (d12 * d12);
-        double cos_z = z13 / (d12 * d13) - z12 * cos123 / (d12 * d12);
-        double factor123a =
-          (-bp12 * fc12 * fa12 * fc13 - bp13 * fc13 * fa13 * fc12) * gp123;
-        double factor123b = -bp13 * fc13 * fa13 * fcp12 * g123 * d12inv;
-        f12[0] += (x12 * factor123b + factor123a * cos_x) * 0.5;
-        f12[1] += (y12 * factor123b + factor123a * cos_y) * 0.5;
-        f12[2] += (z12 * factor123b + factor123a * cos_z) * 0.5;
+        double cos_x =
+          x13 / (d12 * d13) - x12 * cos123 / (d12 * d12);
+        double cos_y =
+          y13 / (d12 * d13) - y12 * cos123 / (d12 * d12);
+        double cos_z =
+          z13 / (d12 * d13) - z12 * cos123 / (d12 * d12);
+        double factor123a = (-bp12 * fc12 * fa12 * fc13 -
+                             bp13 * fc13 * fa13 * fc12) *
+                            gp123;
+        double factor123b =
+          -bp13 * fc13 * fa13 * fcp12 * g123 * d12inv;
+        f12[0] +=
+          (x12 * factor123b + factor123a * cos_x) * 0.5;
+        f12[1] +=
+          (y12 * factor123b + factor123a * cos_y) * 0.5;
+        f12[2] +=
+          (z12 * factor123b + factor123a * cos_z) * 0.5;
       }
 
       atom.pe += p12 * 0.5;
@@ -289,14 +318,18 @@ void findForce(Atom& atom)
 void createXyz(Atom& atom)
 {
   const int M = 8;
-  double x0[M] = {0.0, 0.0, 0.5, 0.5, 0.25, 0.25, 0.75, 0.75};
-  double y0[M] = {0.0, 0.5, 0.0, 0.5, 0.25, 0.75, 0.25, 0.75};
-  double z0[M] = {0.0, 0.5, 0.5, 0.0, 0.25, 0.75, 0.75, 0.25};
+  double x0[M] = {0.0,  0.0,  0.5,  0.5,
+                  0.25, 0.25, 0.75, 0.75};
+  double y0[M] = {0.0,  0.5,  0.0,  0.5,
+                  0.25, 0.75, 0.25, 0.75};
+  double z0[M] = {0.0,  0.5,  0.5,  0.0,
+                  0.25, 0.75, 0.75, 0.25};
   const int num_cells = 2;
   atom.number = num_cells * num_cells * num_cells * M;
   double a = 5.45;
   atom.box[0] = atom.box[1] = atom.box[2] = a * num_cells;
-  atom.box[3] = atom.box[4] = atom.box[5] = a * num_cells * 0.5;
+  atom.box[3] = atom.box[4] = atom.box[5] =
+    a * num_cells * 0.5;
   atom.x0.resize(atom.number, 0.0);
   atom.y0.resize(atom.number, 0.0);
   atom.z0.resize(atom.number, 0.0);
@@ -316,9 +349,15 @@ void createXyz(Atom& atom)
     for (int ny = 0; ny < num_cells; ++ny) {
       for (int nz = 0; nz < num_cells; ++nz) {
         for (int m = 0; m < M; ++m) {
-          atom.x[n] = atom.x0[n] = (x0[m] + nx) * a + (double(rand()) / RAND_MAX - 0.5) * 0.5;
-          atom.y[n] = atom.y0[n] = (y0[m] + ny) * a + (double(rand()) / RAND_MAX - 0.5) * 0.5;
-          atom.z[n] = atom.z0[n] = (z0[m] + nz) * a + (double(rand()) / RAND_MAX - 0.5) * 0.5;
+          atom.x[n] = atom.x0[n] =
+            (x0[m] + nx) * a +
+            (double(rand()) / RAND_MAX - 0.5) * 0.5;
+          atom.y[n] = atom.y0[n] =
+            (y0[m] + ny) * a +
+            (double(rand()) / RAND_MAX - 0.5) * 0.5;
+          atom.z[n] = atom.z0[n] =
+            (z0[m] + nz) * a +
+            (double(rand()) / RAND_MAX - 0.5) * 0.5;
           ++n;
         }
       }
@@ -328,10 +367,12 @@ void createXyz(Atom& atom)
   std::ofstream ofile("model.xyz");
   ofile << std::fixed << std::setprecision(16);
   ofile << atom.number << std::endl;
-  ofile << "Lattice=\"" << atom.box[0] << " 0 0 0 " << atom.box[1] << " 0 0 0 " << atom.box[2] << "\" ";
+  ofile << "Lattice=\"" << atom.box[0] << " 0 0 0 "
+        << atom.box[1] << " 0 0 0 " << atom.box[2] << "\" ";
   ofile << "Properties=species:S:1:pos:R:3" << std::endl;
   for (int n = 0; n < atom.number; ++n) {
-    ofile << "Si " << atom.x[n] << " " << atom.y[n] << " " << atom.z[n] << std::endl;
+    ofile << "Si " << atom.x[n] << " " << atom.y[n] << " "
+          << atom.z[n] << std::endl;
   }
   ofile.close();
 
@@ -350,9 +391,11 @@ int main(int argc, char** argv)
 
   findForce(atom);
   for (int n = 0; n < atom.number; ++n) {
-    ofile << atom.fx[n] << " " << atom.fy[n] << " " << atom.fz[n] << std::endl;
+    ofile << atom.fx[n] << " " << atom.fy[n] << " "
+          << atom.fz[n] << std::endl;
   }
-  std::cout << "analytical force is calculated." << std::endl;
+  std::cout << "analytical force is calculated."
+            << std::endl;
 
   const double delta = 2.0e-5;
   for (int n = 0; n < atom.number; ++n) {
@@ -363,7 +406,8 @@ int main(int argc, char** argv)
     findForce(atom);
     double peNegative = atom.pe;
     atom.x[n] = atom.x0[n];
-    ofile << (peNegative - pePositive) / (delta * 2.0) << " ";
+    ofile << (peNegative - pePositive) / (delta * 2.0)
+          << " ";
 
     atom.y[n] = atom.y0[n] + delta;
     findForce(atom);
@@ -372,7 +416,8 @@ int main(int argc, char** argv)
     findForce(atom);
     peNegative = atom.pe;
     atom.y[n] = atom.y0[n];
-    ofile << (peNegative - pePositive) / (delta * 2.0) << " ";
+    ofile << (peNegative - pePositive) / (delta * 2.0)
+          << " ";
 
     atom.z[n] = atom.z0[n] + delta;
     findForce(atom);
@@ -381,12 +426,14 @@ int main(int argc, char** argv)
     findForce(atom);
     peNegative = atom.pe;
     atom.z[n] = atom.z0[n];
-    ofile << (peNegative - pePositive) / (delta * 2.0) << std::endl;
+    ofile << (peNegative - pePositive) / (delta * 2.0)
+          << std::endl;
   }
 
-  std::cout << "finite-difference force is calculated." << std::endl;
+  std::cout << "finite-difference force is calculated."
+            << std::endl;
 
   ofile.close();
-  
+
   return 0;
 }
