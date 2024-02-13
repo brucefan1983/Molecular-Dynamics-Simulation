@@ -184,12 +184,10 @@ void find_b_and_bp(Atom& atom)
 
       double zeta = 0.0;
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
-        int n3 =
-          atom
-            .NL[n1 * atom.MN + i2]; // we only know n3 != n1
+        int n3 = atom.NL[n1 * atom.MN + i2];
         if (n3 == n2) {
           continue;
-        } // ensure that n3 != n2
+        }
         double x13, y13, z13;
         x13 = atom.x[n3] - atom.x[n1];
         y13 = atom.y[n3] - atom.y[n1];
@@ -241,13 +239,10 @@ void find_force_tersoff(Atom& atom)
       find_fa_and_fap(d12, fa12, fap12);
       find_fr_and_frp(d12, fr12, frp12);
 
-      double b12, bp12;
+      double b12 = atom.b[n1 * atom.MN + i1];
+      double bp12 = atom.bp[n1 * atom.MN + i1];
 
-      double f12[3] = {0.0, 0.0, 0.0}; // d_Ui_d_rij
-      double p12 = 0.0;                // Uij
-
-      b12 = atom.b[n1 * atom.MN + i1];
-      bp12 = atom.bp[n1 * atom.MN + i1];
+      double f12[3] = {0.0, 0.0, 0.0};
       double factor1 = -b12 * fa12 + fr12;
       double factor2 = -b12 * fap12 + frp12;
       double factor3 =
@@ -255,17 +250,15 @@ void find_force_tersoff(Atom& atom)
       f12[0] += x12 * factor3 * 0.5;
       f12[1] += y12 * factor3 * 0.5;
       f12[2] += z12 * factor3 * 0.5;
-      p12 += factor1 * fc12;
-
+      
       for (int i2 = 0; i2 < atom.NN[n1]; ++i2) {
         int n3 = atom.NL[n1 * atom.MN + i2];
         if (n3 == n2) {
           continue;
         }
-        double x13, y13, z13;
-        x13 = atom.x[n3] - atom.x[n1];
-        y13 = atom.y[n3] - atom.y[n1];
-        z13 = atom.z[n3] - atom.z[n1];
+        double x13 = atom.x[n3] - atom.x[n1];
+        double y13 = atom.y[n3] - atom.y[n1];
+        double z13 = atom.z[n3] - atom.z[n1];
         applyMic(atom.box, x13, y13, z13);
 
         double d13 =
@@ -298,7 +291,7 @@ void find_force_tersoff(Atom& atom)
           (z12 * factor123b + factor123a * cos_z) * 0.5;
       }
 
-      atom.pe += p12 * 0.5;
+      atom.pe += factor1 * fc12 * 0.5;
       atom.fx[n1] += f12[0];
       atom.fy[n1] += f12[1];
       atom.fz[n1] += f12[2];
