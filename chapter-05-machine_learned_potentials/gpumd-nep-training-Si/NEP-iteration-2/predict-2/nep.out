@@ -1,0 +1,115 @@
+
+***************************************************************
+*                 Welcome to use GPUMD                        *
+*    (Graphics Processing Units Molecular Dynamics)           *
+*                     Version 3.8                             *
+*              This is the nep executable                     *
+***************************************************************
+
+
+---------------------------------------------------------------
+GPU information:
+---------------------------------------------------------------
+
+number of GPUs = 1
+Device id:                   0
+    Device name:             NVIDIA GeForce RTX 3070
+    Compute capability:      8.6
+    Amount of global memory: 7.79523 GB
+    Number of SMs:           46
+
+---------------------------------------------------------------
+Started running nep.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started reading nep.in.
+---------------------------------------------------------------
+
+Input or default parameters:
+    (default) model_type = potential.
+    (input)   calculation mode = predict.
+    (default) use NEP version 4.
+    (input)   number of atom types = 1.
+        (default) type 0 (Si with Z = 14) has force weight of 1.
+    (default) will not add the ZBL potential.
+    (input)   radial cutoff = 5 A.
+    (input)   angular cutoff = 5 A.
+    (default) n_max_radial = 4.
+    (default) n_max_angular = 4.
+    (default) basis_size_radial = 12.
+    (default) basis_size_angular = 12.
+    (default) l_max_3body = 4.
+    (default) l_max_4body = 2.
+    (default) l_max_5body = 0.
+    (default) number of neurons = 30.
+    (default) lambda_1 = -1.
+    (default) lambda_2 = -1.
+    (default) lambda_e = 1.
+    (default) lambda_f = 1.
+    (default) lambda_v = 0.1.
+    (default) lambda_shear = 1.
+    (default) force_delta = 0.
+    (default) batch size = 1000.
+    (default) population size = 50.
+    (default) maximum number of generations = 100000.
+Some calculated parameters:
+    number of radial descriptor components = 5.
+    number of angular descriptor components = 25.
+    total number of descriptor components = 30.
+    NN architecture = 30-30-1.
+    number of NN parameters to be optimized = 961.
+    number of descriptor parameters to be optimized = 130.
+    total number of parameters to be optimized = 1091.
+
+---------------------------------------------------------------
+Finished reading nep.in.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started reading train.xyz.
+---------------------------------------------------------------
+
+Number of configurations = 100.
+Number of devices = 1
+Number of batches = 1
+Hello, I changed the batch_size from 1000 to 100.
+
+Batch 0:
+Number of configurations = 100.
+
+---------------------------------------------------------------
+Constructing train_set in device  0.
+Total number of atoms = 6400.
+Number of atoms in the largest configuration = 64.
+Number of configurations having virial = 100.
+Radial descriptor with a cutoff of 5 A:
+    Minimum number of neighbors for one atom = 26.
+    Maximum number of neighbors for one atom = 29.
+Angular descriptor with a cutoff of 5 A:
+    Minimum number of neighbors for one atom = 26.
+    Maximum number of neighbors for one atom = 29.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used for initialization = 0.893689 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started predicting.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used for predicting = 0.014898 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished running nep.
+---------------------------------------------------------------
+
