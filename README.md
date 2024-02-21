@@ -4,7 +4,7 @@
 
 * [A Python code demonstrating the velocity-Verlet integrator in terms of 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator)
 
-## Chapter 2: Simple MD code
+## Chapter 2: Simple molecular dynamics code
 
 * [A C++ implemenation of simple MD without using neighbor list](chapter-02-simple_md/cpp-simpleMD)
 
@@ -41,6 +41,9 @@
 * [A C++ implementation of MD simulation of diffusion](chapter-09-transport_properties/diffusion_emd_standalone)
 * [A C++ implementation of EMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_emd_standalone)
 * [A C++ implementation of HNEMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_hnemd_standalone)
+
+## Chapter 10: Path-integral molecular dynamics
+* [A Matlab code demonstrating PIMD in terms of 1D harmonic oscillator](chapter-10-pimd/src)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
