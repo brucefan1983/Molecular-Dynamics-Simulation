@@ -4,7 +4,7 @@ To be published in the summer of 2024.
 
 ## Chapter 1: Classical Physics
 
-* [A Python code demonstrating the velocity-Verlet integrator using 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator)
+* [A Python code demonstrating the velocity-Verlet integrator in terms of 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator)
 
 ## Chapter 2: Simple MD code
 
@@ -23,6 +23,12 @@ To be published in the summer of 2024.
 ## Chapter 5: Machine-learned potentials
 
 * [An example of using GPUMD to train a NEP model for silicon crystal](chapter-05-machine_learned_potentials/gpumd-nep-training-Si)
+
+## Chapter 6: Thermostatting methods
+* [A Python implementation of the Nose-Hoover thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/nh)
+* [A Python implementation of the Nose-Hoover chain thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/nhc)
+* [A Python implementation of the Langevin thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/langevin)
+* [An example of using GPUMD to compare the different thermostatting methods](chapter-06-thermostat/compare_thermostat_speed)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
