@@ -6,7 +6,7 @@ To be published in the summer of 2024.
 
 | folder      | description |
 |:------------|:---------------|
-| chapter-01-classical_physics/python-harmonic-oscillator | A Python code demonstrating the velocity-Verlet integrator using 1D harmonic oscillator |
+| [chapter-01-classical_physics/python-harmonic-oscillator] | A Python code demonstrating the velocity-Verlet integrator using 1D harmonic oscillator |
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
