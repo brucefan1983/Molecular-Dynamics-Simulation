@@ -6,9 +6,13 @@ To be published in the summer of 2024.
 
 * [A Python code demonstrating the velocity-Verlet integrator using 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator)
 
-## Chapter 1: Simple MD code
+## Chapter 2: Simple MD code
 
-* [A C++ implemenation of simple MD](chapter-02-simple_md/cpp-simpleMD)
+* [A C++ implemenation of simple MD without using neighbor list](chapter-02-simple_md/cpp-simpleMD)
+
+## Chapter 3: Simulation box and neighbor list
+
+* [A C++ implemenation of linear-scaling MD with neighbor list](chapter-03-linear_md/cpp-linearMD)
 
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
