@@ -37,6 +37,11 @@
 * [An example of using GPUMD to study thermal expansion](chapter-08-static_properties/thermal_expansion)
 * [Matlab codes for calculating RDF](chapter-08-static_properties/rdf)
 
+## Chapter 9: Transport properties
+* [A C++ implementation of MD simulation of diffusion](chapter-09-transport_properties/diffusion_emd_standalone)
+* [A C++ implementation of EMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_emd_standalone)
+* [A C++ implementation of HNEMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_hnemd_standalone)
+
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
 * 该群主要讨论分子动力学模拟中的算法和作者开发的 GPUMD 程序 (https://gpumd.org) 的使用。
