@@ -34,6 +34,7 @@
 
 ## Chapter 8: Static properties
 * [An example of using GPUMD to demonstrate statistical error](chapter-08-static_properties/statistical_error)
+* [An example of using GPUMD to study thermal expansion](chapter-08-static_properties/thermal_expansion)
 * [Matlab codes for calculating RDF](chapter-08-static_properties/rdf)
 
 ## 讨论群
