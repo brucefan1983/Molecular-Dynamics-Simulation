@@ -20,6 +20,10 @@ To be published in the summer of 2024.
 
 * [An example of using GPUMD to validate Tersoff force against the C++ code above](chapter-04-empirical_potentials/gpumd-tersoff)
 
+## Chapter 5: Machine-learned potentials
+
+* [An example of using GPUMD to train a NEP model for silicon crystal](chapter-05-machine_learned_potentials/gpumd-nep-training-Si)
+
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
 * 该群主要讨论分子动力学模拟中的算法和作者开发的 GPUMD 程序 (https://gpumd.org) 的使用。
