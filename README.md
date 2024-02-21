@@ -1,7 +1,5 @@
 # Source code and examples for my on-going book ***Molecular dynamics simulation***
 
-To be published in the summer of 2024.
-
 ## Chapter 1: Classical Physics
 
 * [A Python code demonstrating the velocity-Verlet integrator in terms of 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator)
