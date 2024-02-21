@@ -38,7 +38,7 @@
 * [Matlab codes for calculating RDF](chapter-08-static_properties/rdf)
 
 ## Chapter 9: Transport properties
-* [A C++ implementation of MD simulation of diffusion](chapter-09-transport_properties/diffusion_emd_standalone)
+* [A C++ implementation of EMD simulation of diffusion](chapter-09-transport_properties/diffusion_emd_standalone)
 * [A C++ implementation of EMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_emd_standalone)
 * [A C++ implementation of HNEMD simulation of thermal conductivity](chapter-09-transport_properties/kappa_hnemd_standalone)
 
