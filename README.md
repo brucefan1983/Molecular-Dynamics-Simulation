@@ -14,6 +14,10 @@ To be published in the summer of 2024.
 
 * [A C++ implemenation of linear-scaling MD with neighbor list](chapter-03-linear_md/cpp-linearMD)
 
+## Chapter 4: Empirical potentials
+
+* [A C++ implemenation of Tersoff potential, validating force calculation using finite difference](chapter-04-empirical_potentials/cpp-tersoff-validation)
+
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
 * 该群主要讨论分子动力学模拟中的算法和作者开发的 GPUMD 程序 (https://gpumd.org) 的使用。
