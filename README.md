@@ -28,6 +28,14 @@
 * [A Python implementation of the Langevin thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/langevin)
 * [An example of using GPUMD to compare the different thermostatting methods](chapter-06-thermostat/compare_thermostat_speed)
 
+## Chapter 7: Barostatting methods
+* [A C++ implementation of the MTTK barostat in terms of 1D harmonic oscillator](chapter-07-barostat/mttk)
+* [An example of using GPUMD to compare the different barostatting methods](chapter-07-barostat/compare_barostats)
+
+## Chapter 8: Static properties
+* [An example of using GPUMD to demonstrate statistical error](chapter-08-static_properties/statistical_error)
+* [Matlab codes for calculating RDF](chapter-08-static_properties/rdf)
+
 ## 讨论群
 * 读者可加入作者的 QQ 群： 887975816。
 * 该群主要讨论分子动力学模拟中的算法和作者开发的 GPUMD 程序 (https://gpumd.org) 的使用。
