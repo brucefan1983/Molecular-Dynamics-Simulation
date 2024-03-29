@@ -1,0 +1,10 @@
+potential   Si_Tersoff_1989.txt
+velocity    300
+
+#ensemble    npt_ber 300 300 100 10 0 0 50 50 50 1000
+ensemble    npt_scr 300 300 100 10 0 0 50 50 50 1000
+#ensemble    npt_mttk temp 300 300 x 10 10 y 0 0 z 0 0
+time_step   1
+dump_thermo 2
+run         20000
+
