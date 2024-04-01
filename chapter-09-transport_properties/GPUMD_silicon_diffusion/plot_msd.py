@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-msd=np.loadtxt('msd.out')
+msd=np.loadtxt('nve/msd.out')
 
 M=msd.shape[0]
 t=msd[:,0] # ps

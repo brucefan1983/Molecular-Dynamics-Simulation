@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-sdc=np.loadtxt('sdc.out')
+sdc=np.loadtxt('nve/sdc.out')
 
 M=sdc.shape[0]
 t=sdc[:,0] # ps

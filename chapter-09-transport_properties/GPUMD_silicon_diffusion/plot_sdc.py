@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-sdc=np.loadtxt('sdc.out')
-msd=np.loadtxt('msd.out')
+sdc=np.loadtxt('nve/sdc.out')
+msd=np.loadtxt('nve/msd.out')
 
 M=sdc.shape[0]
 t=sdc[:,0] # ps
