@@ -1,0 +1,25 @@
+# NEP potential for water
+potential nep.txt
+
+# Time step for 0.5 fs
+time_step 0.5
+
+# Initialize velocity at 300K
+velocity 300
+
+# Run NPT equalibration with stocastic thermostat for 300K Tini and Tend, and 100 for Tcoupling, 0 bar for pressures, and 2 Gpa for pressure coupling and 2000 steps
+ensemble  npt_scr 300 300 100 0 2 2000
+
+# Run 50000 steps, equal to 25 ps simulation
+run 50000
+
+# Run NVE production
+ensemble nve
+
+# Compute rdf from AIMD run with every 1000 MD steps with 400 data up to 8 angstrom
+compute_rdf 8.0 400 1000 atom 0 0 atom 1 1 atom 0 1
+
+# Run 100000 steps, equal to 100 ps simulation
+run 100000
+
+  
