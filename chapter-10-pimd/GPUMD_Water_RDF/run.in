@@ -1,0 +1,26 @@
+# NEP potential for water
+potential nep.txt
+
+# time step for 0.5 fs
+time_step 0.5
+
+# Initialize velocity at 300K
+velocity 300
+
+# Run Equlibration using PIMD with 24 beads on 300K, 0, 2GPa pressure coulping of 2000 steps and temperature coulping of 4000 steps
+ensemble pimd 24 300 300 4000 0 2 2000
+
+# Run 10000 steps, equal to 5 ps simulation
+run 10000
+
+# Run Production using PIMD with 24 beads on 300K
+ensemble pimd 24 300 300 4000
+
+# Dump beads every 100 steps, just positions are needed
+dump_beads 100 0 0
+
+# Compute rdf from AIMD run with every 1000 MD steps with 400 data up to 8 angstrom
+compute_rdf 8.0 400 100 atom 0 0 atom 1 1 atom 0 1
+
+# Run 6000 steps, equal to 3 ps simulation
+run 6000

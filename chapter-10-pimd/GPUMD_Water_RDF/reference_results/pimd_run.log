@@ -1,0 +1,151 @@
+
+***************************************************************
+*                 Welcome to use GPUMD                        *
+*     (Graphics Processing Units Molecular Dynamics)          *
+*                     Version 3.9                             *
+*              This is the gpumd executable                   *
+***************************************************************
+
+
+---------------------------------------------------------------
+Compiling options:
+---------------------------------------------------------------
+
+DEBUG is off: Use different PRNG seeds for different runs.
+
+---------------------------------------------------------------
+GPU information:
+---------------------------------------------------------------
+
+number of GPUs = 1
+Device id:                   0
+    Device name:             NVIDIA GeForce RTX 3060
+    Compute capability:      8.6
+    Amount of global memory: 11.7595 GB
+    Number of SMs:           28
+
+---------------------------------------------------------------
+Started running GPUMD.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started initializing positions and related parameters.
+---------------------------------------------------------------
+
+Number of atoms is 1536.
+Use periodic boundary conditions along x.
+Use periodic boundary conditions along y.
+Use periodic boundary conditions along z.
+Use orthogonal box.
+Box lengths are
+    Lx =     2.4839350935e+01 A
+    Ly =     2.4839350935e+01 A
+    Lz =     2.4839350935e+01 A
+Do not specify initial velocities here.
+Have no grouping method.
+There are 2 atom types.
+    1024 atoms of type 0.
+    512 atoms of type 1.
+
+---------------------------------------------------------------
+Finished initializing positions and related parameters.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started executing the commands in run.in.
+---------------------------------------------------------------
+
+Use the NEP3 potential with 2 atom types.
+    type 0 (H with Z = 1).
+    type 1 (O with Z = 8).
+    radial cutoff = 8 A.
+    angular cutoff = 6 A.
+    MN_radial = 328.
+    MN_angular = 152.
+    enlarged MN_radial = 410.
+    enlarged MN_angular = 190.
+    n_max_radial = 8.
+    n_max_angular = 8.
+    basis_size_radial = 8.
+    basis_size_angular = 8.
+    l_max_3body = 4.
+    l_max_4body = 2.
+    l_max_5body = 1.
+    ANN = 63-50-1.
+    number of neural network parameters = 3251.
+    number of descriptor parameters = 648.
+    total number of parameters = 3899.
+Time step for this run is 0.5 fs.
+Initialized velocities with T = 300 K.
+Use NVT-PIMD for this run.
+    number of beads is 24.
+    initial temperature is 300 K.
+    final temperature is 300 K.
+    tau_T is 4000 time_step.
+    isotropic pressure is 0 GPa.
+    bulk modulus is 2 GPa.
+    tau_p is 2000 time_step.
+Run 10000 steps.
+    1000 steps completed.
+    2000 steps completed.
+    3000 steps completed.
+    4000 steps completed.
+    5000 steps completed.
+    6000 steps completed.
+    7000 steps completed.
+    8000 steps completed.
+    9000 steps completed.
+    10000 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 1372.95 second.
+Speed of this run = 11187.6 atom*step/second.
+---------------------------------------------------------------
+
+Use NVT-PIMD for this run.
+    number of beads is 24.
+    initial temperature is 300 K.
+    final temperature is 300 K.
+    tau_T is 4000 time_step.
+Dump data for beads in PIMD-related runs.
+    every 100 steps.
+    without velocity data.
+    without force data.
+Compute radial distribution function (RDF).
+    radial cutoff 8.
+    radial cutoff will be divided into 400 bins.
+    RDF sample interval is 100 step.
+Run 6000 steps.
+    600 steps completed.
+    1200 steps completed.
+    1800 steps completed.
+    2400 steps completed.
+    3000 steps completed.
+    3600 steps completed.
+    4200 steps completed.
+    4800 steps completed.
+    5400 steps completed.
+    6000 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 2532.78 second.
+Speed of this run = 3638.69 atom*step/second.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished executing the commands in run.in.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used = 3907.126874 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished running GPUMD.
+---------------------------------------------------------------
+
