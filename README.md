@@ -3,7 +3,7 @@
 ## Source code and examples in the book
 
 | Chapter number     | Chapter title | Language/software  |  Description | Author(s) |
-|:------------|:---------------|:---------------|:---------------|
+|:------------|:---------------|:---------------|:---------------|:---------------|
 | 1 | Classical Physics | Python | [Demonstrating the velocity-Verlet integrator in terms of 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator) |  Ke Xu |
 | 2 | Simple molecular dynamics | C++ | [A simple MD code without using neighbor list](chapter-02-simple_md/cpp-simpleMD) | Zheyong  Fan |
 | 3 | Simulation box and neighbor list | C++ | [A linear-scaling MD code using neighbor list](chapter-03-linear_md/cpp-linearMD) | Zheyong  Fan|
