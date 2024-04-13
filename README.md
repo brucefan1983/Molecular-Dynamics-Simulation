@@ -16,9 +16,10 @@
 | 6 | Thermostatting methods | GPUMD | [Comparing the thermostats in GPUMDD](chapter-06-thermostat/compare_thermostat_speed) |
 | 7 | Barostatting methods | GPUMD | [Demonstrating the usage of the barostatting methods in GPUMD](chapter-07-barostat/npt_examples) |
 | 7 | Barostatting methods | GPUMD | [Comparing the barostats in GPUMD](chapter-07-barostat/compare_barostats) |
-| 8 | Static properties | GPUMD | [Demonstrating statistical error](chapter-08-static_properties/statistical_error) |
-| 8 | Static properties | GPUMD | [Demonstrating the study of thermal expansion using GPUMD](chapter-08-static_properties/thermal_expansion) |
-| 8 | Static properties | GPUMD | [Demonstrating the calculation of RDF of water in GPUMD](chapter-08-static_properties/rdf) |
+| 8 | Static properties | GPUMD | [Demonstrating statistical error](chapter-08-static_properties/GPUMD_statistical_error) |
+| 8 | Static properties | GPUMD | [Demonstrating the study of thermal expansion using GPUMD](chapter-08-static_properties/GPUMD_thermal_expansion) |
+| 8 | Static properties | GPUMD | [Demonstrating the calculation of RDF of water in GPUMD](chapter-08-static_properties/GPUMD_Water_RDF) |
+| 8 | Static properties | Python | [Calculating RDF from saved trajectory](chapter-08-static_properties/Python_RDF) |
 | 9 | Transport properties | GPUMD | [Calculating self diffusion coefficient of liquid silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_diffusion) |
 | 9 | Transport properties | GPUMD | [Calculating viscosity of liquid silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_diffusion) |
 | 9 | Transport properties | GPUMD | [Calculating thermal transport properties of crystalline silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_kappa) |
