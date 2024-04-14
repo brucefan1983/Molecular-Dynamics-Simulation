@@ -2,7 +2,7 @@
 
 ## Source code and examples in the book
 
-| Chapter  | Language/software  |  Description | Author(s) | Discussed in the book? |
+| Chapter  | Language/software  |  Description | Author | Discussed in the book? |
 |:---------------|:---------------|:---------------|:---------------|:-------------|
 | 1  Classical Physics | Python | [Demonstrating the velocity-Verlet integrator in terms of 1D harmonic oscillator](chapter-01-classical_physics/python-harmonic-oscillator) |  Ke Xu | Yes |
 | 2  Simple molecular dynamics | C++ | [A simple MD code without using neighbor list](chapter-02-simple_md/cpp-simpleMD) | Zheyong  Fan | Yes |
@@ -13,7 +13,7 @@
 | 6  Thermostatting methods | Python | [Implementating the Nose-Hoover thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/nh) | Shuning Pan | Yes |
 | | Python | [Implementating the Nose-Hoover chain thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/nhc) | Shuning Pan | Yes |
 | | Python | [Implementating the Langevin thermostat in terms of 1D harmonic oscillator](chapter-06-thermostat/langevin) | Shuning Pan | Yes |
-| | GPUMD | [Comparing the thermostats in GPUMDD](chapter-06-thermostat/compare_thermostat_speed) | Zheyong  Fan | Yes |
+| | GPUMD | [Comparing the thermostats in GPUMD](chapter-06-thermostat/compare_thermostat_speed) | Zheyong  Fan | Yes |
 | 7  Barostatting methods | GPUMD | [Demonstrating the usage of the barostatting methods in GPUMD](chapter-07-barostat/npt_examples) | Zheyong  Fan | Yes |
 | | GPUMD | [Comparing the barostats in GPUMD](chapter-07-barostat/compare_barostats) | Zheyong  Fan | Yes |
 | 8  Static properties | GPUMD | [Demonstrating statistical error](chapter-08-static_properties/GPUMD_statistical_error) | Zheyong  Fan | Yes |
@@ -27,6 +27,7 @@
 | | C++ | [Standalone MD code calculating thermal conductivity using EMD](chapter-09-transport_properties/cpp_kappa_emd_standalone) | Zheyong  Fan | No |
 | | C++ | [Standalone MD code calculating thermal conductivity using HNEMD](chapter-09-transport_properties/cpp_kappa_hnemd_standalone) | Zheyong  Fan | No |
 | 10 Path-integral molecular dynamics | GPUMD | [Calculating the radial distribution function of water  using GPUMD and NEP](chapter-10-pimd/GPUMD_Water_RDF) | Zekun Chen | Yes |
+| | Python | [A full PIMD code in terms of 1D harmonic oscillator](chapter-10-pimd/Python_PIMD) | Nan Xu | Yes |
 
 
 ## Discussion group for the book
