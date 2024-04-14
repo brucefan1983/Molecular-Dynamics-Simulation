@@ -23,9 +23,9 @@
 | 9 Transport properties | GPUMD | [Calculating self diffusion coefficient of liquid silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_diffusion) | Zheyong  Fan | Yes |
 | | GPUMD | [Calculating viscosity of liquid silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_diffusion) | Zheyong  Fan | Yes |
 | | GPUMD | [Calculating thermal transport properties of crystalline silicon using GPUMD and NEP](chapter-09-transport_properties/GPUMD_silicon_kappa) | Zheyong  Fan | Yes |
-| | C++ | [Standalone MD code calculating self diffusion coefficient](chapter-09-transport_properties/diffusion_emd_standalone) | Zheyong  Fan | No |
-| | C++ | [Standalone MD code calculating thermal conductivity using EMD](chapter-09-transport_properties/kappa_emd_standalone) | Zheyong  Fan | No |
-| | C++ | [Standalone MD code calculating thermal conductivity using HNEMD](chapter-09-transport_properties/kappa_hnemd_standalone) | Zheyong  Fan | No |
+| | C++ | [Standalone MD code calculating self diffusion coefficient](chapter-09-transport_properties/cpp_diffusion_emd_standalone) | Zheyong  Fan | No |
+| | C++ | [Standalone MD code calculating thermal conductivity using EMD](chapter-09-transport_properties/cpp_kappa_emd_standalone) | Zheyong  Fan | No |
+| | C++ | [Standalone MD code calculating thermal conductivity using HNEMD](chapter-09-transport_properties/cpp_kappa_hnemd_standalone) | Zheyong  Fan | No |
 | 10 Path-integral molecular dynamics | GPUMD | [Calculating the radial distribution function of water  using GPUMD and NEP](chapter-10-pimd/GPUMD_Water_RDF) | Zekun Chen | Yes |
 
 
