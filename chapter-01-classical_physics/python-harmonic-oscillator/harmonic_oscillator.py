@@ -18,7 +18,9 @@ plt.plot(np.arange(1, n_step+1) * dt, v_vector, '--', linewidth=2)
 plt.xlabel('time')
 plt.ylabel('position or velocity')
 plt.legend(['position', 'velocity'])
+plt.tight_layout()
 plt.savefig('fig-c01-position_and_momentum.pdf')
+plt.close()
 
 potential = 0.5 * k * x_vector**2
 kinetic = 0.5 * m * v_vector**2
@@ -30,13 +32,15 @@ plt.plot(np.arange(1, n_step+1) * dt, potential + kinetic, '-.', linewidth=1)
 plt.xlabel('time')
 plt.ylabel('Energy')
 plt.legend(['potential', 'kinetic', 'total'])
+plt.tight_layout()
 plt.savefig('fig-c01-energy_conservation.pdf')
+plt.close()
 
-plt.figure()
-
-plt.figure()
+plt.figure(figsize=(5,4.8))
 plt.plot(x_vector, v_vector, '.', markersize=10)
 plt.xlabel('position')
 plt.ylabel('momentum')
 plt.axis('equal')
+plt.tight_layout()
 plt.savefig('fig-c01-phase_space.pdf', dpi=200)
+plt.close()
