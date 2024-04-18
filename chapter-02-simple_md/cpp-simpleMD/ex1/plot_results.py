@@ -38,4 +38,4 @@ plt.ylim((-1e-4,1e-4))
 plt.title('(d)', fontsize=15)
 
 plt.tight_layout()
-plt.savefig('fig-chapter-6-energy.pdf')
+plt.savefig('fig-c02-energy.pdf')
