@@ -261,7 +261,7 @@ void findNeighborON1(Atom& atom)
     numCells[d] = floor(thickness[d] * cutoffInverse);
   }
   numCells[3] = numCells[0] * numCells[1] * numCells[2];
-  
+
   int cell[4];
 
   std::vector<int> cellCount(numCells[3], 0);
