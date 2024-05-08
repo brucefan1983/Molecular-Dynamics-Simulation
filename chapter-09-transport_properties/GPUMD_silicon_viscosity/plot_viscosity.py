@@ -10,9 +10,9 @@ print('eta_L=',1000*np.mean(viscosity[125,10:13]),'+-',1000*np.std(viscosity[125
 print('eta_S=',1000*np.mean(viscosity[125,13:16]),'+-',1000*np.std(viscosity[125,13:16])/np.sqrt(3))
 
     
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(12, 6))
 
-plt.subplot(2, 1, 1)
+plt.subplot(1, 2, 1)
 plt.plot(t, 1000*viscosity[:,10], '-', linewidth=2,label='x')
 plt.plot(t, 1000*viscosity[:,11], '-', linewidth=2,label='y')
 plt.plot(t, 1000*viscosity[:,12], '-', linewidth=2,label='z')
@@ -23,7 +23,7 @@ plt.title('(a)', fontsize=15)
 plt.legend(fontsize=15)
 
 
-plt.subplot(2, 1, 2)
+plt.subplot(1, 2, 2)
 plt.plot(t, 1000*viscosity[:,13], '-', linewidth=2,label='xy')
 plt.plot(t, 1000*viscosity[:,15], '-', linewidth=2,label='yz')
 plt.plot(t, 1000*viscosity[:,14], '-', linewidth=2,label='zx')
@@ -34,5 +34,5 @@ plt.title('(b)', fontsize=15)
 plt.legend(fontsize=15)
 
 plt.tight_layout()
-plt.savefig('fig-c9-viscosity.pdf')
+plt.savefig('fig-c09-viscosity.pdf')
 
