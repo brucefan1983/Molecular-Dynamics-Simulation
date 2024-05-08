@@ -1,0 +1,18 @@
+potential Si_Fan_2019.txt
+time_step 1
+
+velocity  1000
+#首先将晶格常数优化到指定的温度压力条件下
+ensemble    npt_ber 1000 1000 100 0 0 0 53.4059 53.4059 53.4059 2000
+run         10000
+
+#因为要使用爱因斯坦晶体作为参考，所以需要让所有原子先回到平衡位置
+minimize fire 1.0e-5 1000
+
+#用FL方法计算低温自由能
+ensemble ti_spring temp 1000 press 0
+run 100000
+
+#用RS方法计算高温自由能
+#ensemble ti_rs temp 300 1000 aniso 0
+#run 100000
