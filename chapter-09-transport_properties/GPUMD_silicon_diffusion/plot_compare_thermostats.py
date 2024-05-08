@@ -19,9 +19,9 @@ plt.plot(t, np.mean(sdc_bdp[:,4:7],axis=1), '-', linewidth=3,label='NVT-BDP')
 plt.plot(t, np.mean(sdc_lan[:,4:7],axis=1), '-', linewidth=3,label='NVT-Langevin')
 plt.xlim((0,4))
 plt.xlabel('Correlation time (ps)', fontsize=15)
-plt.ylabel('SDC (Ang$^2$/ps)', fontsize=15)
+plt.ylabel('SDC ($\mathrm{\AA}^2$/ps)', fontsize=15)
 plt.legend(fontsize=15)
 
 plt.tight_layout()
-plt.savefig('fig-c9-diffusion-thermostat.pdf')
+plt.savefig('fig-c09-diffusion-thermostat.pdf')
 

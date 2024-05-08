@@ -14,10 +14,10 @@ plt.plot(t, msd[:,2], '-', linewidth=2,label='y')
 plt.plot(t, msd[:,3], '-', linewidth=2,label='z')
 plt.plot(t, np.mean(msd[:,1:4],axis=1), '--', linewidth=2,label='mean')
 plt.xlabel('Time (ps)', fontsize=15)
-plt.ylabel('MSD (Ang$^2$)', fontsize=15)
+plt.ylabel('MSD ($\mathrm{\AA}^2$)', fontsize=15)
 plt.legend(fontsize=15)
 
 
 plt.tight_layout()
-plt.savefig('fig-c9-msd.pdf')
+plt.savefig('fig-c09-msd.pdf')
 
