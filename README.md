@@ -31,7 +31,7 @@
 
 
 ## Discussion group for the book
-* QQ group: 887975816
+* QQ group: 778083814
 
 
 
