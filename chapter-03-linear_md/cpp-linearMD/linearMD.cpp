@@ -91,7 +91,7 @@ float getArea(const double* a, const double* b)
 
 void getThickness(const Atom& atom, double* thickness)
 {
-  double volume = abs(getDet(atom.box));
+  double volume = std::abs(getDet(atom.box));
   const double a[3] = {atom.box[0], atom.box[3], atom.box[6]};
   const double b[3] = {atom.box[1], atom.box[4], atom.box[7]};
   const double c[3] = {atom.box[2], atom.box[5], atom.box[8]};
